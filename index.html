@@ -1,124 +1,770 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM_ERROR // NULLSHIFT</title>
-    <style>
-        body {
-            background-color: #050505;
-            color: #00ff66;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 20px;
-            margin: 0;
-            overflow-x: hidden;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NULLSHIFT // ARCHIVE</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #020403;
+        color: #d7ffe3;
+        font-family: "Courier New", Courier, monospace;
+        overflow: hidden;
+    }
+
+    body {
+        position: relative;
+    }
+
+    /* Scanlines */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 20;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+    }
+
+    /* CRT glow */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 19;
+        box-shadow:
+            inset 0 0 120px rgba(0, 255, 100, 0.08),
+            inset 0 0 30px rgba(0, 255, 100, 0.04);
+    }
+
+    #terminal {
+        width: 100%;
+        height: 100%;
+        padding: 28px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #315c3d #020403;
+    }
+
+    #output {
+        max-width: 1000px;
+        margin: 0 auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.55;
+        text-shadow: 0 0 6px rgba(100,255,150,0.25);
+    }
+
+    .line {
+        margin: 2px 0;
+    }
+
+    .dim {
+        color: #66816d;
+    }
+
+    .warning {
+        color: #d7d19a;
+    }
+
+    .danger {
+        color: #d98b8b;
+    }
+
+    .accent {
+        color: #b8e6c2;
+    }
+
+    .title {
+        color: #e8fff0;
+        text-shadow:
+            0 0 5px rgba(180,255,200,0.4),
+            0 0 20px rgba(80,255,120,0.15);
+    }
+
+    .command {
+        color: #ffffff;
+    }
+
+    .input-line {
+        display: flex;
+        max-width: 1000px;
+        margin: 10px auto 0;
+    }
+
+    .prompt {
+        color: #8dbd98;
+        margin-right: 8px;
+        user-select: none;
+    }
+
+    #commandInput {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #f0fff3;
+        font-family: inherit;
+        font-size: inherit;
+        caret-color: #d7ffe3;
+        text-shadow: 0 0 6px rgba(100,255,150,0.3);
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 17px;
+        background: #ccefd5;
+        animation: blink 1s steps(1) infinite;
+        vertical-align: -3px;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
         }
-        .terminal {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid #00ff66;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
-            padding: 20px;
-            background-color: #0a0a0a;
+    }
+
+    .glitch {
+        animation: glitch 0.12s infinite;
+    }
+
+    @keyframes glitch {
+        0% { transform: translate(0); }
+        25% { transform: translate(-1px, 1px); }
+        50% { transform: translate(1px, -1px); }
+        75% { transform: translate(-1px, -1px); }
+        100% { transform: translate(0); }
+    }
+
+    @media (max-width: 600px) {
+        #terminal {
+            padding: 16px;
         }
-        .output-line {
-            margin-bottom: 8px;
-            line-height: 1.4;
-            white-space: pre-wrap;
+
+        #output,
+        #commandInput {
+            font-size: 13px;
         }
-        .input-area {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-        }
-        .prompt {
-            color: #00ff66;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            background: transparent;
-            border: none;
-            color: #00ff66;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            width: 100%;
-            outline: none;
-        }
-        .glitch {
-            animation: pulse 2s infinite alternate;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-    </style>
+    }
+</style>
 </head>
+
 <body>
 
-<div class="terminal">
-    <div id="terminal-output">
-        <div class="output-line glitch">=== WARNING: UNAUTHORIZED ARCHIVE ACCESS ===</div>
-        <div class="output-line">INITIALIZING CORE REPOSITORY... SUCCESS.</div>
-        <div class="output-line">CURRENT SYSTEM NODE: CANDIDATE 9502026#</div>
-        <div class="output-line" style="color: #888;">Type 'help', 'status', 'lore', or 'realisation' to probe the framework.</div>
-    </div>
-    
-    <div class="input-area">
-        <span class="prompt">SYS:\></span>
-        <input type="text" id="terminal-input" autofocus autocomplete="off">
+<div id="terminal">
+    <div id="output"></div>
+
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input
+            id="commandInput"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            autofocus
+            aria-label="NULLSHIFT command input"
+        >
     </div>
 </div>
 
 <script>
-    const inputField = document.getElementById('terminal-input');
-    const outputArea = document.getElementById('terminal-output');
 
-    document.addEventListener('click', () => inputField.focus());
+/* =========================================================
+   NULLSHIFT ARCHIVE TERMINAL
+   ========================================================= */
 
-    inputField.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            const command = this.value.trim().toLowerCase();
-            this.value = '';
-            
-            printLine("SYS:\\> " + command, "#00aa44");
-            
-            switch(command) {
-                case 'help':
-                    printLine("AVAILABLE INTERFACES:\n -> status\n -> lore\n -> clear");
-                    break;
-                case 'status':
-                    printLine("ASYMPTOTE STATUS: Coalescing\nSTRUCTURE: Fractured Geometries\nSYSTEM INTEGRITY: Locked");
-                    break;
-                case 'lore':
-                    printLine("The Abyssal Asymptote Coalesces Beneath A Hallowed Threnody.");
-                    break;
-                case 'cosine':
-                    printLine("The infinite cosine distils behind a blessed cinquain.", "#00ff66");
-                    break;
-                case 'realisation':
-                    printLine("CRITICAL REALITY FAILURE INCOMING...", "#ff3333");
-                    setTimeout(() => {
-                        outputArea.innerHTML = '<div class="output-line glitch" style="color:#ff3333; font-size: 24px;">RE-ALIGNING GEOMETRIES. WE SEE YOU.</div>';
-                    }, 2000);
-                    break;
-                case 'clear':
-                    outputArea.innerHTML = '';
-                    break;
-                default:
-                    printLine("SYSTEM_ERROR: Command '" + command + "' unrecognized by the Archive framework.", "#ff3333");
-            }
+const output = document.getElementById("output");
+const input = document.getElementById("commandInput");
+const terminal = document.getElementById("terminal");
+
+let commandHistory = [];
+let historyIndex = -1;
+
+let discovered = {
+    axiom: false,
+    hades: false,
+    threnody: false,
+    paries: false,
+    simulation: false
+};
+
+
+/* =========================================================
+   BASIC OUTPUT
+   ========================================================= */
+
+function print(text = "", className = "") {
+    const line = document.createElement("div");
+    line.className = "line " + className;
+    line.textContent = text;
+    output.appendChild(line);
+
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+function printHTML(html, className = "") {
+    const line = document.createElement("div");
+    line.className = "line " + className;
+    line.innerHTML = html;
+    output.appendChild(line);
+
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+function clearScreen() {
+    output.innerHTML = "";
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+/* =========================================================
+   BOOT SEQUENCE
+   ========================================================= */
+
+async function boot() {
+
+    print("NULLSHIFT ARCHIVE TERMINAL", "title");
+    print("==============================================", "dim");
+
+    await sleep(250);
+
+    print("INITIALIZING ARCHIVE...", "dim");
+    await sleep(350);
+
+    print("CONNECTING TO SYSTEM NODE...", "dim");
+    await sleep(350);
+
+    print("NODE CONNECTED.", "accent");
+    await sleep(200);
+
+    print("");
+    print("UNAUTHORIZED ARCHIVE ACCESS", "warning");
+    print("CURRENT SYSTEM NODE: CANDIDATE 9502026#", "accent");
+    print("SIMULATION: #777", "accent");
+
+    print("");
+    print("WARNING: ARCHIVE INTEGRITY CANNOT BE VERIFIED.", "warning");
+    print("");
+    print('Type "help" to view available commands.');
+    print("");
+}
+
+boot();
+
+
+/* =========================================================
+   COMMANDS
+   ========================================================= */
+
+const commands = {
+
+    help() {
+
+        print("");
+        print("AVAILABLE COMMANDS", "title");
+        print("----------------------------------------------");
+        print("help          Display available commands");
+        print("status        Query system status");
+        print("lore          Access archived fragments");
+        print("archive       Browse recovered records");
+        print("identity      Query candidate information");
+        print("realisation   Access recovered audio record");
+        print("about         About NULLSHIFT");
+        print("clear         Clear terminal");
+        print("");
+    },
+
+
+    status() {
+
+        print("");
+        print("SYSTEM STATUS", "title");
+        print("----------------------------------------------");
+
+        print("SIMULATION: #777");
+        print("NODE: CANDIDATE 9502026#");
+        print("AXIOM: CONNECTED");
+
+        print("");
+        print("MATTER:      [ONLINE]");
+        print("PATTERN:     [ONLINE]");
+        print("MEMORY:      [UNSTABLE]");
+        print("AWARENESS:   [UNKNOWN]");
+
+        print("");
+        print("FOUNDATION ARC: ACTIVE");
+        print("ARCHIVE INTEGRITY: 71%");
+        print("");
+
+        if (discovered.simulation) {
+            print("OBSERVATION STATUS: COMPROMISED", "danger");
+        } else {
+            print("OBSERVATION STATUS: NOMINAL", "dim");
         }
-    });
 
-    function printLine(text, color = "#00ff66") {
-        const line = document.createElement('div');
-        line.className = 'output-line';
-        line.style.color = color;
-        line.innerText = text;
-        outputArea.appendChild(line);
-        window.scrollTo(0, document.body.scrollHeight);
+        print("");
+    },
+
+
+    lore() {
+
+        print("");
+        print("ARCHIVED FRAGMENTS", "title");
+        print("----------------------------------------------");
+
+        print("[01] THE AXIOM");
+        print("[02] THE FOUR LAYERS");
+        print("[03] THE HADES SIGIL");
+        print("[04] THE THRENODY");
+        print("[05] THE LAST PARIES");
+        print("[06] SIMULATION #777");
+        print("[07] [DATA CORRUPTED]");
+
+        print("");
+        print("Use the fragment names as commands.");
+        print("");
+    },
+
+
+    archive() {
+
+        print("");
+        print("ARCHIVE DIRECTORY", "title");
+        print("----------------------------------------------");
+
+        print("/FOUNDATION");
+        print("  ├─ observation_001");
+        print("  ├─ observation_002");
+        print("  ├─ candidate.log");
+        print("  └─ foundation.arc");
+
+        print("");
+        print("/METAPHYSICS");
+        print("  ├─ axiom.dat");
+        print("  ├─ four_layers.dat");
+        print("  └─ awareness.err");
+
+        print("");
+        print("/SIGILS");
+        print("  └─ hades.sig");
+
+        print("");
+        print("/AUDIO");
+        print("  └─ realisation.dat");
+
+        print("");
+        print("/UNKNOWN");
+        print("  └─ [ACCESS DENIED]", "danger");
+
+        print("");
+    },
+
+
+    identity() {
+
+        print("");
+        print("IDENTITY RECORD", "title");
+        print("----------------------------------------------");
+
+        print("DESIGNATION: CANDIDATE 9502026#");
+        print("CLASSIFICATION: [UNKNOWN]");
+        print("ORIGIN: [REDACTED]");
+        print("MEMORY STATE: PARTIAL");
+        print("AWARENESS STATE: DEVELOPING");
+
+        print("");
+        print("NOTE:");
+        print("Candidate appears capable of observing");
+        print("systems outside expected parameters.");
+
+        print("");
+        print("ADDITIONAL DATA: [SEALED]");
+        print("");
+    },
+
+
+    realisation() {
+
+        print("");
+        print("RECOVERED AUDIO RECORD", "title");
+        print("----------------------------------------------");
+
+        print("TITLE: REALISATION");
+        print("TYPE: ORIGINAL SOUNDTRACK");
+        print("ASSOCIATED LEVEL: 02");
+        print("STATUS: RECOVERED");
+
+        print("");
+        print("The file exists outside this terminal.");
+        print("Audio playback interface: [PENDING]");
+        print("");
+
+        print("ARCHIVE NOTE:");
+        print("The recording may contain information");
+        print("not intended for the candidate.");
+
+        print("");
+    },
+
+
+    about() {
+
+        print("");
+        print("NULLSHIFT", "title");
+        print("----------------------------------------------");
+
+        print("A philosophical cosmic simulation.");
+        print("");
+        print("You are given a world.");
+        print("You are given control.");
+        print("You are given an explanation.");
+        print("");
+        print("Not necessarily in that order.");
+        print("");
+
+        print("The deeper you observe,");
+        print("the less certain the observer becomes.");
+
+        print("");
+        print("PROJECT STATUS: IN DEVELOPMENT");
+        print("");
+    },
+
+
+    clear() {
+        clearScreen();
+    },
+
+
+    /* =====================================================
+       HIDDEN COMMANDS
+       ===================================================== */
+
+
+    axiom() {
+
+        discovered.axiom = true;
+
+        print("");
+        print("AXIOM", "title");
+        print("----------------------------------------------");
+
+        print("THE AXIOM CONNECTS:");
+        print("");
+        print("MATTER");
+        print("PATTERN");
+        print("MEMORY");
+        print("AWARENESS");
+
+        print("");
+        print("Four layers.");
+        print("One underlying structure.");
+
+        print("");
+        print("You cannot observe the system");
+        print("without becoming part of it.");
+
+        print("");
+    },
+
+
+    "four layers"() {
+
+        print("");
+        print("METAPHYSICAL METRIC", "title");
+        print("----------------------------------------------");
+
+        print("LAYER 01 // MATTER");
+        print("Physical existence.");
+
+        print("");
+        print("LAYER 02 // PATTERN");
+        print("Structure. Order. Relation.");
+
+        print("");
+        print("LAYER 03 // MEMORY");
+        print("That which remains after observation.");
+
+        print("");
+        print("LAYER 04 // AWARENESS");
+        print("The observer.");
+
+        print("");
+        print("THE AXIOM CONNECTS THEM.");
+        print("");
+    },
+
+
+    hades() {
+
+        discovered.hades = true;
+
+        print("");
+        print("HADES SIGIL", "title");
+        print("----------------------------------------------");
+
+        print("              ◇");
+        print("");
+        print("      AS YOUR MIND");
+        print("     TRANSCENDS MATTER.");
+        print("");
+
+        print("SIGIL STATUS: ACTIVE");
+        print("");
+        print("The archive refuses to explain");
+        print("why the symbol exists.");
+
+        print("");
+    },
+
+
+    threnody() {
+
+        discovered.threnody = true;
+
+        print("");
+        print("THRENODY", "title");
+        print("----------------------------------------------");
+
+        print("BOSS RECORD: FOUND");
+        print("STATUS: [REDACTED]");
+
+        print("");
+        print("The archive contains no reliable");
+        print("description of the encounter.");
+
+        print("");
+        print("Only one statement remains:");
+
+        print("");
+        print('"THE WORLD REMEMBERS WHAT YOU FORGOT."', "warning");
+
+        print("");
+    },
+
+
+    paries() {
+
+        discovered.paries = true;
+
+        print("");
+        print("THE LAST PARIES", "title");
+        print("----------------------------------------------");
+
+        print("RECORD STATUS: INCOMPLETE");
+        print("");
+        print("No definition found.");
+        print("No origin found.");
+        print("No termination found.");
+
+        print("");
+        print("The phrase appears in records");
+        print("that should not exist yet.");
+
+        print("");
+    },
+
+
+    observe() {
+
+        discovered.simulation = true;
+
+        print("");
+        print("OBSERVATION PROTOCOL", "title");
+        print("----------------------------------------------");
+
+        print("Observer detected.");
+        print("Observer is observing.");
+        print("Observer has been observed.", "warning");
+
+        print("");
+        print("SIMULATION #777");
+        print("STATUS: OBSERVED");
+
+        print("");
+        print("OBSERVER: CANDIDATE 9502026#");
+
+        print("");
+        print("WHY ARE YOU STILL LOOKING?", "danger");
+
+        print("");
+    },
+
+
+    transcend() {
+
+        print("");
+        print("REQUESTING TRANSCENDENCE...", "dim");
+        print("");
+
+        setTimeout(() => {
+            document.body.classList.add("glitch");
+
+            print("MATTER ............... RELEASED");
+            print("PATTERN .............. UNSTABLE");
+            print("MEMORY ............... COLLAPSING");
+            print("AWARENESS ............ [RECOGNIZED]", "warning");
+
+            setTimeout(() => {
+                document.body.classList.remove("glitch");
+
+                print("");
+                print("YOU HAVE REACHED A LAYER");
+                print("THE ARCHIVE CANNOT NAME.");
+                print("");
+
+            }, 800);
+
+        }, 400);
+    },
+
+
+    "777"() {
+
+        discovered.simulation = true;
+
+        print("");
+        print("SIMULATION #777", "title");
+        print("----------------------------------------------");
+
+        print("STATUS: ACTIVE");
+        print("OBSERVATION: CONFIRMED");
+        print("CANDIDATE: 9502026#");
+
+        print("");
+        print("There was never supposed to be");
+        print("a record of this simulation.");
+
+        print("");
+        print("[FOUNDATION ARC // TERMINAL RECORD]");
+        print("");
+
+        print("...");
+        print("...");
+        print("...");
+
+        print("");
+        print("YOU PASSED THE TEST.", "warning");
+        print("");
     }
+
+};
+
+
+/* =========================================================
+   COMMAND PROCESSOR
+   ========================================================= */
+
+async function executeCommand(raw) {
+
+    const command = raw.trim().toLowerCase();
+
+    if (!command) return;
+
+    print("> " + raw, "command");
+
+    commandHistory.push(raw);
+    historyIndex = commandHistory.length;
+
+    if (commands[command]) {
+        await commands[command]();
+        return;
+    }
+
+    if (command === "realization") {
+        await commands.realisation();
+        return;
+    }
+
+    print("");
+    print("COMMAND NOT RECOGNIZED.", "warning");
+    print('Type "help" for available commands.');
+    print("");
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+input.addEventListener("keydown", async function(event) {
+
+    if (event.key === "Enter") {
+
+        const command = input.value;
+
+        input.value = "";
+
+        await executeCommand(command);
+
+        return;
+    }
+
+
+    if (event.key === "ArrowUp") {
+
+        event.preventDefault();
+
+        if (commandHistory.length === 0) return;
+
+        historyIndex--;
+
+        if (historyIndex < 0) {
+            historyIndex = 0;
+        }
+
+        input.value = commandHistory[historyIndex] || "";
+    }
+
+
+    if (event.key === "ArrowDown") {
+
+        event.preventDefault();
+
+        if (commandHistory.length === 0) return;
+
+        historyIndex++;
+
+        if (historyIndex >= commandHistory.length) {
+            historyIndex = commandHistory.length;
+            input.value = "";
+            return;
+        }
+
+        input.value = commandHistory[historyIndex] || "";
+    }
+
+});
+
+
+/* =========================================================
+   KEEP TERMINAL FOCUSED
+   ========================================================= */
+
+document.addEventListener("click", () => {
+    input.focus();
+});
+
 </script>
 
 </body>
