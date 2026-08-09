@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,139 +7,425 @@
 <title>NULLSHIFT // ARCHIVE</title>
 
 <style>
+/* =========================================================
+   NULLSHIFT // ARCHIVE TERMINAL
+   CRT INTERFACE // ARG BUILD
+   ========================================================= */
+
+:root {
+    --bg: #020403;
+    --bg-soft: #050906;
+    --text: #d7ffe3;
+    --bright: #effff3;
+    --accent: #9ee6ad;
+    --dim: #587360;
+    --muted: #354a3b;
+    --warning: #d2cf9a;
+    --danger: #d58b8b;
+    --line: rgba(220,255,230,0.11);
+    --glow: rgba(90,255,130,0.24);
+    --scanline: rgba(210,255,225,0.075);
+}
+
+/* ---------------------------------------------------------
+   RESET
+   --------------------------------------------------------- */
+
 * {
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     width: 100%;
     height: 100%;
-    background: #020403;
-    color: #d7ffe3;
-    font-family: "Courier New", Courier, monospace;
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
     overflow: hidden;
 }
 
+/* ---------------------------------------------------------
+   CRT BASE
+   --------------------------------------------------------- */
+
 body {
     position: relative;
+    background:
+        radial-gradient(
+            ellipse at center,
+            #07100a 0%,
+            #030704 48%,
+            #010201 100%
+        );
 }
 
+/* STRONG VISIBLE SCANLINES */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
+
     pointer-events: none;
-    z-index: 20;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.025) 0px,
-        rgba(255,255,255,0.025) 1px,
-        transparent 1px,
-        transparent 4px
-    );
+
+    z-index: 1000;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 2px,
+            var(--scanline) 2px,
+            var(--scanline) 3px,
+            transparent 3px,
+            transparent 5px
+        );
+
+    opacity: 0.72;
+
+    mix-blend-mode: screen;
 }
 
+/* CRT VIGNETTE */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
+
     pointer-events: none;
-    z-index: 19;
+
+    z-index: 999;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 48%,
+            rgba(0,0,0,0.18) 72%,
+            rgba(0,0,0,0.72) 100%
+        );
+
     box-shadow:
-        inset 0 0 120px rgba(0, 255, 100, 0.08),
-        inset 0 0 30px rgba(0, 255, 100, 0.04);
+        inset 0 0 140px rgba(0,255,100,0.08),
+        inset 0 0 35px rgba(0,255,100,0.06);
+
+    animation: crtPulse 5s ease-in-out infinite;
 }
+
+@keyframes crtPulse {
+    0%, 100% {
+        opacity: 0.92;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ---------------------------------------------------------
+   TERMINAL
+   --------------------------------------------------------- */
 
 #terminal {
     width: 100%;
     height: 100%;
-    padding: 28px;
+
+    padding:
+        clamp(18px, 4vw, 42px);
+
     overflow-y: auto;
+
     scrollbar-width: thin;
-    scrollbar-color: #315c3d #020403;
+    scrollbar-color:
+        #315c3d
+        #020403;
+
+    position: relative;
 }
 
+/* Subtle horizontal CRT distortion */
+#terminal::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.015),
+            rgba(255,255,255,0.015)
+        );
+
+    animation: screenFlicker 0.16s infinite;
+    opacity: 0.35;
+}
+
+@keyframes screenFlicker {
+    0% {
+        opacity: 0.32;
+    }
+
+    50% {
+        opacity: 0.38;
+    }
+
+    100% {
+        opacity: 0.31;
+    }
+}
+
+/* ---------------------------------------------------------
+   OUTPUT
+   --------------------------------------------------------- */
+
 #output {
-    max-width: 1000px;
+    max-width: 1050px;
+
     margin: 0 auto;
+
     white-space: pre-wrap;
     word-break: break-word;
+
     line-height: 1.55;
-    text-shadow: 0 0 6px rgba(100,255,150,0.25);
+
+    font-size: clamp(
+        13px,
+        1.25vw,
+        16px
+    );
+
+    text-shadow:
+        0 0 4px rgba(100,255,150,0.28),
+        0 0 14px rgba(70,255,120,0.08);
 }
 
 .line {
     margin: 3px 0;
+
+    animation:
+        lineAppear
+        0.08s
+        ease-out;
 }
 
+@keyframes lineAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-2px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ---------------------------------------------------------
+   TEXT CLASSES
+   --------------------------------------------------------- */
+
 .dim {
-    color: #66816d;
+    color: var(--dim);
+}
+
+.muted {
+    color: var(--muted);
 }
 
 .warning {
-    color: #c9c89a;
+    color: var(--warning);
+
+    text-shadow:
+        0 0 7px rgba(210,205,120,0.22);
+}
+
+.danger {
+    color: var(--danger);
+
+    text-shadow:
+        0 0 8px rgba(255,80,80,0.2);
 }
 
 .accent {
-    color: #b8e6c2;
+    color: var(--accent);
 }
 
 .title {
-    color: #e8fff0;
+    color: var(--bright);
+
+    font-weight: bold;
+
     text-shadow:
-        0 0 5px rgba(180,255,200,0.4),
-        0 0 20px rgba(80,255,120,0.15);
+        0 0 5px rgba(180,255,200,0.42),
+        0 0 20px rgba(80,255,120,0.16);
 }
 
 .command {
     color: #ffffff;
 }
 
+.corrupt {
+    color: #9bc5a4;
+
+    animation:
+        corruption
+        0.16s
+        infinite;
+}
+
+@keyframes corruption {
+    0%, 100% {
+        opacity: 0.86;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ---------------------------------------------------------
+   INPUT
+   --------------------------------------------------------- */
+
 .input-line {
     display: flex;
-    max-width: 1000px;
-    margin: 10px auto 0;
+
+    max-width: 1050px;
+
+    margin:
+        12px auto 0;
+
+    position: relative;
 }
 
 .prompt {
     color: #8dbd98;
+
     margin-right: 8px;
+
     user-select: none;
+
+    text-shadow:
+        0 0 7px rgba(100,255,140,0.25);
 }
 
 #commandInput {
     flex: 1;
+
     border: none;
     outline: none;
+
     background: transparent;
-    color: #f0fff3;
+
+    color: var(--bright);
+
     font-family: inherit;
+
     font-size: inherit;
-    caret-color: #d7ffe3;
-    text-shadow: 0 0 6px rgba(100,255,150,0.3);
+
+    caret-color: var(--bright);
+
+    text-shadow:
+        0 0 6px rgba(100,255,150,0.35);
 }
 
+#commandInput::selection {
+    background: rgba(150,255,170,0.2);
+}
+
+/* ---------------------------------------------------------
+   CURSOR EFFECT
+   --------------------------------------------------------- */
+
+#commandInput {
+    animation:
+        inputGlow
+        2.8s
+        ease-in-out
+        infinite;
+}
+
+@keyframes inputGlow {
+    0%, 100% {
+        text-shadow:
+            0 0 5px rgba(100,255,150,0.25);
+    }
+
+    50% {
+        text-shadow:
+            0 0 10px rgba(100,255,150,0.42);
+    }
+}
+
+/* ---------------------------------------------------------
+   GLITCH
+   --------------------------------------------------------- */
+
 .glitch {
-    animation: glitch 0.12s infinite;
+    animation:
+        glitch
+        0.13s
+        infinite;
 }
 
 @keyframes glitch {
-    0% { transform: translate(0); }
-    25% { transform: translate(-1px, 1px); }
-    50% { transform: translate(1px, -1px); }
-    75% { transform: translate(-1px, -1px); }
-    100% { transform: translate(0); }
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-1px, 1px);
+    }
+
+    40% {
+        transform: translate(1px, -1px);
+    }
+
+    60% {
+        transform: translate(-1px, 0);
+    }
+
+    80% {
+        transform: translate(1px, 1px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
 }
 
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
 @media (max-width: 600px) {
+
     #terminal {
-        padding: 16px;
+        padding: 15px;
     }
 
     #output,
     #commandInput {
-        font-size: 13px;
+        font-size: 12px;
+    }
+
+    .input-line {
+        margin-top: 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }
 </style>
@@ -149,58 +434,141 @@ body::after {
 <body>
 
 <div id="terminal">
+
     <div id="output"></div>
 
     <div class="input-line">
         <span class="prompt">&gt;</span>
+
         <input
             id="commandInput"
             type="text"
             autocomplete="off"
             spellcheck="false"
             autofocus
+            aria-label="Archive command input"
         >
     </div>
+
 </div>
 
 <script>
 
 /* =========================================================
-   NULLSHIFT // ARCHIVE TERMINAL
+   NULLSHIFT // ARCHIVE
+   FINAL ARG BUILD
    ========================================================= */
 
-const output = document.getElementById("output");
-const input = document.getElementById("commandInput");
-const terminal = document.getElementById("terminal");
+const output =
+    document.getElementById("output");
 
-let commandHistory = [];
-let historyIndex = -1;
+const input =
+    document.getElementById("commandInput");
+
+const terminal =
+    document.getElementById("terminal");
 
 
 /* =========================================================
-   OUTPUT
+   STATE
+   ========================================================= */
+
+let commandHistory = [];
+
+let historyIndex = -1;
+
+let booted = false;
+
+
+/* =========================================================
+   OUTPUT ENGINE
    ========================================================= */
 
 function print(text = "", className = "") {
 
-    const line = document.createElement("div");
+    const line =
+        document.createElement("div");
 
-    line.className = "line " + className;
-    line.textContent = text;
+    line.className =
+        "line " + className;
+
+    line.textContent =
+        text;
 
     output.appendChild(line);
 
-    terminal.scrollTop = terminal.scrollHeight;
+    terminal.scrollTop =
+        terminal.scrollHeight;
+}
+
+
+function printLines(lines, className = "") {
+
+    lines.forEach(line => {
+        print(line, className);
+    });
+
 }
 
 
 function clearScreen() {
+
     output.innerHTML = "";
+
 }
 
 
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+
+    return new Promise(resolve =>
+        setTimeout(resolve, ms)
+    );
+
+}
+
+
+function separator() {
+
+    print(
+        "──────────────────────────────────────────────────",
+        "dim"
+    );
+
+}
+
+
+function section(title) {
+
+    print("");
+    print(title, "title");
+    separator();
+
+}
+
+
+function randomCorruption() {
+
+    const fragments = [
+        "∅",
+        "NULL",
+        "////",
+        "0x00",
+        "UNRESOLVED",
+        "■■■",
+        "..."
+    ];
+
+    return fragments[
+        Math.floor(
+            Math.random() *
+            fragments.length
+        )
+    ];
+
 }
 
 
@@ -210,365 +578,1335 @@ function sleep(ms) {
 
 async function boot() {
 
-    print("NULLSHIFT // ARCHIVE", "title");
-    print("==============================================", "dim");
+    if (booted) return;
+
+    booted = true;
+
+    print(
+        "NULLSHIFT // ARCHIVE",
+        "title"
+    );
+
+    print(
+        "ARCHIVAL INTERFACE // BUILD 0.9.██",
+        "dim"
+    );
+
+    separator();
+
+    await sleep(220);
+
+    print(
+        "INITIALIZING LOW-LEVEL ARCHIVE ACCESS...",
+        "dim"
+    );
+
+    await sleep(320);
+
+    print(
+        "INDEXING RECOVERED MATERIAL...",
+        "dim"
+    );
 
     await sleep(300);
 
-    print("ARCHIVE INTERFACE INITIALIZING...", "dim");
+    print(
+        "CONNECTION ESTABLISHED.",
+        "accent"
+    );
 
-    await sleep(400);
-
-    print("CONNECTION ESTABLISHED.", "accent");
-
-    await sleep(250);
-
-    print("");
-    print("UNAUTHORIZED ARCHIVE ACCESS", "warning");
-    print("");
-
-    print("ARCHIVE STATUS: UNKNOWN");
-    print("INTEGRITY: UNVERIFIED");
-    print("ACCESS LEVEL: LIMITED");
+    await sleep(180);
 
     print("");
-    print('Type "help" to view available commands.');
+
+    print(
+        "UNAUTHORIZED ARCHIVE ACCESS",
+        "warning"
+    );
+
+    print(
+        "YOU HAVE NOT BEEN GRANTED ACCESS.",
+        "warning"
+    );
+
+    print(
+        "THE ARCHIVE HAS SIMPLY FAILED TO STOP YOU.",
+        "danger"
+    );
+
     print("");
+
+    print(
+        "ARCHIVE STATUS: UNKNOWN"
+    );
+
+    print(
+        "INTEGRITY: PARTIAL"
+    );
+
+    print(
+        "INDEX: INCOMPLETE"
+    );
+
+    print(
+        "ORIGIN: UNRESOLVED"
+    );
+
+    print("");
+
+    print(
+        'Type "help" to inspect available commands.',
+        "accent"
+    );
+
+    print("");
+
 }
 
 
 /* =========================================================
-   COMMANDS
+   COMMAND DEFINITIONS
    ========================================================= */
 
 const commands = {
 
-    help() {
 
-        print("");
-        print("AVAILABLE COMMANDS", "title");
-        print("----------------------------------------------");
+/* ---------------------------------------------------------
+   HELP
+   --------------------------------------------------------- */
 
-        print("help          Display available commands");
-        print("status        Query archive status");
-        print("lore          Browse recovered fragments");
-        print("archive       Browse archive directories");
-        print("realisation   Access recovered audio record");
-        print("about         About NULLSHIFT");
-        print("clear         Clear terminal");
+help() {
 
-        print("");
-    },
+    section("AVAILABLE COMMANDS");
 
+    print(
+        "help          Display command index"
+    );
 
-    status() {
+    print(
+        "status        Query archive status"
+    );
 
-        print("");
-        print("ARCHIVE STATUS", "title");
-        print("----------------------------------------------");
+    print(
+        "lore          Browse recovered fragments"
+    );
 
-        print("CONNECTION: STABLE");
-        print("ARCHIVE: PARTIALLY INDEXED");
-        print("DATA INTEGRITY: UNKNOWN");
-        print("ACCESS: RESTRICTED");
+    print(
+        "archive       Browse indexed directories"
+    );
 
-        print("");
-        print("MEMORY:      [UNVERIFIED]");
-        print("PATTERN:     [UNVERIFIED]");
-        print("MATTER:      [UNVERIFIED]");
-        print("AWARENESS:   [UNVERIFIED]");
+    print(
+        "scan          Scan for anomalies"
+    );
 
-        print("");
-        print("NO FURTHER INFORMATION AVAILABLE.");
-        print("");
-    },
+    print(
+        "axiom         Access AXIOM fragment"
+    );
 
+    print(
+        "hades         Access HADES SIGIL fragment"
+    );
 
-    lore() {
+    print(
+        "threnody      Access THRENODY fragment"
+    );
 
-        print("");
-        print("RECOVERED FRAGMENTS", "title");
-        print("----------------------------------------------");
+    print(
+        "undeniable    Access UNDENIABLE fragment"
+    );
 
-        print("[01] THE AXIOM");
-        print("[02] THE FOUR LAYERS");
-        print("[03] THE HADES SIGIL");
-        print("[04] THE THRENODY");
-        print("[05] THE LAST PARIES");
-        print("[06] THE INFINITE COSINE");
-        print("[07] THE ABYSSAL ASYMPTOTE");
-        print("[08] THE LIMINAL EQUATION");
-        print("[09] THE ARCHIVE OF UNWRITTEN OUTCOMES");
+    print(
+        "beyond        Access UNKNOWN boundary record"
+    );
 
-        print("");
-        print("Some fragments may not be accessible.");
-        print("");
-    },
+    print(
+        "gore          Access GORE reference"
+    );
 
+    print(
+        "paries        Access LAST PARIES fragment"
+    );
 
-    archive() {
+    print(
+        "cosine        Access INFINITE COSINE fragment"
+    );
 
-        print("");
-        print("ARCHIVE DIRECTORY", "title");
-        print("----------------------------------------------");
+    print(
+        "asymptote     Access ABYSSAL ASYMPTOTE"
+    );
 
-        print("/FRAGMENTS");
-        print("  ├─ axiom.dat");
-        print("  ├─ layers.dat");
-        print("  ├─ hades.sig");
-        print("  └─ threnody.dat");
+    print(
+        "equation      Access LIMINAL EQUATION"
+    );
 
-        print("");
-        print("/TEXT");
-        print("  ├─ asymptote.txt");
-        print("  ├─ equation.txt");
-        print("  ├─ cinquain.txt");
-        print("  └─ outcomes.txt");
+    print(
+        "outcomes      Access ARCHIVE OF UNWRITTEN OUTCOMES"
+    );
 
-        print("");
-        print("/AUDIO");
-        print("  └─ realisation.dat");
+    print(
+        "realisation   Access recovered audio record"
+    );
 
-        print("");
-        print("/UNKNOWN");
-        print("  └─ [UNINDEXED]");
+    print(
+        "about         About NULLSHIFT"
+    );
 
-        print("");
-    },
+    print(
+        "clear         Clear terminal"
+    );
 
+    print("");
 
-    realisation() {
+    print(
+        "TIP: Press TAB to autocomplete commands.",
+        "dim"
+    );
 
-        print("");
-        print("RECOVERED AUDIO RECORD", "title");
-        print("----------------------------------------------");
+    print(
+        "TIP: ↑ / ↓ navigates command history.",
+        "dim"
+    );
 
-        print("TITLE: REALISATION");
-        print("TYPE: ORIGINAL SOUNDTRACK");
-        print("STATUS: RECOVERED");
+    print("");
 
-        print("");
-        print("The archive contains an audio reference");
-        print("whose full contents are not indexed.");
+},
 
-        print("");
-        print("No additional information available.");
-        print("");
-    },
 
+/* ---------------------------------------------------------
+   STATUS
+   --------------------------------------------------------- */
 
-    about() {
+status() {
 
-        print("");
-        print("NULLSHIFT", "title");
-        print("----------------------------------------------");
+    section("ARCHIVE STATUS");
 
-        print("A game about discovery.");
-        print("");
-        print("A world.");
-        print("A system.");
-        print("Questions without immediate answers.");
-        print("");
-        print("Some things are better discovered");
-        print("than explained.");
+    print("CONNECTION: STABLE");
 
-        print("");
-        print("PROJECT STATUS: IN DEVELOPMENT");
-        print("");
-    },
+    print(
+        "ARCHIVE: PARTIALLY INDEXED"
+    );
 
+    print(
+        "DATA INTEGRITY: UNKNOWN"
+    );
 
-    /* =====================================================
-       FRAGMENT COMMANDS
-       ===================================================== */
+    print(
+        "ACCESS: RESTRICTED"
+    );
 
+    print(
+        "TEMPORAL CONSISTENCY: UNVERIFIED"
+    );
 
-    axiom() {
+    print(
+        "COGNITIVE CONSISTENCY: UNVERIFIED"
+    );
 
-        print("");
-        print("FRAGMENT // AXIOM", "title");
-        print("----------------------------------------------");
+    print("");
 
-        print("[RECORD PARTIALLY RECOVERED]");
-        print("");
-        print("Matter.");
-        print("Pattern.");
-        print("Memory.");
-        print("Awareness.");
+    print(
+        "MATTER:      [INDEXED]"
+    );
 
-        print("");
-        print("[REMAINDER UNAVAILABLE]");
-        print("");
-    },
+    print(
+        "PATTERN:     [PARTIAL]"
+    );
 
+    print(
+        "MEMORY:      [CORRUPTED]"
+    );
 
-    "four layers"() {
+    print(
+        "AWARENESS:   [WITHHELD]"
+    );
 
-        print("");
-        print("FRAGMENT // FOUR LAYERS", "title");
-        print("----------------------------------------------");
+    print("");
 
-        print("LAYER I");
-        print("[DATA WITHHELD]");
+    print(
+        "ANOMALIES:   DETECTED",
+        "warning"
+    );
 
-        print("");
-        print("LAYER II");
-        print("[DATA WITHHELD]");
+    print(
+        "UNRESOLVED:  04"
+    );
 
-        print("");
-        print("LAYER III");
-        print("[DATA WITHHELD]");
+    print("");
 
-        print("");
-        print("LAYER IV");
-        print("[DATA WITHHELD]");
+    print(
+        "NO FURTHER INFORMATION AVAILABLE."
+    );
 
-        print("");
-        print("The archive refuses to elaborate.");
-        print("");
-    },
+    print("");
 
+},
 
-    hades() {
 
-        print("");
-        print("FRAGMENT // HADES SIGIL", "title");
-        print("----------------------------------------------");
+/* ---------------------------------------------------------
+   LORE
+   --------------------------------------------------------- */
 
-        print("              ◇");
-        print("");
-        print("        [SYMBOL INDEXED]");
-        print("");
-        print("INSCRIPTION:");
-        print("AS YOUR MIND TRANSCENDS MATTER.");
+lore() {
 
-        print("");
-        print("[NO CONTEXT FOUND]");
-        print("");
-    },
+    section("RECOVERED FRAGMENTS");
 
+    print(
+        "[01] THE AXIOM"
+    );
 
-    threnody() {
+    print(
+        "[02] THE FOUR LAYERS"
+    );
 
-        print("");
-        print("FRAGMENT // THRENODY", "title");
-        print("----------------------------------------------");
+    print(
+        "[03] THE HADES SIGIL"
+    );
 
-        print("[RECORD FOUND]");
-        print("");
-        print("CATEGORY: UNKNOWN");
-        print("REFERENCE: THRENODY");
+    print(
+        "[04] THE THRENODY"
+    );
 
-        print("");
-        print("[DESCRIPTION UNAVAILABLE]");
-        print("");
-    },
+    print(
+        "[05] THE UNDENIABLE"
+    );
 
+    print(
+        "[06] THE LAST PARIES"
+    );
 
-    paries() {
+    print(
+        "[07] THE INFINITE COSINE"
+    );
 
-        print("");
-        print("FRAGMENT // THE LAST PARIES", "title");
-        print("----------------------------------------------");
+    print(
+        "[08] THE ABYSSAL ASYMPTOTE"
+    );
 
-        print("REFERENCE FOUND.");
-        print("");
-        print("DEFINITION: [MISSING]");
-        print("ORIGIN: [MISSING]");
-        print("CONTEXT: [MISSING]");
+    print(
+        "[09] THE LIMINAL EQUATION"
+    );
 
-        print("");
-        print("The archive contains the phrase.");
-        print("Nothing more.");
+    print(
+        "[10] THE ARCHIVE OF UNWRITTEN OUTCOMES"
+    );
 
-        print("");
-    },
+    print(
+        "[11] GORE"
+    );
 
+    print(
+        "[12] THE BEYOND"
+    );
 
-    cosine() {
+    print("");
 
-        print("");
-        print("FRAGMENT // CINQUAIN", "title");
-        print("----------------------------------------------");
+    print(
+        "Several records exhibit non-standard properties.",
+        "dim"
+    );
 
-        print("THE INFINITE COSINE DISTILLS");
-        print("BEHIND A BLESSED CINQUAIN.");
+    print(
+        "Some records appear to contain information",
+        "dim"
+    );
 
-        print("");
-        print("[END OF FRAGMENT]");
-        print("");
-    },
+    print(
+        "which was never entered into the archive.",
+        "dim"
+    );
 
+    print("");
 
-    "infinite cosine"() {
+},
 
-        print("");
-        print("FRAGMENT // THE INFINITE COSINE", "title");
-        print("----------------------------------------------");
 
-        print("THE INFINITE COSINE DISTILLS");
-        print("BEHIND A BLESSED CINQUAIN.");
+/* ---------------------------------------------------------
+   ARCHIVE
+   --------------------------------------------------------- */
 
-        print("");
-        print("[NO ADDITIONAL RECORDS]");
-        print("");
-    },
+archive() {
 
+    section("ARCHIVE DIRECTORY");
 
-    asymptote() {
+    print("/FRAGMENTS");
 
-        print("");
-        print("FRAGMENT // ABYSSAL ASYMPTOTE", "title");
-        print("----------------------------------------------");
+    print("  ├─ axiom.dat");
 
-        print("THE ABYSSAL ASYMPTOTE");
-        print("COALESCES BENEATH");
-        print("A HALLOWED THRENODY.");
+    print("  ├─ layers.dat");
 
-        print("");
-        print("[FRAGMENT ENDS]");
-        print("");
-    },
+    print("  ├─ hades.sig");
 
+    print("  ├─ threnody.dat");
 
-    equation() {
+    print("  ├─ undeniable.dat");
 
-        print("");
-        print("FRAGMENT // LIMINAL EQUATION", "title");
-        print("----------------------------------------------");
+    print("  ├─ paries.dat");
 
-        print("THE LIMINAL EQUATION");
-        print("DREAMS IN FRACTURED");
-        print("GEOMETRIES.");
+    print("  └─ gore.dat");
 
-        print("");
-        print("[FRAGMENT ENDS]");
-        print("");
-    },
+    print("");
 
+    print("/TEXT");
 
-    outcomes() {
+    print("  ├─ asymptote.txt");
 
-        print("");
-        print("FRAGMENT // ARCHIVE", "title");
-        print("----------------------------------------------");
+    print("  ├─ equation.txt");
 
-        print("THE ARCHIVE OF");
-        print("UNWRITTEN OUTCOMES");
-        print("BREATHES BETWEEN");
-        print("OBSERVATIONS.");
+    print("  ├─ cinquain.txt");
 
-        print("");
-        print("[FRAGMENT ENDS]");
-        print("");
-    },
+    print("  ├─ outcomes.txt");
 
+    print("  └─ [UNKNOWN].txt");
 
-    clear() {
-        clearScreen();
-    }
+    print("");
+
+    print("/AUDIO");
+
+    print("  └─ realisation.dat");
+
+    print("");
+
+    print("/BOUNDARY");
+
+    print("  └─ [ACCESS DENIED]");
+
+    print("");
+
+    print("/UNKNOWN");
+
+    print("  ├─ [UNINDEXED]");
+
+    print("  ├─ [UNRESOLVED]");
+
+    print("  └─ [THIS ENTRY SHOULD NOT EXIST]");
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   SCAN
+   --------------------------------------------------------- */
+
+async scan() {
+
+    section("ARCHIVE SCAN");
+
+    print(
+        "Beginning low-level scan...",
+        "dim"
+    );
+
+    await sleep(300);
+
+    print(
+        "[████████████████░░░░] 81%"
+    );
+
+    await sleep(240);
+
+    print(
+        "[███████████████████░] 96%"
+    );
+
+    await sleep(300);
+
+    print(
+        "[████████████████████] 100%",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "ANOMALY DETECTED.",
+        "warning"
+    );
+
+    print(
+        "LOCATION: NON-LOCAL"
+    );
+
+    print(
+        "REFERENCE FRAME: NONE"
+    );
+
+    print(
+        "BOUNDARY: UNDEFINED"
+    );
+
+    print(
+        "DIRECTION: INAPPLICABLE"
+    );
+
+    print("");
+
+    print(
+        "The archive cannot determine",
+        "dim"
+    );
+
+    print(
+        "whether the anomaly is approaching",
+        "dim"
+    );
+
+    print(
+        "or whether it has always been present.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "SCAN TERMINATED.",
+        "danger"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   AXIOM
+   --------------------------------------------------------- */
+
+axiom() {
+
+    section("FRAGMENT // AXIOM");
+
+    print(
+        "[RECORD PARTIALLY RECOVERED]"
+    );
+
+    print("");
+
+    print("Matter.");
+
+    print("Pattern.");
+
+    print("Memory.");
+
+    print("Awareness.");
+
+    print("");
+
+    print(
+        "Four conditions.",
+        "accent"
+    );
+
+    print(
+        "One relation."
+    );
+
+    print("");
+
+    print(
+        "[REMAINDER UNAVAILABLE]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   FOUR LAYERS
+   --------------------------------------------------------- */
+
+"four layers"() {
+
+    section("FRAGMENT // FOUR LAYERS");
+
+    print("LAYER I");
+
+    print("[DATA WITHHELD]");
+
+    print("");
+
+    print("LAYER II");
+
+    print("[DATA WITHHELD]");
+
+    print("");
+
+    print("LAYER III");
+
+    print("[DATA WITHHELD]");
+
+    print("");
+
+    print("LAYER IV");
+
+    print("[DATA WITHHELD]");
+
+    print("");
+
+    print(
+        "The archive refuses to elaborate."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   HADES
+   --------------------------------------------------------- */
+
+hades() {
+
+    section("FRAGMENT // HADES SIGIL");
+
+    print(
+        "              ◇",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "        [SYMBOL INDEXED]"
+    );
+
+    print("");
+
+    print("INSCRIPTION:");
+
+    print(
+        "AS YOUR MIND TRANSCENDS MATTER.",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "[NO CONTEXT FOUND]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   THRENODY
+   --------------------------------------------------------- */
+
+threnody() {
+
+    section("FRAGMENT // THRENODY");
+
+    print(
+        "[RECORD FOUND]",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "CATEGORY: UNKNOWN"
+    );
+
+    print(
+        "REFERENCE: THRENODY"
+    );
+
+    print(
+        "CLASSIFICATION: [IMPOSSIBLE]"
+    );
+
+    print("");
+
+    print(
+        "The record does not describe THRENODY."
+    );
+
+    print(
+        "It only permits the name to remain."
+    );
+
+    print("");
+
+    print(
+        "A boundary was written."
+    );
+
+    print(
+        "Something answered."
+    );
+
+    print("");
+
+    print(
+        "DESCRIPTION UNAVAILABLE."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   UNDENIABLE
+   --------------------------------------------------------- */
+
+undeniable() {
+
+    section("FRAGMENT // THE UNDENIABLE");
+
+    print(
+        "[PROTECTIVE RECORD]"
+    );
+
+    print("");
+
+    print(
+        "THE UNDENIABLE."
+    );
+
+    print("");
+
+    print(
+        "Not a conclusion."
+    );
+
+    print(
+        "Not an answer."
+    );
+
+    print(
+        "Not the thing it was made to resemble."
+    );
+
+    print("");
+
+    print(
+        "A weaker echo."
+    );
+
+    print(
+        "An incomplete refusal."
+    );
+
+    print(
+        "A boundary raised before the boundary was understood."
+    );
+
+    print("");
+
+    print(
+        "PURPOSE: [WITHHELD]"
+    );
+
+    print(
+        "ORIGIN: [WITHHELD]"
+    );
+
+    print(
+        "LIMIT: [UNKNOWN]"
+    );
+
+    print("");
+
+    print(
+        "The archive marks this record as",
+        "dim"
+    );
+
+    print(
+        "\"sufficiently early.\"",
+        "warning"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   LAST PARIES
+   --------------------------------------------------------- */
+
+paries() {
+
+    section("FRAGMENT // THE LAST PARIES");
+
+    print(
+        "REFERENCE FOUND."
+    );
+
+    print("");
+
+    print(
+        "DEFINITION: [MISSING]"
+    );
+
+    print(
+        "ORIGIN: [MISSING]"
+    );
+
+    print(
+        "CONTEXT: [MISSING]"
+    );
+
+    print("");
+
+    print(
+        "The archive contains the phrase."
+    );
+
+    print(
+        "Nothing more."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   INFINITE COSINE
+   --------------------------------------------------------- */
+
+cosine() {
+
+    section("FRAGMENT // THE INFINITE COSINE");
+
+    print(
+        "THE INFINITE COSINE DISTILLS"
+    );
+
+    print(
+        "BEHIND A BLESSED CINQUAIN."
+    );
+
+    print("");
+
+    print(
+        "[END OF FRAGMENT]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   ABYSSAL ASYMPTOTE
+   --------------------------------------------------------- */
+
+asymptote() {
+
+    section("FRAGMENT // ABYSSAL ASYMPTOTE");
+
+    print(
+        "THE ABYSSAL ASYMPTOTE"
+    );
+
+    print(
+        "COALESCES BENEATH"
+    );
+
+    print(
+        "A HALLOWED THRENODY.",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "[FRAGMENT ENDS]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   LIMINAL EQUATION
+   --------------------------------------------------------- */
+
+equation() {
+
+    section("FRAGMENT // LIMINAL EQUATION");
+
+    print(
+        "THE LIMINAL EQUATION"
+    );
+
+    print(
+        "DREAMS IN FRACTURED"
+    );
+
+    print(
+        "GEOMETRIES."
+    );
+
+    print("");
+
+    print(
+        "[FRAGMENT ENDS]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   UNWRITTEN OUTCOMES
+   --------------------------------------------------------- */
+
+outcomes() {
+
+    section(
+        "FRAGMENT // ARCHIVE OF UNWRITTEN OUTCOMES"
+    );
+
+    print(
+        "THE ARCHIVE OF"
+    );
+
+    print(
+        "UNWRITTEN OUTCOMES"
+    );
+
+    print(
+        "BREATHES BETWEEN"
+    );
+
+    print(
+        "OBSERVATIONS."
+    );
+
+    print("");
+
+    print(
+        "[FRAGMENT ENDS]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   GORE
+   --------------------------------------------------------- */
+
+gore() {
+
+    section("REFERENCE // GORE");
+
+    print(
+        "[NON-DESCRIPTIVE RECORD]"
+    );
+
+    print("");
+
+    print(
+        "NAME: GORE"
+    );
+
+    print(
+        "CLASS: UNKNOWN"
+    );
+
+    print(
+        "STATUS: UNRESOLVED"
+    );
+
+    print("");
+
+    print(
+        "No reliable description survives."
+    );
+
+    print(
+        "No origin survives."
+    );
+
+    print(
+        "No boundary survives."
+    );
+
+    print("");
+
+    print(
+        "The archive contains only one warning:"
+    );
+
+    print("");
+
+    print(
+        "DO NOT ASSUME ABSENCE IS EMPTY.",
+        "warning"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   THE BEYOND
+   --------------------------------------------------------- */
+
+beyond() {
+
+    section("BOUNDARY RECORD // [BEYOND]");
+
+    print(
+        "[ACCESSING NON-INDEXED RECORD]",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "There is no location."
+    );
+
+    print(
+        "There is no distance."
+    );
+
+    print(
+        "There is no measurable boundary."
+    );
+
+    print("");
+
+    print(
+        "Beyond nothing,"
+    );
+
+    print(
+        "something remains."
+    );
+
+    print("");
+
+    print(
+        "Not matter."
+    );
+
+    print(
+        "Not thought."
+    );
+
+    print(
+        "Not absence."
+    );
+
+    print(
+        "Not presence."
+    );
+
+    print("");
+
+    print(
+        "The archive attempts classification."
+    );
+
+    print(
+        "The archive fails."
+    );
+
+    print("");
+
+    print(
+        "The entity is not named.",
+        "danger"
+    );
+
+    print(
+        "The entity is not understood."
+    );
+
+    print(
+        "The entity is not contained."
+    );
+
+    print("");
+
+    print(
+        "REFERENCE:",
+        "dim"
+    );
+
+    print(
+        "BEYOND NOTHING",
+        "corrupt"
+    );
+
+    print("");
+
+    print(
+        "DESCRIPTION:"
+    );
+
+    print(
+        randomCorruption() +
+        " " +
+        randomCorruption() +
+        " " +
+        randomCorruption()
+    );
+
+    print("");
+
+    print(
+        "[COGNITIVE INDEX REJECTED]",
+        "warning"
+    );
+
+    print(
+        "[RECORD TERMINATED]"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   REALISATION
+   --------------------------------------------------------- */
+
+realisation() {
+
+    section("RECOVERED AUDIO RECORD");
+
+    print(
+        "TITLE: REALISATION"
+    );
+
+    print(
+        "TYPE: ORIGINAL SOUNDTRACK"
+    );
+
+    print(
+        "STATUS: RECOVERED"
+    );
+
+    print("");
+
+    print(
+        "The archive contains an audio reference"
+    );
+
+    print(
+        "whose complete contents are not indexed."
+    );
+
+    print("");
+
+    print(
+        "The waveform contains irregular intervals."
+    );
+
+    print(
+        "Cause: UNKNOWN."
+    );
+
+    print("");
+
+    print(
+        "No additional information available."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   ABOUT
+   --------------------------------------------------------- */
+
+about() {
+
+    section("NULLSHIFT");
+
+    print(
+        "A game about discovery."
+    );
+
+    print("");
+
+    print(
+        "A world."
+    );
+
+    print(
+        "A system."
+    );
+
+    print(
+        "A question."
+    );
+
+    print(
+        "A boundary."
+    );
+
+    print("");
+
+    print(
+        "Something is wrong."
+    );
+
+    print(
+        "The archive knows."
+    );
+
+    print(
+        "The archive will not explain."
+    );
+
+    print("");
+
+    print(
+        "Some things are better discovered"
+    );
+
+    print(
+        "than explained."
+    );
+
+    print("");
+
+    print(
+        "PROJECT STATUS: IN DEVELOPMENT",
+        "accent"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   CLEAR
+   --------------------------------------------------------- */
+
+clear() {
+
+    clearScreen();
+
+}
 
 };
+
+
+/* =========================================================
+   COMMAND ALIASES
+   ========================================================= */
+
+const aliases = {
+
+    "realization":
+        "realisation",
+
+    "realise":
+        "realisation",
+
+    "realize":
+        "realisation",
+
+    "last paries":
+        "paries",
+
+    "infinite cosine":
+        "cosine",
+
+    "infinite cosine distills":
+        "cosine",
+
+    "abyssal asymptote":
+        "asymptote",
+
+    "liminal equation":
+        "equation",
+
+    "unwritten outcomes":
+        "outcomes",
+
+    "the undeniable":
+        "undeniable",
+
+    "the beyond":
+        "beyond"
+
+};
+
+
+/* =========================================================
+   COMMAND AUTOCOMPLETE
+   ========================================================= */
+
+function getCommandNames() {
+
+    return [
+        ...Object.keys(commands),
+        ...Object.keys(aliases)
+    ];
+
+}
+
+
+function autocomplete(value) {
+
+    const query =
+        value.trim().toLowerCase();
+
+    if (!query) return;
+
+    const matches =
+        getCommandNames()
+            .filter(command =>
+                command.startsWith(query)
+            );
+
+    if (matches.length === 1) {
+
+        input.value =
+            matches[0];
+
+        return;
+
+    }
+
+    if (matches.length > 1) {
+
+        print("");
+
+        print(
+            "POSSIBLE COMMANDS:",
+            "dim"
+        );
+
+        matches.forEach(command => {
+
+            print(
+                "  " + command,
+                "dim"
+            );
+
+        });
+
+        print("");
+
+    }
+
+}
 
 
 /* =========================================================
@@ -577,132 +1915,209 @@ const commands = {
 
 async function executeCommand(raw) {
 
-    const command = raw.trim().toLowerCase();
+    const original =
+        raw.trim();
+
+    const command =
+        original.toLowerCase();
 
     if (!command) return;
 
-    print("> " + raw, "command");
+    print(
+        "> " + original,
+        "command"
+    );
 
-    commandHistory.push(raw);
-    historyIndex = commandHistory.length;
+    commandHistory.push(original);
+
+    historyIndex =
+        commandHistory.length;
+
+
+    /* DIRECT COMMAND */
 
     if (commands[command]) {
 
         await commands[command]();
+
         return;
-    }
 
-    /*
-       Alternate spelling intentionally supported.
-    */
-
-    if (command === "realization") {
-
-        await commands.realisation();
-        return;
     }
 
 
-    /*
-       Friendly fragment aliases.
-    */
+    /* ALIAS */
 
-    if (command === "infinite cosine distills") {
+    if (aliases[command]) {
 
-        await commands.cosine();
+        await commands[
+            aliases[command]
+        ]();
+
         return;
+
     }
 
-    if (command === "abyssal asymptote") {
+
+    /* FRIENDLY FRAGMENT ALIASES */
+
+    if (
+        command ===
+        "the abyssal asymptote coalesces"
+    ) {
 
         await commands.asymptote();
+
         return;
+
     }
 
-    if (command === "liminal equation") {
 
-        await commands.equation();
-        return;
-    }
-
-    if (command === "unwritten outcomes") {
-
-        await commands.outcomes();
-        return;
-    }
-
+    /* UNKNOWN */
 
     print("");
-    print("COMMAND NOT RECOGNIZED.", "warning");
-    print('Type "help" for available commands.');
+
+    print(
+        "COMMAND NOT RECOGNIZED.",
+        "warning"
+    );
+
+    print(
+        "The archive cannot interpret:",
+        "dim"
+    );
+
+    print(
+        `"${original}"`,
+        "danger"
+    );
+
     print("");
+
+    print(
+        'Type "help" for available commands.'
+    );
+
+    print("");
+
 }
 
 
 /* =========================================================
-   INPUT
+   KEYBOARD INPUT
    ========================================================= */
 
-input.addEventListener("keydown", async function(event) {
-
-    if (event.key === "Enter") {
-
-        const command = input.value;
-
-        input.value = "";
-
-        await executeCommand(command);
-
-        return;
-    }
+input.addEventListener(
+    "keydown",
+    async function(event) {
 
 
-    if (event.key === "ArrowUp") {
+        /* ENTER */
 
-        event.preventDefault();
+        if (event.key === "Enter") {
 
-        if (commandHistory.length === 0) return;
-
-        historyIndex--;
-
-        if (historyIndex < 0) {
-            historyIndex = 0;
-        }
-
-        input.value = commandHistory[historyIndex] || "";
-    }
-
-
-    if (event.key === "ArrowDown") {
-
-        event.preventDefault();
-
-        if (commandHistory.length === 0) return;
-
-        historyIndex++;
-
-        if (historyIndex >= commandHistory.length) {
-
-            historyIndex = commandHistory.length;
+            const command =
+                input.value;
 
             input.value = "";
+
+            await executeCommand(
+                command
+            );
 
             return;
         }
 
-        input.value = commandHistory[historyIndex] || "";
-    }
 
-});
+        /* UP */
+
+        if (event.key === "ArrowUp") {
+
+            event.preventDefault();
+
+            if (
+                commandHistory.length === 0
+            ) return;
+
+            historyIndex--;
+
+            if (historyIndex < 0) {
+
+                historyIndex = 0;
+
+            }
+
+            input.value =
+                commandHistory[
+                    historyIndex
+                ] || "";
+
+            return;
+        }
+
+
+        /* DOWN */
+
+        if (event.key === "ArrowDown") {
+
+            event.preventDefault();
+
+            if (
+                commandHistory.length === 0
+            ) return;
+
+            historyIndex++;
+
+            if (
+                historyIndex >=
+                commandHistory.length
+            ) {
+
+                historyIndex =
+                    commandHistory.length;
+
+                input.value = "";
+
+                return;
+            }
+
+            input.value =
+                commandHistory[
+                    historyIndex
+                ] || "";
+
+            return;
+        }
+
+
+        /* TAB */
+
+        if (event.key === "Tab") {
+
+            event.preventDefault();
+
+            autocomplete(
+                input.value
+            );
+
+            return;
+        }
+
+    }
+);
 
 
 /* =========================================================
    KEEP INPUT FOCUSED
    ========================================================= */
 
-document.addEventListener("click", function() {
-    input.focus();
-});
+document.addEventListener(
+    "click",
+    function() {
+
+        input.focus();
+
+    }
+);
 
 
 /* =========================================================
@@ -715,4 +2130,3 @@ boot();
 
 </body>
 </html>
-```
