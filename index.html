@@ -10,6 +10,7 @@
 /* =========================================================
    NULLSHIFT // ARCHIVE TERMINAL
    CRT INTERFACE // ARG BUILD
+   EXPANDED ARCHIVAL BUILD
    ========================================================= */
 
 :root {
@@ -65,6 +66,7 @@ body {
 }
 
 /* STRONG VISIBLE SCANLINES */
+
 body::before {
     content: "";
     position: fixed;
@@ -91,6 +93,7 @@ body::before {
 }
 
 /* CRT VIGNETTE */
+
 body::after {
     content: "";
     position: fixed;
@@ -146,7 +149,6 @@ body::after {
     position: relative;
 }
 
-/* Subtle horizontal CRT distortion */
 #terminal::before {
     content: "";
 
@@ -332,22 +334,16 @@ body::after {
 
     text-shadow:
         0 0 6px rgba(100,255,150,0.35);
-}
 
-#commandInput::selection {
-    background: rgba(150,255,170,0.2);
-}
-
-/* ---------------------------------------------------------
-   CURSOR EFFECT
-   --------------------------------------------------------- */
-
-#commandInput {
     animation:
         inputGlow
         2.8s
         ease-in-out
         infinite;
+}
+
+#commandInput::selection {
+    background: rgba(150,255,170,0.2);
 }
 
 @keyframes inputGlow {
@@ -400,6 +396,31 @@ body::after {
 }
 
 /* ---------------------------------------------------------
+   ARCHIVAL SPECIAL EFFECTS
+   --------------------------------------------------------- */
+
+.hidden-record {
+    color: #73927c;
+    opacity: 0.72;
+}
+
+.egg {
+    color: #8fbf99;
+
+    text-shadow:
+        0 0 4px rgba(100,255,150,0.18);
+}
+
+.corrupted-record {
+    letter-spacing: 0.08em;
+
+    animation:
+        corruption
+        0.11s
+        infinite;
+}
+
+/* ---------------------------------------------------------
    RESPONSIVE
    --------------------------------------------------------- */
 
@@ -438,6 +459,7 @@ body::after {
     <div id="output"></div>
 
     <div class="input-line">
+
         <span class="prompt">&gt;</span>
 
         <input
@@ -448,6 +470,7 @@ body::after {
             autofocus
             aria-label="Archive command input"
         >
+
     </div>
 
 </div>
@@ -456,7 +479,8 @@ body::after {
 
 /* =========================================================
    NULLSHIFT // ARCHIVE
-   FINAL ARG BUILD
+   EXPANDED ARG BUILD
+   EXISTING RECORDS PRESERVED
    ========================================================= */
 
 const output =
@@ -518,10 +542,6 @@ function clearScreen() {
 }
 
 
-/* =========================================================
-   UTILITIES
-   ========================================================= */
-
 function sleep(ms) {
 
     return new Promise(resolve =>
@@ -559,7 +579,10 @@ function randomCorruption() {
         "0x00",
         "UNRESOLVED",
         "■■■",
-        "..."
+        "...",
+        "AXIOM",
+        "777",
+        "[REDACTED]"
     ];
 
     return fragments[
@@ -655,6 +678,18 @@ async function boot() {
     print("");
 
     print(
+        "ARCHIVAL ROOT: PARAXIOM",
+        "dim"
+    );
+
+    print(
+        "PROJECT REFERENCE: [WITHHELD]",
+        "dim"
+    );
+
+    print("");
+
+    print(
         'Type "help" to inspect available commands.',
         "accent"
     );
@@ -679,80 +714,47 @@ help() {
 
     section("AVAILABLE COMMANDS");
 
+    print("help          Display command index");
+    print("status        Query archive status");
+    print("lore          Browse recovered fragments");
+    print("archive       Browse indexed directories");
+    print("scan          Scan for anomalies");
+
+    print("axiom         Access AXIOM fragment");
+    print("layers        Access FOUR LAYERS fragment");
+
+    print("paraxiom      Access PARAXIOM records");
+    print("initiator     Access INITIATOR record");
+
+    print("candidate     Access candidate record");
+    print("hades         Access HADES SIGIL fragment");
+    print("threnody      Access THRENODY fragment");
+    print("undeniable    Access UNDENIABLE fragment");
+
+    print("paries        Access LAST PARIES fragment");
+    print("cosine        Access INFINITE COSINE fragment");
+    print("asymptote     Access ABYSSAL ASYMPTOTE");
+    print("equation      Access LIMINAL EQUATION");
+    print("outcomes      Access ARCHIVE OF UNWRITTEN OUTCOMES");
+
+    print("beyond        Access UNKNOWN boundary record");
+    print("gore          Access GORE reference");
+    print("realisation   Access recovered audio record");
+
+    print("echo          Search for archival echoes");
+    print("about         About NULLSHIFT");
+    print("clear         Clear terminal");
+
+    print("");
+
     print(
-        "help          Display command index"
+        "Some commands are not documented.",
+        "muted"
     );
 
     print(
-        "status        Query archive status"
-    );
-
-    print(
-        "lore          Browse recovered fragments"
-    );
-
-    print(
-        "archive       Browse indexed directories"
-    );
-
-    print(
-        "scan          Scan for anomalies"
-    );
-
-    print(
-        "axiom         Access AXIOM fragment"
-    );
-
-    print(
-        "hades         Access HADES SIGIL fragment"
-    );
-
-    print(
-        "threnody      Access THRENODY fragment"
-    );
-
-    print(
-        "undeniable    Access UNDENIABLE fragment"
-    );
-
-    print(
-        "beyond        Access UNKNOWN boundary record"
-    );
-
-    print(
-        "gore          Access GORE reference"
-    );
-
-    print(
-        "paries        Access LAST PARIES fragment"
-    );
-
-    print(
-        "cosine        Access INFINITE COSINE fragment"
-    );
-
-    print(
-        "asymptote     Access ABYSSAL ASYMPTOTE"
-    );
-
-    print(
-        "equation      Access LIMINAL EQUATION"
-    );
-
-    print(
-        "outcomes      Access ARCHIVE OF UNWRITTEN OUTCOMES"
-    );
-
-    print(
-        "realisation   Access recovered audio record"
-    );
-
-    print(
-        "about         About NULLSHIFT"
-    );
-
-    print(
-        "clear         Clear terminal"
+        "Some commands are not commands.",
+        "muted"
     );
 
     print("");
@@ -781,44 +783,18 @@ status() {
     section("ARCHIVE STATUS");
 
     print("CONNECTION: STABLE");
-
-    print(
-        "ARCHIVE: PARTIALLY INDEXED"
-    );
-
-    print(
-        "DATA INTEGRITY: UNKNOWN"
-    );
-
-    print(
-        "ACCESS: RESTRICTED"
-    );
-
-    print(
-        "TEMPORAL CONSISTENCY: UNVERIFIED"
-    );
-
-    print(
-        "COGNITIVE CONSISTENCY: UNVERIFIED"
-    );
+    print("ARCHIVE: PARTIALLY INDEXED");
+    print("DATA INTEGRITY: UNKNOWN");
+    print("ACCESS: RESTRICTED");
+    print("TEMPORAL CONSISTENCY: UNVERIFIED");
+    print("COGNITIVE CONSISTENCY: UNVERIFIED");
 
     print("");
 
-    print(
-        "MATTER:      [INDEXED]"
-    );
-
-    print(
-        "PATTERN:     [PARTIAL]"
-    );
-
-    print(
-        "MEMORY:      [CORRUPTED]"
-    );
-
-    print(
-        "AWARENESS:   [WITHHELD]"
-    );
+    print("MATTER:      [INDEXED]");
+    print("PATTERN:     [PARTIAL]");
+    print("MEMORY:      [CORRUPTED]");
+    print("AWARENESS:   [WITHHELD]");
 
     print("");
 
@@ -827,8 +803,18 @@ status() {
         "warning"
     );
 
+    print("UNRESOLVED:  04");
+
+    print("");
+
     print(
-        "UNRESOLVED:  04"
+        "PARAXIOM LINK: [PRESENT]",
+        "dim"
+    );
+
+    print(
+        "INITIATOR LINK: [UNVERIFIED]",
+        "dim"
     );
 
     print("");
@@ -850,53 +836,25 @@ lore() {
 
     section("RECOVERED FRAGMENTS");
 
-    print(
-        "[01] THE AXIOM"
-    );
+    print("[01] THE AXIOM");
+    print("[02] THE FOUR LAYERS");
+    print("[03] THE HADES SIGIL");
+    print("[04] THE THRENODY");
+    print("[05] THE UNDENIABLE");
+    print("[06] THE LAST PARIES");
+    print("[07] THE INFINITE COSINE");
+    print("[08] THE ABYSSAL ASYMPTOTE");
+    print("[09] THE LIMINAL EQUATION");
+    print("[10] THE ARCHIVE OF UNWRITTEN OUTCOMES");
+    print("[11] GORE");
+    print("[12] THE BEYOND");
 
-    print(
-        "[02] THE FOUR LAYERS"
-    );
+    print("");
 
-    print(
-        "[03] THE HADES SIGIL"
-    );
-
-    print(
-        "[04] THE THRENODY"
-    );
-
-    print(
-        "[05] THE UNDENIABLE"
-    );
-
-    print(
-        "[06] THE LAST PARIES"
-    );
-
-    print(
-        "[07] THE INFINITE COSINE"
-    );
-
-    print(
-        "[08] THE ABYSSAL ASYMPTOTE"
-    );
-
-    print(
-        "[09] THE LIMINAL EQUATION"
-    );
-
-    print(
-        "[10] THE ARCHIVE OF UNWRITTEN OUTCOMES"
-    );
-
-    print(
-        "[11] GORE"
-    );
-
-    print(
-        "[12] THE BEYOND"
-    );
+    print("[13] PARAXIOM");
+    print("[14] THE INITIATOR");
+    print("[15] CANDIDATE RECORDS");
+    print("[16] NON-LOCAL ARCHIVAL ECHOES");
 
     print("");
 
@@ -931,17 +889,11 @@ archive() {
     print("/FRAGMENTS");
 
     print("  ├─ axiom.dat");
-
     print("  ├─ layers.dat");
-
     print("  ├─ hades.sig");
-
     print("  ├─ threnody.dat");
-
     print("  ├─ undeniable.dat");
-
     print("  ├─ paries.dat");
-
     print("  └─ gore.dat");
 
     print("");
@@ -949,13 +901,9 @@ archive() {
     print("/TEXT");
 
     print("  ├─ asymptote.txt");
-
     print("  ├─ equation.txt");
-
     print("  ├─ cinquain.txt");
-
     print("  ├─ outcomes.txt");
-
     print("  └─ [UNKNOWN].txt");
 
     print("");
@@ -963,6 +911,15 @@ archive() {
     print("/AUDIO");
 
     print("  └─ realisation.dat");
+
+    print("");
+
+    print("/PARAXIOM");
+
+    print("  ├─ company.dat");
+    print("  ├─ initiative.dat");
+    print("  ├─ initiator.dat");
+    print("  └─ candidates.idx");
 
     print("");
 
@@ -975,9 +932,7 @@ archive() {
     print("/UNKNOWN");
 
     print("  ├─ [UNINDEXED]");
-
     print("  ├─ [UNRESOLVED]");
-
     print("  └─ [THIS ENTRY SHOULD NOT EXIST]");
 
     print("");
@@ -1000,15 +955,11 @@ async scan() {
 
     await sleep(300);
 
-    print(
-        "[████████████████░░░░] 81%"
-    );
+    print("[████████████████░░░░] 81%");
 
     await sleep(240);
 
-    print(
-        "[███████████████████░] 96%"
-    );
+    print("[███████████████████░] 96%");
 
     await sleep(300);
 
@@ -1024,21 +975,10 @@ async scan() {
         "warning"
     );
 
-    print(
-        "LOCATION: NON-LOCAL"
-    );
-
-    print(
-        "REFERENCE FRAME: NONE"
-    );
-
-    print(
-        "BOUNDARY: UNDEFINED"
-    );
-
-    print(
-        "DIRECTION: INAPPLICABLE"
-    );
+    print("LOCATION: NON-LOCAL");
+    print("REFERENCE FRAME: NONE");
+    print("BOUNDARY: UNDEFINED");
+    print("DIRECTION: INAPPLICABLE");
 
     print("");
 
@@ -1055,6 +995,18 @@ async scan() {
     print(
         "or whether it has always been present.",
         "dim"
+    );
+
+    print("");
+
+    print(
+        "SECONDARY SIGNATURE:",
+        "warning"
+    );
+
+    print(
+        "PARAXIOM",
+        "corrupt"
     );
 
     print("");
@@ -1084,11 +1036,8 @@ axiom() {
     print("");
 
     print("Matter.");
-
     print("Pattern.");
-
     print("Memory.");
-
     print("Awareness.");
 
     print("");
@@ -1100,6 +1049,18 @@ axiom() {
 
     print(
         "One relation."
+    );
+
+    print("");
+
+    print(
+        "The archive labels the relation:",
+        "dim"
+    );
+
+    print(
+        "AXIOM",
+        "accent"
     );
 
     print("");
@@ -1122,31 +1083,269 @@ axiom() {
     section("FRAGMENT // FOUR LAYERS");
 
     print("LAYER I");
-
-    print("[DATA WITHHELD]");
-
+    print("[MATTER]");
     print("");
 
     print("LAYER II");
-
-    print("[DATA WITHHELD]");
-
+    print("[PATTERN]");
     print("");
 
     print("LAYER III");
-
-    print("[DATA WITHHELD]");
-
+    print("[MEMORY]");
     print("");
 
     print("LAYER IV");
-
-    print("[DATA WITHHELD]");
-
+    print("[AWARENESS]");
     print("");
 
     print(
         "The archive refuses to elaborate."
+    );
+
+    print("");
+
+    print(
+        "A handwritten note was found beneath the record:",
+        "dim"
+    );
+
+    print(
+        "\"One cannot observe the whole from within one layer.\"",
+        "corrupt"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   PARAXIOM
+   --------------------------------------------------------- */
+
+paraxiom() {
+
+    section("RECORD // PARAXIOM");
+
+    print(
+        "[CORPORATE ARCHIVAL RECORD]"
+    );
+
+    print("");
+
+    print(
+        "ENTITY: PARAXIOM"
+    );
+
+    print(
+        "CLASS: COMPANY"
+    );
+
+    print(
+        "STATUS: ACTIVE / UNVERIFIED"
+    );
+
+    print("");
+
+    print(
+        "The archive identifies PARAXIOM",
+        "dim"
+    );
+
+    print(
+        "as the organization associated with",
+        "dim"
+    );
+
+    print(
+        "the Initiative.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "PROJECT REFERENCE:"
+    );
+
+    print(
+        "PARAXIOM INITIATIVE",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "Additional corporate information",
+        "dim"
+    );
+
+    print(
+        "has been removed from this archive.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "WHY DOES A COMPANY HAVE A BOUNDARY FILE?",
+        "warning"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   PARAXIUM INITIATOR
+   --------------------------------------------------------- */
+
+initiator() {
+
+    section("RECORD // PARAXIUM INITIATOR");
+
+    print(
+        "[SYSTEM RECORD]"
+    );
+
+    print("");
+
+    print(
+        "SYSTEM: PARAXIUM INITIATOR"
+    );
+
+    print(
+        "OWNER: PARAXIOM"
+    );
+
+    print(
+        "PROJECT: PARAXIOM INITIATIVE"
+    );
+
+    print("");
+
+    print(
+        "FUNCTION:"
+    );
+
+    print(
+        "CREATION OF PLANETARY,"
+    );
+
+    print(
+        "UNIVERSAL,"
+    );
+
+    print(
+        "AND RELATED REALITY STRUCTURES."
+    );
+
+    print("");
+
+    print(
+        "STATUS: [RESTRICTED]"
+    );
+
+    print(
+        "ACCESS: [RESTRICTED]"
+    );
+
+    print(
+        "OUTPUT HISTORY: [WITHHELD]"
+    );
+
+    print("");
+
+    print(
+        "The archive contains a warning:",
+        "warning"
+    );
+
+    print(
+        "DO NOT CONFUSE THE INITIATOR WITH THE INITIATIVE.",
+        "danger"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   CANDIDATE
+   --------------------------------------------------------- */
+
+candidate() {
+
+    section("CANDIDATE INDEX");
+
+    print(
+        "[SEARCHING CANDIDATE DATABASE...]",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "PRIMARY CANDIDATE:"
+    );
+
+    print(
+        "9502026#",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "STATUS: [RECORD PARTIAL]"
+    );
+
+    print(
+        "IDENTITY: [WITHHELD]"
+    );
+
+    print(
+        "ORIGIN: [WITHHELD]"
+    );
+
+    print(
+        "OBSERVATION: [ACTIVE]",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "ADDITIONAL ENTRY DETECTED.",
+        "warning"
+    );
+
+    print(
+        "0000395#",
+        "corrupt"
+    );
+
+    print("");
+
+    print(
+        "NOTE:"
+    );
+
+    print(
+        "FIRST RECORDED IRREGULARITY."
+    );
+
+    print(
+        "ARCHIVAL STATUS: ESCAPED",
+        "danger"
+    );
+
+    print("");
+
+    print(
+        "[REMAINING CANDIDATE DATA SEALED]"
     );
 
     print("");
@@ -1208,17 +1407,9 @@ threnody() {
 
     print("");
 
-    print(
-        "CATEGORY: UNKNOWN"
-    );
-
-    print(
-        "REFERENCE: THRENODY"
-    );
-
-    print(
-        "CLASSIFICATION: [IMPOSSIBLE]"
-    );
+    print("CATEGORY: UNKNOWN");
+    print("REFERENCE: THRENODY");
+    print("CLASSIFICATION: [IMPOSSIBLE]");
 
     print("");
 
@@ -1259,57 +1450,31 @@ undeniable() {
 
     section("FRAGMENT // THE UNDENIABLE");
 
-    print(
-        "[PROTECTIVE RECORD]"
-    );
+    print("[PROTECTIVE RECORD]");
 
     print("");
 
-    print(
-        "THE UNDENIABLE."
-    );
+    print("THE UNDENIABLE.");
 
     print("");
 
-    print(
-        "Not a conclusion."
-    );
-
-    print(
-        "Not an answer."
-    );
-
-    print(
-        "Not the thing it was made to resemble."
-    );
+    print("Not a conclusion.");
+    print("Not an answer.");
+    print("Not the thing it was made to resemble.");
 
     print("");
 
-    print(
-        "A weaker echo."
-    );
-
-    print(
-        "An incomplete refusal."
-    );
-
+    print("A weaker echo.");
+    print("An incomplete refusal.");
     print(
         "A boundary raised before the boundary was understood."
     );
 
     print("");
 
-    print(
-        "PURPOSE: [WITHHELD]"
-    );
-
-    print(
-        "ORIGIN: [WITHHELD]"
-    );
-
-    print(
-        "LIMIT: [UNKNOWN]"
-    );
+    print("PURPOSE: [WITHHELD]");
+    print("ORIGIN: [WITHHELD]");
+    print("LIMIT: [UNKNOWN]");
 
     print("");
 
@@ -1336,23 +1501,13 @@ paries() {
 
     section("FRAGMENT // THE LAST PARIES");
 
-    print(
-        "REFERENCE FOUND."
-    );
+    print("REFERENCE FOUND.");
 
     print("");
 
-    print(
-        "DEFINITION: [MISSING]"
-    );
-
-    print(
-        "ORIGIN: [MISSING]"
-    );
-
-    print(
-        "CONTEXT: [MISSING]"
-    );
+    print("DEFINITION: [MISSING]");
+    print("ORIGIN: [MISSING]");
+    print("CONTEXT: [MISSING]");
 
     print("");
 
@@ -1469,21 +1624,10 @@ outcomes() {
         "FRAGMENT // ARCHIVE OF UNWRITTEN OUTCOMES"
     );
 
-    print(
-        "THE ARCHIVE OF"
-    );
-
-    print(
-        "UNWRITTEN OUTCOMES"
-    );
-
-    print(
-        "BREATHES BETWEEN"
-    );
-
-    print(
-        "OBSERVATIONS."
-    );
+    print("THE ARCHIVE OF");
+    print("UNWRITTEN OUTCOMES");
+    print("BREATHES BETWEEN");
+    print("OBSERVATIONS.");
 
     print("");
 
@@ -1504,37 +1648,19 @@ gore() {
 
     section("REFERENCE // GORE");
 
-    print(
-        "[NON-DESCRIPTIVE RECORD]"
-    );
+    print("[NON-DESCRIPTIVE RECORD]");
 
     print("");
 
-    print(
-        "NAME: GORE"
-    );
-
-    print(
-        "CLASS: UNKNOWN"
-    );
-
-    print(
-        "STATUS: UNRESOLVED"
-    );
+    print("NAME: GORE");
+    print("CLASS: UNKNOWN");
+    print("STATUS: UNRESOLVED");
 
     print("");
 
-    print(
-        "No reliable description survives."
-    );
-
-    print(
-        "No origin survives."
-    );
-
-    print(
-        "No boundary survives."
-    );
+    print("No reliable description survives.");
+    print("No origin survives.");
+    print("No boundary survives.");
 
     print("");
 
@@ -1569,45 +1695,21 @@ beyond() {
 
     print("");
 
-    print(
-        "There is no location."
-    );
-
-    print(
-        "There is no distance."
-    );
-
-    print(
-        "There is no measurable boundary."
-    );
+    print("There is no location.");
+    print("There is no distance.");
+    print("There is no measurable boundary.");
 
     print("");
 
-    print(
-        "Beyond nothing,"
-    );
-
-    print(
-        "something remains."
-    );
+    print("Beyond nothing,");
+    print("something remains.");
 
     print("");
 
-    print(
-        "Not matter."
-    );
-
-    print(
-        "Not thought."
-    );
-
-    print(
-        "Not absence."
-    );
-
-    print(
-        "Not presence."
-    );
+    print("Not matter.");
+    print("Not thought.");
+    print("Not absence.");
+    print("Not presence.");
 
     print("");
 
@@ -1636,10 +1738,7 @@ beyond() {
 
     print("");
 
-    print(
-        "REFERENCE:",
-        "dim"
-    );
+    print("REFERENCE:", "dim");
 
     print(
         "BEYOND NOTHING",
@@ -1648,9 +1747,7 @@ beyond() {
 
     print("");
 
-    print(
-        "DESCRIPTION:"
-    );
+    print("DESCRIPTION:");
 
     print(
         randomCorruption() +
@@ -1676,6 +1773,433 @@ beyond() {
 },
 
 
+/* =========================================================
+   EASTER EGG COMMANDS
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   PORTAL
+   --------------------------------------------------------- */
+
+portal() {
+
+    section("ARCHIVAL ECHO // TEST CHAMBER");
+
+    print(
+        "TEST CHAMBER STATUS: UNAVAILABLE"
+    );
+
+    print("");
+
+    print(
+        "Aperture:"
+    );
+
+    print(
+        "[NO APERTURE DETECTED]",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "The archive remembers a promise:"
+    );
+
+    print(
+        "TESTING IS NOT RESEARCH.",
+        "egg"
+    );
+
+    print(
+        "RESEARCH IS NOT TESTING."
+    );
+
+    print("");
+
+    print(
+        "A cake-related file has been permanently removed.",
+        "muted"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   MINECRAFT
+   --------------------------------------------------------- */
+
+minecraft() {
+
+    section("ARCHIVAL ECHO // BLOCK WORLD");
+
+    print(
+        "WORLD GENERATION: FAMILIAR"
+    );
+
+    print(
+        "CHUNK STATUS: [LOADED]"
+    );
+
+    print(
+        "BEDROCK LAYER: [UNVERIFIED]"
+    );
+
+    print("");
+
+    print(
+        "A recovered note contains:"
+    );
+
+    print(
+        "THE STRONGEST MATERIAL IS NOT ALWAYS THE BOUNDARY.",
+        "egg"
+    );
+
+    print("");
+
+    print(
+        "One block remains unnamed."
+    );
+
+    print(
+        "One world remains unexplored."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   TERRARIA
+   --------------------------------------------------------- */
+
+terraria() {
+
+    section("ARCHIVAL ECHO // DEEP WORLD");
+
+    print(
+        "WORLD STATE: [CORRUPTED]"
+    );
+
+    print(
+        "HARDMODE: [UNKNOWN]"
+    );
+
+    print(
+        "COSMIC SIGNATURE: DETECTED"
+    );
+
+    print("");
+
+    print(
+        "A hostile record repeatedly references",
+        "dim"
+    );
+
+    print(
+        "an avatar of emptiness.",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "The archive refuses to provide a name."
+    );
+
+    print("");
+
+    print(
+        "WHY DOES NOTHING NEED AN AVATAR?",
+        "corrupt"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   CALAMITY
+   --------------------------------------------------------- */
+
+calamity() {
+
+    section("ARCHIVAL ECHO // CALAMITY");
+
+    print(
+        "THREAT INDEX: EXCESSIVE"
+    );
+
+    print(
+        "MUSIC SIGNATURE: [RECOGNIZED]"
+    );
+
+    print(
+        "WORLD STATUS: UNWISE"
+    );
+
+    print("");
+
+    print(
+        "The archive has classified the event"
+    );
+
+    print(
+        "as a calamity."
+    );
+
+    print("");
+
+    print(
+        "This is not considered useful information.",
+        "dim"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   CELESTIA
+   --------------------------------------------------------- */
+
+celestia() {
+
+    section("ARCHIVAL ECHO // CELESTIAL OBSERVATION");
+
+    print(
+        "OBSERVATORY CONNECTION: STABLE"
+    );
+
+    print(
+        "STARFIELD: GENERATED"
+    );
+
+    print(
+        "PLANETARY MODEL: PRESENT"
+    );
+
+    print("");
+
+    print(
+        "Coordinates were requested."
+    );
+
+    print(
+        "Coordinates were returned."
+    );
+
+    print(
+        "The coordinates do not describe a place.",
+        "warning"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   THEOTOWN
+   --------------------------------------------------------- */
+
+theotown() {
+
+    section("ARCHIVAL ECHO // URBAN MODEL");
+
+    print(
+        "CITY STATUS: FUNCTIONAL"
+    );
+
+    print(
+        "POPULATION: UNKNOWN"
+    );
+
+    print(
+        "POWER: REQUIRED"
+    );
+
+    print(
+        "WATER: REQUIRED"
+    );
+
+    print(
+        "TRAFFIC: INEVITABLE"
+    );
+
+    print("");
+
+    print(
+        "The archive has determined that"
+    );
+
+    print(
+        "civilization remains dependent on roads.",
+        "egg"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   POWDER TOY
+   --------------------------------------------------------- */
+
+powder() {
+
+    section("ARCHIVAL ECHO // MATERIAL SYSTEM");
+
+    print(
+        "PARTICLE FIELD: ACTIVE"
+    );
+
+    print(
+        "MATERIAL INTERACTIONS: UNSTABLE"
+    );
+
+    print(
+        "GRAVITY: PRESENT"
+    );
+
+    print(
+        "THERMODYNAMICS: DISRESPECTED"
+    );
+
+    print("");
+
+    print(
+        "A single particle has crossed",
+        "dim"
+    );
+
+    print(
+        "a boundary it was never supposed to know existed.",
+        "corrupt"
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   RETROARCH
+   --------------------------------------------------------- */
+
+retroarch() {
+
+    section("ARCHIVAL ECHO // EMULATION");
+
+    print(
+        "CORE: UNKNOWN"
+    );
+
+    print(
+        "CONTENT: UNKNOWN"
+    );
+
+    print(
+        "STATE: LOADED"
+    );
+
+    print("");
+
+    print(
+        "The archive has discovered",
+        "dim"
+    );
+
+    print(
+        "that memory can be saved."
+    );
+
+    print("");
+
+    print(
+        "It has not discovered",
+        "dim"
+    );
+
+    print(
+        "whether memory can be trusted."
+    );
+
+    print("");
+
+},
+
+
+/* ---------------------------------------------------------
+   ECHO
+   --------------------------------------------------------- */
+
+echo() {
+
+    section("ARCHIVAL ECHO SEARCH");
+
+    print(
+        "Searching for records which should not exist...",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "[FOUND]"
+    );
+
+    print(
+        "A chamber with no door."
+    );
+
+    print(
+        "A world with no sky."
+    );
+
+    print(
+        "A city that remembers its roads."
+    );
+
+    print(
+        "A star that has never been observed."
+    );
+
+    print(
+        "A particle which crossed the boundary."
+    );
+
+    print("");
+
+    print(
+        "Five unrelated records.",
+        "warning"
+    );
+
+    print(
+        "One common signature."
+    );
+
+    print("");
+
+    print(
+        "PARAXIOM",
+        "corrupt"
+    );
+
+    print("");
+
+},
+
+
 /* ---------------------------------------------------------
    REALISATION
    --------------------------------------------------------- */
@@ -1684,17 +2208,9 @@ realisation() {
 
     section("RECOVERED AUDIO RECORD");
 
-    print(
-        "TITLE: REALISATION"
-    );
-
-    print(
-        "TYPE: ORIGINAL SOUNDTRACK"
-    );
-
-    print(
-        "STATUS: RECOVERED"
-    );
+    print("TITLE: REALISATION");
+    print("TYPE: ORIGINAL SOUNDTRACK");
+    print("STATUS: RECOVERED");
 
     print("");
 
@@ -1735,27 +2251,14 @@ about() {
 
     section("NULLSHIFT");
 
-    print(
-        "A game about discovery."
-    );
+    print("A game about discovery.");
 
     print("");
 
-    print(
-        "A world."
-    );
-
-    print(
-        "A system."
-    );
-
-    print(
-        "A question."
-    );
-
-    print(
-        "A boundary."
-    );
+    print("A world.");
+    print("A system.");
+    print("A question.");
+    print("A boundary.");
 
     print("");
 
@@ -1812,51 +2315,177 @@ clear() {
 
 const aliases = {
 
-    "realization":
-        "realisation",
+    "realization": "realisation",
+    "realise": "realisation",
+    "realize": "realisation",
 
-    "realise":
-        "realisation",
+    "last paries": "paries",
+    "infinite cosine": "cosine",
+    "infinite cosine distills": "cosine",
 
-    "realize":
-        "realisation",
+    "abyssal asymptote": "asymptote",
+    "liminal equation": "equation",
+    "unwritten outcomes": "outcomes",
 
-    "last paries":
-        "paries",
+    "the undeniable": "undeniable",
+    "the beyond": "beyond",
 
-    "infinite cosine":
-        "cosine",
+    "four layers": "four layers",
 
-    "infinite cosine distills":
-        "cosine",
+    /* PARAXIOM */
 
-    "abyssal asymptote":
-        "asymptote",
+    "paraxium": "initiator",
+    "paraxium initiator": "initiator",
+    "paraxiom initiative": "paraxiom",
 
-    "liminal equation":
-        "equation",
+    /* CANDIDATE */
 
-    "unwritten outcomes":
-        "outcomes",
+    "candidate 9502026": "candidate",
+    "9502026#": "candidate",
 
-    "the undeniable":
-        "undeniable",
+    /* EASTER EGGS */
 
-    "the beyond":
-        "beyond"
+    "portal 2": "portal",
+    "portal2": "portal",
+
+    "minecraft": "minecraft",
+    "mc": "minecraft",
+
+    "terraria": "terraria",
+    "wrath of the gods": "terraria",
+
+    "calamity": "calamity",
+
+    "celestia": "celestia",
+
+    "theotown": "theotown",
+    "theo town": "theotown",
+
+    "the powder toy": "powder",
+    "powder toy": "powder",
+
+    "retroarch": "retroarch"
 
 };
 
 
 /* =========================================================
-   COMMAND AUTOCOMPLETE
+   SECRET / HIDDEN COMMANDS
+   ========================================================= */
+
+const hiddenCommands = {
+
+    "777": async function() {
+
+        section("ARCHIVAL INDEX // [REDACTED]");
+
+        print(
+            "INDEX MATCH FOUND.",
+            "warning"
+        );
+
+        print("");
+
+        print(
+            "REFERENCE: 777"
+        );
+
+        print(
+            "STATUS: [SEALED]"
+        );
+
+        print(
+            "CONTEXT: [WITHHELD]"
+        );
+
+        print("");
+
+        print(
+            "The archive recommends forgetting",
+            "dim"
+        );
+
+        print(
+            "that this number was entered."
+        );
+
+        print("");
+
+    },
+
+
+    "0000395": async function() {
+
+        section("CANDIDATE ECHO");
+
+        print(
+            "0000395#",
+            "corrupt"
+        );
+
+        print("");
+
+        print(
+            "RECORD STATUS: ESCAPED",
+            "warning"
+        );
+
+        print("");
+
+        print(
+            "No further information."
+        );
+
+        print("");
+
+    },
+
+
+    "nothing": async function() {
+
+        section("EMPTY RECORD");
+
+        print(
+            "NOTHING FOUND."
+        );
+
+        print("");
+
+        print(
+            "The archive hesitates."
+        );
+
+        print("");
+
+        print(
+            "That should have been impossible.",
+            "danger"
+        );
+
+        print("");
+
+    },
+
+
+    "axiom": async function() {
+
+        await commands.axiom();
+
+    }
+
+};
+
+
+/* =========================================================
+   AUTOCOMPLETE
    ========================================================= */
 
 function getCommandNames() {
 
     return [
         ...Object.keys(commands),
-        ...Object.keys(aliases)
+        ...Object.keys(aliases),
+        ...Object.keys(hiddenCommands)
     ];
 
 }
@@ -1934,6 +2563,17 @@ async function executeCommand(raw) {
         commandHistory.length;
 
 
+    /* HIDDEN COMMANDS */
+
+    if (hiddenCommands[command]) {
+
+        await hiddenCommands[command]();
+
+        return;
+
+    }
+
+
     /* DIRECT COMMAND */
 
     if (commands[command]) {
@@ -1958,7 +2598,7 @@ async function executeCommand(raw) {
     }
 
 
-    /* FRIENDLY FRAGMENT ALIASES */
+    /* FRIENDLY FRAGMENT ALIAS */
 
     if (
         command ===
@@ -2009,7 +2649,6 @@ async function executeCommand(raw) {
 input.addEventListener(
     "keydown",
     async function(event) {
-
 
         /* ENTER */
 
