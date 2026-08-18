@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NULLSHIFT // ERRATA ARCHIVE</title>
+<title>NULLSHIFT // ARCHIVE</title>
 
 <style>
+
 /* =========================================================
-   NULLSHIFT // ERRATA ARCHIVE
-   CRT TERMINAL // ARG BUILD
-   ARCHIVAL BUILD 1.0
+   NULLSHIFT // ARCHIVE
+   CANONICAL LORE ARCHIVE
+   BUILD 1.0
    ========================================================= */
 
 :root {
+
     --bg: #010201;
     --bg-soft: #050906;
 
@@ -29,9 +32,18 @@
     --violet: #aaa0d4;
 
     --line: rgba(220,255,230,0.11);
-    --glow: rgba(90,255,130,0.24);
-    --scanline: rgba(210,255,225,0.075);
+
+    --glow:
+        rgba(90,255,130,0.24);
+
+    --scanline:
+        rgba(210,255,225,0.075);
 }
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 * {
     box-sizing: border-box;
@@ -39,9 +51,12 @@
 
 html,
 body {
+
     margin: 0;
+
     width: 100%;
     height: 100%;
+
     background: var(--bg);
     color: var(--text);
 
@@ -53,10 +68,17 @@ body {
     overflow: hidden;
 }
 
+
+/* =========================================================
+   CRT
+   ========================================================= */
+
 body {
+
     position: relative;
 
     background:
+
         radial-gradient(
             ellipse at center,
             #07100a 0%,
@@ -65,14 +87,21 @@ body {
         );
 }
 
+
 body::before {
+
     content: "";
+
     position: fixed;
+
     inset: 0;
+
     pointer-events: none;
+
     z-index: 1000;
 
     background:
+
         repeating-linear-gradient(
             to bottom,
             transparent 0px,
@@ -84,17 +113,25 @@ body::before {
         );
 
     opacity: 0.72;
+
     mix-blend-mode: screen;
 }
 
+
 body::after {
+
     content: "";
+
     position: fixed;
+
     inset: 0;
+
     pointer-events: none;
+
     z-index: 999;
 
     background:
+
         radial-gradient(
             ellipse at center,
             transparent 48%,
@@ -103,13 +140,23 @@ body::after {
         );
 
     box-shadow:
-        inset 0 0 140px rgba(0,255,100,0.08),
-        inset 0 0 35px rgba(0,255,100,0.06);
 
-    animation: crtPulse 5s ease-in-out infinite;
+        inset 0 0 140px
+        rgba(0,255,100,0.08),
+
+        inset 0 0 35px
+        rgba(0,255,100,0.06);
+
+    animation:
+        crtPulse
+        5s
+        ease-in-out
+        infinite;
 }
 
+
 @keyframes crtPulse {
+
     0%, 100% {
         opacity: 0.92;
     }
@@ -117,9 +164,16 @@ body::after {
     50% {
         opacity: 1;
     }
+
 }
 
+
+/* =========================================================
+   TERMINAL
+   ========================================================= */
+
 #terminal {
+
     width: 100%;
     height: 100%;
 
@@ -133,51 +187,17 @@ body::after {
     scrollbar-color:
         #315c3d
         #020403;
-
-    position: relative;
 }
 
-#terminal::before {
-    content: "";
-
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            rgba(255,255,255,0.015),
-            rgba(255,255,255,0.015)
-        );
-
-    animation:
-        screenFlicker
-        0.16s
-        infinite;
-
-    opacity: 0.35;
-}
-
-@keyframes screenFlicker {
-    0% {
-        opacity: 0.32;
-    }
-
-    50% {
-        opacity: 0.38;
-    }
-
-    100% {
-        opacity: 0.31;
-    }
-}
 
 #output {
-    max-width: 1050px;
+
+    max-width: 1100px;
+
     margin: 0 auto;
 
     white-space: pre-wrap;
+
     word-break: break-word;
 
     line-height: 1.55;
@@ -190,11 +210,17 @@ body::after {
         );
 
     text-shadow:
-        0 0 4px rgba(100,255,150,0.28),
-        0 0 14px rgba(70,255,120,0.08);
+
+        0 0 4px
+        rgba(100,255,150,0.28),
+
+        0 0 14px
+        rgba(70,255,120,0.08);
 }
 
+
 .line {
+
     margin: 3px 0;
 
     animation:
@@ -203,17 +229,33 @@ body::after {
         ease-out;
 }
 
+
 @keyframes lineAppear {
+
     from {
+
         opacity: 0;
-        transform: translateX(-2px);
+
+        transform:
+            translateX(-2px);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateX(0);
+
+        transform:
+            translateX(0);
+
     }
+
 }
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
 
 .dim {
     color: var(--dim);
@@ -224,17 +266,21 @@ body::after {
 }
 
 .warning {
+
     color: var(--warning);
 
     text-shadow:
-        0 0 7px rgba(210,205,120,0.22);
+        0 0 7px
+        rgba(210,205,120,0.22);
 }
 
 .danger {
+
     color: var(--danger);
 
     text-shadow:
-        0 0 8px rgba(255,80,80,0.2);
+        0 0 8px
+        rgba(255,80,80,0.2);
 }
 
 .accent {
@@ -242,19 +288,27 @@ body::after {
 }
 
 .violet {
+
     color: var(--violet);
 
     text-shadow:
-        0 0 8px rgba(160,130,230,0.25);
+        0 0 8px
+        rgba(160,130,230,0.25);
 }
 
 .title {
+
     color: var(--bright);
+
     font-weight: bold;
 
     text-shadow:
-        0 0 5px rgba(180,255,200,0.42),
-        0 0 20px rgba(80,255,120,0.16);
+
+        0 0 5px
+        rgba(180,255,200,0.42),
+
+        0 0 20px
+        rgba(80,255,120,0.16);
 }
 
 .command {
@@ -262,6 +316,7 @@ body::after {
 }
 
 .corrupt {
+
     color: #9bc5a4;
 
     animation:
@@ -270,28 +325,15 @@ body::after {
         infinite;
 }
 
-.hidden-record {
-    color: #73927c;
-    opacity: 0.72;
-}
+.important {
 
-.egg {
-    color: #8fbf99;
+    color: #dffff0;
 
-    text-shadow:
-        0 0 4px rgba(100,255,150,0.18);
-}
-
-.corrupted-record {
-    letter-spacing: 0.08em;
-
-    animation:
-        corruption
-        0.11s
-        infinite;
+    font-weight: bold;
 }
 
 @keyframes corruption {
+
     0%, 100% {
         opacity: 0.86;
     }
@@ -299,12 +341,19 @@ body::after {
     50% {
         opacity: 1;
     }
+
 }
 
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
 .input-line {
+
     display: flex;
 
-    max-width: 1050px;
+    max-width: 1100px;
 
     margin:
         12px auto 0;
@@ -313,15 +362,20 @@ body::after {
 }
 
 .prompt {
+
     color: #8dbd98;
+
     margin-right: 8px;
+
     user-select: none;
 
     text-shadow:
-        0 0 7px rgba(100,255,140,0.25);
+        0 0 7px
+        rgba(100,255,140,0.25);
 }
 
 #commandInput {
+
     flex: 1;
 
     border: none;
@@ -332,71 +386,29 @@ body::after {
     color: var(--bright);
 
     font-family: inherit;
+
     font-size: inherit;
 
     caret-color: var(--bright);
 
     text-shadow:
-        0 0 6px rgba(100,255,150,0.35);
-
-    animation:
-        inputGlow
-        2.8s
-        ease-in-out
-        infinite;
+        0 0 6px
+        rgba(100,255,150,0.35);
 }
 
 #commandInput::selection {
+
     background:
         rgba(150,255,170,0.2);
 }
 
-@keyframes inputGlow {
-    0%, 100% {
-        text-shadow:
-            0 0 5px rgba(100,255,150,0.25);
-    }
 
-    50% {
-        text-shadow:
-            0 0 10px rgba(100,255,150,0.42);
-    }
-}
-
-.glitch {
-    animation:
-        glitch
-        0.13s
-        infinite;
-}
-
-@keyframes glitch {
-    0% {
-        transform: translate(0);
-    }
-
-    20% {
-        transform: translate(-1px, 1px);
-    }
-
-    40% {
-        transform: translate(1px, -1px);
-    }
-
-    60% {
-        transform: translate(-1px, 0);
-    }
-
-    80% {
-        transform: translate(1px, 1px);
-    }
-
-    100% {
-        transform: translate(0);
-    }
-}
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 600px) {
+
     #terminal {
         padding: 15px;
     }
@@ -406,21 +418,31 @@ body::after {
         font-size: 12px;
     }
 
-    .input-line {
-        margin-top: 8px;
-    }
 }
 
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
     }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
@@ -438,19 +460,21 @@ body::after {
             autocomplete="off"
             spellcheck="false"
             autofocus
-            aria-label="Archive command input"
+            aria-label="NullShift archive command input"
         >
 
     </div>
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   NULLSHIFT // ERRATA ARCHIVE
-   ARCHIVAL BUILD 1.0
+   NULLSHIFT // ARCHIVE
+   CANONICAL LORE DATABASE
    ========================================================= */
+
 
 const output =
     document.getElementById("output");
@@ -467,11 +491,8 @@ const terminal =
    ========================================================= */
 
 let commandHistory = [];
+
 let historyIndex = -1;
-let booted = false;
-let archiveDepth = 0;
-let doomSeen = false;
-let secretWarsSeen = false;
 
 
 /* =========================================================
@@ -496,26 +517,10 @@ function print(text = "", className = "") {
 }
 
 
-function printLines(lines, className = "") {
-
-    lines.forEach(line => {
-        print(line, className);
-    });
-
-}
-
-
-function clearScreen() {
-
-    output.innerHTML = "";
-
-}
-
-
 function sleep(ms) {
 
-    return new Promise(resolve =>
-        setTimeout(resolve, ms)
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
     );
 
 }
@@ -524,7 +529,7 @@ function sleep(ms) {
 function separator() {
 
     print(
-        "──────────────────────────────────────────────────",
+        "────────────────────────────────────────────────────────",
         "dim"
     );
 
@@ -545,44 +550,11 @@ function section(title) {
 }
 
 
-function randomCorruption() {
-
-    const fragments = [
-
-        "∅",
-        "NULL",
-        "////",
-        "0x00",
-        "UNRESOLVED",
-        "■■■",
-        "...",
-        "AXIOM",
-        "777",
-        "[REDACTED]",
-        "7D",
-        "ERRATA",
-        "NONLOCAL"
-
-    ];
-
-    return fragments[
-        Math.floor(
-            Math.random() *
-            fragments.length
-        )
-    ];
-}
-
-
 /* =========================================================
    BOOT
    ========================================================= */
 
 async function boot() {
-
-    if (booted) return;
-
-    booted = true;
 
     print(
         "NULLSHIFT",
@@ -590,12 +562,12 @@ async function boot() {
     );
 
     print(
-        "// ERRATA ARCHIVE",
+        "// ARCHIVE",
         "accent"
     );
 
     print(
-        "ARCHIVAL INTERFACE // BUILD 1.0.██",
+        "CANONICAL LORE DATABASE // BUILD 1.0",
         "dim"
     );
 
@@ -604,92 +576,46 @@ async function boot() {
     await sleep(250);
 
     print(
-        "INITIALIZING LOW-LEVEL ARCHIVE ACCESS...",
-        "dim"
-    );
-
-    await sleep(280);
-
-    print(
-        "MOUNTING ERRATA INDEX...",
-        "dim"
+        "INITIALIZING ARCHIVE..."
     );
 
     await sleep(250);
 
     print(
-        "RECOVERING SIMULATION REFERENCES...",
-        "dim"
+        "LOADING NULLSHIFT INDEX..."
     );
 
-    await sleep(260);
+    await sleep(250);
 
     print(
-        "INDEXING RECOVERED MATERIAL...",
-        "dim"
+        "LOADING CANONICAL RECORDS..."
     );
 
     await sleep(300);
 
     print(
-        "CONNECTION ESTABLISHED.",
-        "accent"
-    );
-
-    await sleep(180);
-
-    print("");
-
-    print(
-        "UNAUTHORIZED ARCHIVE ACCESS",
-        "warning"
-    );
-
-    print(
-        "YOU HAVE NOT BEEN GRANTED ACCESS.",
-        "warning"
-    );
-
-    print(
-        "THE ARCHIVE HAS SIMPLY FAILED TO STOP YOU.",
-        "danger"
-    );
-
-    print("");
-
-    print("ARCHIVE STATUS: UNKNOWN");
-    print("INTEGRITY: PARTIAL");
-    print("INDEX: INCOMPLETE");
-    print("ORIGIN: UNRESOLVED");
-
-    print("");
-
-    print(
-        "CORPORATE OWNER: ERRATA",
-        "dim"
-    );
-
-    print(
-        "INITIATIVE: ERRATA INITIATIVE",
-        "dim"
-    );
-
-    print(
-        "SIMULATION: #777",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "THE SUN NEVER SETS IN ERRATA.",
+        "ARCHIVE READY.",
         "accent"
     );
 
     print("");
 
     print(
-        'Type "help" to inspect available commands.',
+        "PROJECT: NULLSHIFT"
+    );
+
+    print(
+        "ARCHIVE CLASS: LORE / DEVELOPMENT"
+    );
+
+    print(
+        "STATUS: IN DEVELOPMENT"
+    );
+
+    print("");
+
+    print(
+        'Type "help" to access the archive.',
         "accent"
     );
 
@@ -705,1387 +631,203 @@ async function boot() {
 const commands = {
 
 
+/* =========================================================
+   HELP
+   ========================================================= */
+
 help() {
 
-    section("AVAILABLE COMMANDS");
+    section("NULLSHIFT // COMMAND INDEX");
 
-    print("help          Display command index");
-    print("status        Query archive status");
-    print("ls            List archive directories");
-    print("archive       Browse indexed directories");
-    print("lore          Browse recovered fragments");
-    print("scan          Scan for anomalies");
-
-    print("");
-
-    print("axiom         Access AXIOM");
-    print("layers        Access FOUR LAYERS");
-    print("7d            Access seventh-dimensional record");
+    print("help          Command index");
+    print("about         NullShift overview");
+    print("lore          Complete canonical lore index");
+    print("timeline      Known chronological records");
+    print("entities      Major entities and systems");
+    print("archive       Archive directory");
+    print("status        Project/archive status");
 
     print("");
 
-    print("errata        Access ERRATA corporate record");
-    print("initiative    Access ERRATA INITIATIVE");
-    print("initiator     Access ERRATA INITIATOR");
+    print("axiom         The Axiom");
+    print("layers        The Four Layers");
+    print("7d            The Seventh Dimension");
 
     print("");
 
-    print("candidate     Access candidate records");
+    print("errata        ERRATA corporate record");
+    print("initiative    ERRATA Initiative");
+    print("initiator     ERRATA Initiator");
+
+    print("");
+
+    print("candidate     Candidate index");
     print("9502026#      Candidate 9502026#");
     print("0000395#      Candidate 0000395#");
 
     print("");
 
-    print("hades         Access HADES SIGIL");
-    print("threnody      Access THRENODY");
-    print("undeniable    Access THE UNDENIABLE");
+    print("hades         HADES SIGIL");
+    print("threnody      THRENODY");
+    print("undeniable    THE UNDENIABLE");
+    print("paries        THE LAST PARIES");
+    print("cosine        THE INFINITE COSINE");
+    print("asymptote     THE ABYSSAL ASYMPTOTE");
+    print("equation      THE LIMINAL EQUATION");
+    print("outcomes      ARCHIVE OF UNWRITTEN OUTCOMES");
+    print("beyond        THE BEYOND");
 
     print("");
 
-    print("paries        Access THE LAST PARIES");
-    print("cosine        Access INFINITE COSINE");
-    print("asymptote     Access ABYSSAL ASYMPTOTE");
-    print("equation      Access LIMINAL EQUATION");
-    print("outcomes      Access UNWRITTEN OUTCOMES");
-    print("beyond        Access THE BEYOND");
+    print("fall          THE FALL IS THE RISE");
+    print("sun           THE SUN NEVER SETS IN ERRATA");
+    print("matrix        Simulation matrix");
+    print("realisation   REALISATION");
 
     print("");
 
-    print("fall          Access THE FALL IS THE RISE");
-    print("sun           Query ERRATA solar record");
-    print("echo          Search archival echoes");
-    print("matrix        Query simulation matrix");
-
-    print("");
-
-    print("realisation   Access recovered audio");
-    print("about         About NULLSHIFT");
-    print("clear         Clear terminal");
-
-    print("");
-
-    print("EASTER EGGS");
-    print("portal        Access test chamber");
-    print("minecraft     Block-world echo");
-    print("terraria      Deep-world echo");
-    print("calamity      Calamity echo");
-    print("celestia      Observatory echo");
-    print("theotown      Urban-model echo");
-    print("powder        Material-system echo");
-    print("retroarch     Emulation echo");
-    print("doomsday      External Doomsday echo");
-    print("secretwars    External Secret Wars echo");
-    print("doom          External Doom echo");
-
-    print("");
-
-    print("???            Some commands are not documented.");
-    print("???            Some commands are not commands.");
+    print("clear         Clear archive");
 
     print("");
 
     print(
-        "TIP: TAB autocompletes known commands.",
+        "The archive contains established lore only.",
         "dim"
     );
 
     print(
-        "TIP: ↑ / ↓ navigates command history.",
+        "No unreleased plot information is indexed.",
         "dim"
     );
 
-    print("");
-
-},
-
-
-status() {
-
-    section("ARCHIVE STATUS");
-
-    print("CONNECTION: STABLE");
-    print("ARCHIVE: PARTIALLY INDEXED");
-    print("DATA INTEGRITY: UNKNOWN");
-    print("ACCESS: RESTRICTED");
-
-    print("");
-
-    print("CORPORATION: ERRATA");
-    print("INITIATIVE: ACTIVE");
-    print("INITIATOR: ACTIVE / UNVERIFIED");
-
-    print("");
-
-    print("SIMULATION: #777");
-
-    print("");
-
-    print("MATTER:      [INDEXED]");
-    print("PATTERN:     [PARTIAL]");
-    print("MEMORY:      [CORRUPTED]");
-    print("AWARENESS:   [WITHHELD]");
-
-    print("");
-
-    print(
-        "SEVENTH DIMENSION: [UNINTERPRETABLE]",
-        "warning"
-    );
-
-    print(
-        "ANOMALIES:   DETECTED",
-        "warning"
-    );
-
-    print("UNRESOLVED:  07");
-
-    print("");
-
-    print(
-        "TEMPORAL CONSISTENCY: UNVERIFIED",
-        "dim"
-    );
-
-    print(
-        "COGNITIVE CONSISTENCY: UNVERIFIED",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "THE ARCHIVE IS OBSERVING THE OBSERVER.",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-ls() {
-
-    section("ERRATA://ARCHIVE");
-
-    print("FRAGMENTS/");
-    print("TEXT/");
-    print("AUDIO/");
-    print("ERRATA/");
-    print("CANDIDATES/");
-    print("SIMULATIONS/");
-    print("BOUNDARY/");
-    print("UNKNOWN/");
-
-    print("");
-
-    print(
-        "[7 UNRESOLVED OBJECTS]",
-        "warning"
-    );
-
-    print("");
-
-},
-
-
-lore() {
-
-    section("RECOVERED NULLSHIFT FRAGMENTS");
-
-    print("[01] THE AXIOM");
-    print("[02] THE FOUR LAYERS");
-    print("[03] THE SEVENTH DIMENSION");
-    print("[04] THE HADES SIGIL");
-    print("[05] THE THRENODY");
-    print("[06] THE UNDENIABLE");
-    print("[07] THE LAST PARIES");
-    print("[08] THE INFINITE COSINE");
-    print("[09] THE ABYSSAL ASYMPTOTE");
-    print("[10] THE LIMINAL EQUATION");
-    print("[11] THE ARCHIVE OF UNWRITTEN OUTCOMES");
-    print("[12] THE BEYOND");
-
-    print("");
-
-    print("[13] ERRATA");
-    print("[14] THE ERRATA INITIATIVE");
-    print("[15] THE ERRATA INITIATOR");
-    print("[16] CANDIDATE 9502026#");
-    print("[17] CANDIDATE 0000395#");
-    print("[18] SIMULATION #777");
-
-    print("");
-
-    print("[19] NON-LOCAL ARCHIVAL ECHOES");
-
-    print(
-        "[20] RECORDS WHICH PREDATE THEIR OWN CREATION",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "Some records appear to contain information",
-        "dim"
-    );
-
-    print(
-        "which was never entered into the archive.",
-        "dim"
-    );
-
-    print("");
-
-},
-
-
-archive() {
-
-    section("ARCHIVE DIRECTORY");
-
-    print("/FRAGMENTS");
-
-    print("  ├─ axiom.dat");
-    print("  ├─ layers.dat");
-    print("  ├─ seventh_dimension.dat");
-    print("  ├─ hades.sig");
-    print("  ├─ threnody.dat");
-    print("  ├─ undeniable.dat");
-    print("  ├─ paries.dat");
-    print("  └─ beyond.dat");
-
-    print("");
-
-    print("/TEXT");
-
-    print("  ├─ asymptote.txt");
-    print("  ├─ equation.txt");
-    print("  ├─ cinquain.txt");
-    print("  ├─ outcomes.txt");
-    print("  └─ [UNKNOWN].txt");
-
-    print("");
-
-    print("/AUDIO");
-
-    print("  └─ realisation.dat");
-
-    print("");
-
-    print("/ERRATA");
-
-    print("  ├─ company.dat");
-    print("  ├─ initiative.dat");
-    print("  ├─ initiator.dat");
-    print("  ├─ candidates.idx");
-    print("  └─ simulations.idx");
-
-    print("");
-
-    print("/SIMULATIONS");
-    print("  └─ #777.sim");
-
-    print("");
-
-    print("/BOUNDARY");
-
-    print("  ├─ 4D");
-    print("  ├─ 7D");
-    print("  └─ [ACCESS DENIED]");
-
-    print("");
-
-    print("/UNKNOWN");
-
-    print("  ├─ [UNINDEXED]");
-    print("  ├─ [UNRESOLVED]");
-    print("  ├─ [THIS ENTRY SHOULD NOT EXIST]");
-    print("  └─ [CREATED TOMORROW]");
-
-    print("");
-
-},
-
-
-async scan() {
-
-    section("ARCHIVE SCAN");
-
-    print(
-        "Beginning low-level scan...",
-        "dim"
-    );
-
-    await sleep(280);
-
-    print("[████████████░░░░░░░░] 63%");
-
-    await sleep(250);
-
-    print("[████████████████░░░░] 81%");
-
-    await sleep(250);
-
-    print("[███████████████████░] 96%");
-
-    await sleep(280);
-
-    print(
-        "[████████████████████] 100%",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "ANOMALY DETECTED.",
-        "warning"
-    );
-
-    print("LOCATION: NON-LOCAL");
-    print("REFERENCE FRAME: NONE");
-    print("BOUNDARY: UNDEFINED");
-    print("DIRECTION: INAPPLICABLE");
-
-    print("");
-
-    print(
-        "The archive cannot determine",
-        "dim"
-    );
-
-    print(
-        "whether the anomaly is approaching",
-        "dim"
-    );
-
-    print(
-        "or whether it has always been present.",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "SECONDARY SIGNATURE:",
-        "warning"
-    );
-
-    print(
-        "ERRATA",
-        "corrupt"
-    );
-
-    print("");
-
-    print("TERTIARY SIGNATURE:");
-
-    print(
-        "7D",
-        "danger"
-    );
-
-    print("");
-
-    print(
-        "SCAN TERMINATED.",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-axiom() {
-
-    section("FRAGMENT // AXIOM");
-
-    print("[RECORD PARTIALLY RECOVERED]");
-
-    print("");
-
-    print("MATTER.");
-    print("PATTERN.");
-    print("MEMORY.");
-    print("AWARENESS.");
-
-    print("");
-
-    print("Four conditions.", "accent");
-    print("One relation.");
-
-    print("");
-
-    print("The archive labels the relation:");
-
-    print(
-        "AXIOM",
-        "accent"
-    );
-
-    print("");
-
-    print("The Axiom does not explain existence.");
-
-    print(
-        "It connects the layers through which",
-        "dim"
-    );
-
-    print(
-        "existence becomes observable.",
-        "dim"
-    );
-
-    print("");
-
-    print("[REMAINDER UNAVAILABLE]");
-    print("");
-
-},
-
-
-layers() {
-
-    section("FRAGMENT // FOUR LAYERS");
-
-    print("LAYER I");
-    print("[MATTER]");
-
-    print("");
-
-    print("LAYER II");
-    print("[PATTERN]");
-
-    print("");
-
-    print("LAYER III");
-    print("[MEMORY]");
-
-    print("");
-
-    print("LAYER IV");
-    print("[AWARENESS]");
-
-    print("");
-
-    print("The archive refuses to elaborate.");
-
-    print("");
-
-    print(
-        "\"One cannot observe the whole from within one layer.\"",
-        "corrupt"
-    );
-
-    print("");
-
-    print("A second annotation exists.");
-
-    print(
-        "It was written from outside the four layers.",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "ANNOTATION: [7D]",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-"7d"() {
-
-    section("FRAGMENT // SEVENTH DIMENSION");
-
-    print(
-        "[INTERPRETATION ENGINE STARTING...]",
-        "warning"
-    );
-
-    print("");
-
-    print("DIMENSION 01: MATTER");
-    print("DIMENSION 02: PATTERN");
-    print("DIMENSION 03: MEMORY");
-    print("DIMENSION 04: AWARENESS");
-
-    print("");
-
-    print("DIMENSION 05: [UNRESOLVED]");
-    print("DIMENSION 06: [UNRESOLVED]");
-
-    print("");
-
-    print(
-        "DIMENSION 07:",
-        "danger"
-    );
-
-    print(
-        "[INTERPRETATION FAILED]",
-        "danger"
-    );
-
-    print("");
-
-    print("The system attempted geometry.");
-    print("The geometry attempted to observe itself.");
-    print("The observation became part of the geometry.");
-
-    print("");
-
-    print("RESULT:", "warning");
-    print("NO STABLE REFERENCE FRAME.");
-
-    print("");
-
-    print(
-        "9502026# reportedly encountered this state.",
-        "dim"
-    );
-
-    print("THRENODY did not interpret it.");
-
-    print(
-        "THRENODY exited.",
-        "danger"
-    );
-
-    print("");
-    print("[7D RECORD CLOSED]");
     print("");
 
 },
 
 
 /* =========================================================
-   ERRATA
+   ABOUT
    ========================================================= */
-
-errata() {
-
-    section("CORPORATE RECORD // ERRATA");
-
-    print("ENTITY: ERRATA");
-    print("CLASS: COMPANY");
-    print("STATUS: ACTIVE / UNVERIFIED");
-
-    print("");
-
-    print(
-        "ERRATA operates the Initiative.",
-        "dim"
-    );
-
-    print(
-        "ERRATA owns the Initiative.",
-        "dim"
-    );
-
-    print(
-        "ERRATA owns the Initiator.",
-        "dim"
-    );
-
-    print("");
-
-    print("The archive contains no founding date.");
-    print("The archive contains no verified founder.");
-    print("The archive contains no confirmed endpoint.");
-
-    print("");
-
-    print(
-        "THE SUN NEVER SETS IN ERRATA.",
-        "accent"
-    );
-
-    print("");
-
-    print("Corporate slogan?", "dim");
-    print("Warning?", "dim");
-    print("Observation?", "dim");
-
-    print("");
-
-    print(
-        "The archive does not distinguish between them.",
-        "warning"
-    );
-
-    print("");
-
-},
-
-
-initiative() {
-
-    section("RECORD // ERRATA INITIATIVE");
-
-    print("PROGRAM: ERRATA INITIATIVE");
-    print("OWNER: ERRATA");
-    print("STATUS: ACTIVE");
-
-    print("");
-
-    print("The Initiative contains:");
-
-    print("• candidates");
-    print("• simulations");
-    print("• observational systems");
-    print("• the ERRATA Initiator");
-
-    print("");
-
-    print("SIMULATION COUNT: [WITHHELD]");
-    print("KNOWN REFERENCE: #777");
-
-    print("");
-
-    print(
-        "THE FALL IS THE RISE.",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-initiator() {
-
-    section("RECORD // ERRATA INITIATOR");
-
-    print("SYSTEM: ERRATA INITIATOR");
-    print("OWNER: ERRATA");
-    print("PROJECT: ERRATA INITIATIVE");
-
-    print("");
-
-    print("FUNCTION:");
-
-    print("CREATION OF PLANETARY,");
-    print("UNIVERSAL,");
-    print("AND RELATED REALITY STRUCTURES.");
-
-    print("");
-
-    print("STATUS: [RESTRICTED]");
-    print("ACCESS: [RESTRICTED]");
-    print("OUTPUT HISTORY: [WITHHELD]");
-
-    print("");
-
-    print("WARNING:", "warning");
-
-    print(
-        "DO NOT CONFUSE THE INITIATOR",
-        "danger"
-    );
-
-    print(
-        "WITH THE INITIATIVE.",
-        "danger"
-    );
-
-    print("");
-
-    print(
-        "A secondary warning has been appended:"
-    );
-
-    print(
-        "DO NOT ASSUME THE INITIATOR IS THE FIRST CAUSE.",
-        "corrupt"
-    );
-
-    print("");
-
-},
-
-
-candidate() {
-
-    section("CANDIDATE INDEX");
-
-    print(
-        "[SEARCHING CANDIDATE DATABASE...]",
-        "dim"
-    );
-
-    print("");
-
-    print("PRIMARY CANDIDATE:");
-
-    print(
-        "9502026#",
-        "accent"
-    );
-
-    print("");
-
-    print("STATUS: [RECORD PARTIAL]");
-    print("IDENTITY: [WITHHELD]");
-    print("ORIGIN: [WITHHELD]");
-    print("OBSERVATION: [ACTIVE]", "warning");
-
-    print("");
-
-    print("ASSOCIATED EVENTS:");
-
-    print("• SIMULATION #777");
-    print("• THRENODY");
-    print("• 7D INTERPRETATION FAILURE");
-
-    print("");
-
-    print(
-        "ADDITIONAL ENTRY DETECTED.",
-        "warning"
-    );
-
-    print(
-        "0000395#",
-        "corrupt"
-    );
-
-    print("");
-
-    print(
-        "STATUS: ESCAPED",
-        "danger"
-    );
-
-    print("FIRST RECORDED IRREGULARITY.");
-
-    print("");
-
-    print("[REMAINING CANDIDATE DATA SEALED]");
-    print("");
-
-},
-
-
-"9502026#"() {
-
-    section("CANDIDATE // 9502026#");
-
-    print(
-        "IDENTIFIER: 9502026#",
-        "accent"
-    );
-
-    print("SIMULATION: #777");
-    print("STATUS: ACTIVE / UNRESOLVED");
-
-    print("");
-
-    print("The candidate reached a boundary.");
-    print("The boundary was not a wall.");
-
-    print("");
-
-    print("THRENODY was deployed.");
-    print("THRENODY failed to interpret the observed space.");
-
-    print("");
-
-    print("REFERENCE:", "warning");
-
-    print(
-        "SEVENTH DIMENSION",
-        "danger"
-    );
-
-    print("");
-
-    print("The candidate remained.");
-    print("The archive did not.");
-
-    print("");
-
-},
-
-
-"0000395#"() {
-
-    section("CANDIDATE // 0000395#");
-
-    print(
-        "STATUS: ESCAPED",
-        "danger"
-    );
-
-    print("");
-
-    print("FIRST RECORDED CANDIDATE");
-    print("TO ESCAPE SIMULATION #777.");
-
-    print("");
-
-    print("No external destination was recorded.");
-    print("No transit event was recorded.");
-    print("No exit vector was recorded.");
-
-    print("");
-
-    print("Only the absence of the candidate.");
-
-    print("");
-
-    print(
-        "The archive calls this:",
-        "dim"
-    );
-
-    print(
-        "THE FIRST IRREGULARITY.",
-        "warning"
-    );
-
-    print("");
-
-},
-
-
-hades() {
-
-    section("FRAGMENT // HADES SIGIL");
-
-    print(
-        "              ◇",
-        "title"
-    );
-
-    print("");
-
-    print("[SYMBOL INDEXED]");
-
-    print("");
-
-    print("INSCRIPTION:");
-
-    print(
-        "AS YOUR MIND TRANSCENDS MATTER.",
-        "accent"
-    );
-
-    print("");
-
-    print("The sigil appears to function as");
-    print("both boundary marker and warning.");
-
-    print("");
-
-    print("[NO FURTHER CONTEXT FOUND]");
-    print("");
-
-},
-
-
-threnody() {
-
-    section("FRAGMENT // THRENODY");
-
-    print(
-        "[RECORD FOUND]",
-        "warning"
-    );
-
-    print("");
-
-    print("CATEGORY: UNKNOWN");
-    print("REFERENCE: THRENODY");
-    print("CLASSIFICATION: [IMPOSSIBLE]");
-
-    print("");
-
-    print(
-        "THRENODY was deployed against",
-        "dim"
-    );
-
-    print(
-        "an event associated with Candidate 9502026#.",
-        "dim"
-    );
-
-    print("");
-
-    print("It encountered space");
-    print("which did not remain interpretable.");
-
-    print("");
-
-    print(
-        "SEVENTH-DIMENSIONAL SIGNATURE DETECTED.",
-        "warning"
-    );
-
-    print("");
-
-    print("THRENODY ATTEMPTED INTERPRETATION.");
-    print("THRENODY FAILED.");
-
-    print(
-        "THRENODY EXITED THE SIMULATION.",
-        "danger"
-    );
-
-    print("");
-
-    print("The archive does not describe THRENODY.");
-    print("It only permits the name to remain.");
-
-    print("");
-
-},
-
-
-undeniable() {
-
-    section("FRAGMENT // THE UNDENIABLE");
-
-    print("[PROTECTIVE RECORD]");
-
-    print("");
-
-    print("THE UNDENIABLE.");
-
-    print("");
-
-    print("Not a conclusion.");
-    print("Not an answer.");
-    print("Not the thing it was made to resemble.");
-
-    print("");
-
-    print("A weaker echo.");
-    print("An incomplete refusal.");
-
-    print(
-        "A boundary raised before the boundary was understood."
-    );
-
-    print("");
-
-    print("PURPOSE: [WITHHELD]");
-    print("ORIGIN: [WITHHELD]");
-    print("LIMIT: [UNKNOWN]");
-
-    print("");
-
-    print("The archive marks this record as");
-
-    print(
-        "\"sufficiently early.\"",
-        "warning"
-    );
-
-    print("");
-
-},
-
-
-paries() {
-
-    section("FRAGMENT // THE LAST PARIES");
-
-    print("REFERENCE FOUND.");
-
-    print("");
-
-    print("DEFINITION: [MISSING]");
-    print("ORIGIN: [MISSING]");
-    print("CONTEXT: [MISSING]");
-
-    print("");
-
-    print("The archive contains the phrase.");
-    print("Nothing more.");
-
-    print("");
-
-},
-
-
-cosine() {
-
-    section("FRAGMENT // THE INFINITE COSINE");
-
-    print("THE INFINITE COSINE DISTILLS");
-    print("BEHIND A BLESSED CINQUAIN.");
-
-    print("");
-
-    print("[END OF FRAGMENT]");
-    print("");
-
-},
-
-
-asymptote() {
-
-    section("FRAGMENT // ABYSSAL ASYMPTOTE");
-
-    print("THE ABYSSAL ASYMPTOTE");
-    print("COALESCES BENEATH");
-    print(
-        "A HALLOWED THRENODY.",
-        "accent"
-    );
-
-    print("");
-
-    print("[FRAGMENT ENDS]");
-    print("");
-
-},
-
-
-equation() {
-
-    section("FRAGMENT // LIMINAL EQUATION");
-
-    print("THE LIMINAL EQUATION");
-    print("DREAMS IN FRACTURED");
-    print("GEOMETRIES.");
-
-    print("");
-
-    print("[FRAGMENT ENDS]");
-    print("");
-
-},
-
-
-outcomes() {
-
-    section(
-        "FRAGMENT // ARCHIVE OF UNWRITTEN OUTCOMES"
-    );
-
-    print("THE ARCHIVE OF");
-    print("UNWRITTEN OUTCOMES");
-    print("BREATHES BETWEEN");
-    print("OBSERVATIONS.");
-
-    print("");
-
-    print("Some outcomes are not absent.");
-    print("They are simply not written.");
-
-    print("");
-
-    print("[FRAGMENT ENDS]");
-    print("");
-
-},
-
-
-fall() {
-
-    section("AXIOMATIC PHRASE // THE FALL");
-
-    print(
-        "THE FALL IS THE RISE.",
-        "accent"
-    );
-
-    print("");
-
-    print("The archive contains no explanation.");
-    print("Every attempt to derive one produces");
-    print("the same result.");
-
-    print("");
-
-    print(
-        "FALL = RISE",
-        "warning"
-    );
-
-    print("");
-
-    print("The equation is not mathematical.");
-    print("It is observational.");
-
-    print("");
-
-},
-
-
-sun() {
-
-    section("ERRATA // SOLAR RECORD");
-
-    print(
-        "QUERY: WHY DOES THE SUN NEVER SET?",
-        "dim"
-    );
-
-    print("");
-
-    print("RESPONSE:");
-
-    print("");
-
-    print(
-        "THE SUN NEVER SETS IN ERRATA.",
-        "accent"
-    );
-
-    print("");
-
-    print("TIME REFERENCE: UNAVAILABLE");
-    print("LOCATION REFERENCE: UNAVAILABLE");
-    print("SOLAR REFERENCE: SYMBOLIC / PHYSICAL / UNKNOWN");
-
-    print("");
-
-    print("The archive refuses to choose.");
-
-    print("");
-
-},
-
-
-matrix() {
-
-    section("SIMULATION MATRIX");
-
-    print("KNOWN SIMULATIONS: [WITHHELD]");
-    print("KNOWN ESCAPE: 0000395#");
-    print("PRIMARY OBSERVATION: 9502026#");
-    print("KNOWN REFERENCE: #777");
-
-    print("");
-
-    print("SIMULATION #777");
-    print("STATE: ACTIVE");
-    print("BOUNDARY: NON-EUCLIDEAN");
-    print("DIMENSIONALITY: INCONSISTENT");
-
-    print("");
-
-    print(
-        "MATRIX QUERY TERMINATED.",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-beyond() {
-
-    section("BOUNDARY RECORD // [BEYOND]");
-
-    print(
-        "[ACCESSING NON-INDEXED RECORD]",
-        "warning"
-    );
-
-    print("");
-
-    print("There is no location.");
-    print("There is no distance.");
-    print("There is no measurable boundary.");
-
-    print("");
-
-    print("Beyond nothing,");
-    print("something remains.");
-
-    print("");
-
-    print("Not matter.");
-    print("Not thought.");
-    print("Not absence.");
-    print("Not presence.");
-
-    print("");
-
-    print("The archive attempts classification.");
-    print("The archive fails.");
-
-    print("");
-
-    print(
-        "The entity is not named.",
-        "danger"
-    );
-
-    print("The entity is not understood.");
-    print("The entity is not contained.");
-
-    print("");
-
-    print("REFERENCE:");
-
-    print(
-        "BEYOND NOTHING",
-        "corrupt"
-    );
-
-    print("");
-
-    print(
-        randomCorruption() +
-        " " +
-        randomCorruption() +
-        " " +
-        randomCorruption()
-    );
-
-    print("");
-
-    print(
-        "[COGNITIVE INDEX REJECTED]",
-        "warning"
-    );
-
-    print("[RECORD TERMINATED]");
-    print("");
-
-},
-
-
-echo() {
-
-    section("ARCHIVAL ECHO SEARCH");
-
-    print(
-        "Searching for records which should not exist...",
-        "dim"
-    );
-
-    print("");
-
-    print("[FOUND]");
-
-    print("A chamber with no door.");
-    print("A world with no sky.");
-    print("A city that remembers its roads.");
-    print("A star that has never been observed.");
-    print("A particle which crossed the boundary.");
-    print("A candidate who was never assigned.");
-
-    print("");
-
-    print(
-        "Six unrelated records.",
-        "warning"
-    );
-
-    print("One common signature.");
-
-    print("");
-
-    print(
-        "ERRATA",
-        "corrupt"
-    );
-
-    print("");
-
-},
-
-
-realisation() {
-
-    section("RECOVERED AUDIO RECORD");
-
-    print("TITLE: REALISATION");
-    print("TYPE: ORIGINAL SOUNDTRACK");
-    print("STATUS: RECOVERED");
-
-    print("");
-
-    print("The archive contains an audio reference");
-    print("whose complete contents are not indexed.");
-
-    print("");
-
-    print("The waveform contains irregular intervals.");
-    print("Cause: UNKNOWN.");
-
-    print("");
-
-    print("One timestamp repeats.");
-    print("777.");
-
-    print("");
-
-    print("No additional information available.");
-
-    print("");
-
-},
-
 
 about() {
 
     section("NULLSHIFT");
 
-    print("A game about discovery.");
+    print(
+        "NULLSHIFT",
+        "title"
+    );
 
     print("");
 
-    print("A world.");
-    print("A system.");
-    print("A question.");
-    print("A boundary.");
+    print(
+        "NullShift is a game centered around"
+    );
+
+    print(
+        "discovery, consciousness, memory,"
+    );
+
+    print(
+        "creation, responsibility,"
+    );
+
+    print(
+        "and the limits of observation."
+    );
 
     print("");
 
-    print("Something is wrong.");
-    print("The archive knows.");
-    print("The archive will not explain.");
+    print(
+        "Its central framework consists of"
+    );
+
+    print(
+        "four metaphysical layers:",
+        "accent"
+    );
 
     print("");
 
-    print("MATTER.");
-    print("PATTERN.");
-    print("MEMORY.");
-    print("AWARENESS.");
+    print("1. MATTER");
+    print("2. PATTERN");
+    print("3. MEMORY");
+    print("4. AWARENESS");
+
+    print("");
+
+    print(
+        "The Axiom connects these layers."
+    );
+
+    print("");
+
+    print(
+        "NullShift contains simulated realities,"
+    );
+
+    print(
+        "candidates, observations,"
+    );
+
+    print(
+        "dimensional boundaries,"
+    );
+
+    print(
+        "and systems capable of creating"
+    );
+
+    print(
+        "planets, universes, and related realities."
+    );
+
+    print("");
+
+    print(
+        "The known primary simulation is:"
+    );
+
+    print(
+        "#777",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "The primary candidate associated with"
+    );
+
+    print(
+        "the current record is:"
+    );
+
+    print(
+        "9502026#",
+        "important"
+    );
+
+    print("");
+
+    print(
+        "Another candidate, 0000395#, is recorded"
+    );
+
+    print(
+        "as the first known candidate to escape"
+    );
+
+    print(
+        "Simulation #777.",
+        "warning"
+    );
 
     print("");
 
     print(
         "THE FALL IS THE RISE.",
         "accent"
-    );
-
-    print("");
-
-    print(
-        "ERRATA // NULLSHIFT ARCHIVE",
-        "accent"
-    );
-
-    print(
-        "CORPORATE OWNER: ERRATA",
-        "dim"
-    );
-
-    print(
-        "INITIATIVE: ERRATA INITIATIVE",
-        "dim"
-    );
-
-    print(
-        "INITIATOR: ERRATA INITIATOR",
-        "dim"
     );
 
     print("");
@@ -2100,571 +842,1592 @@ about() {
 },
 
 
-clear() {
-
-    clearScreen();
-
-}
-
-};
-
-
 /* =========================================================
-   EASTER EGGS
+   LORE INDEX
    ========================================================= */
 
-commands.portal = function() {
+lore() {
 
-    section("ARCHIVAL ECHO // TEST CHAMBER");
+    section("NULLSHIFT // CANONICAL LORE");
 
-    print("TEST CHAMBER STATUS: UNAVAILABLE");
-
-    print("");
-
-    print("Aperture:");
-    print(
-        "[NO APERTURE DETECTED]",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "TESTING IS NOT RESEARCH.",
-        "egg"
-    );
-
-    print("RESEARCH IS NOT TESTING.");
+    print("[01] NULLSHIFT");
+    print("[02] THE AXIOM");
+    print("[03] MATTER");
+    print("[04] PATTERN");
+    print("[05] MEMORY");
+    print("[06] AWARENESS");
+    print("[07] THE FOUR LAYERS");
+    print("[08] THE FALL IS THE RISE");
+    print("[09] SIMULATION #777");
 
     print("");
 
-    print(
-        "A cake-related file has been permanently removed.",
-        "muted"
-    );
+    print("[10] ERRATA");
+    print("[11] ERRATA INITIATIVE");
+    print("[12] ERRATA INITIATOR");
 
     print("");
 
-};
-
-
-commands.minecraft = function() {
-
-    section("ARCHIVAL ECHO // BLOCK WORLD");
-
-    print("WORLD GENERATION: FAMILIAR");
-    print("CHUNK STATUS: [LOADED]");
-    print("BEDROCK LAYER: [UNVERIFIED]");
+    print("[13] CANDIDATE 9502026#");
+    print("[14] CANDIDATE 0000395#");
 
     print("");
 
-    print(
-        "THE STRONGEST MATERIAL IS NOT ALWAYS THE BOUNDARY.",
-        "egg"
-    );
+    print("[15] HADES SIGIL");
+    print("[16] THRENODY");
+    print("[17] THE SEVENTH DIMENSION");
+    print("[18] THE UNDENIABLE");
 
     print("");
 
-    print("One block remains unnamed.");
-    print("One world remains unexplored.");
+    print("[19] THE LAST PARIES");
+    print("[20] THE INFINITE COSINE");
+    print("[21] THE ABYSSAL ASYMPTOTE");
+    print("[22] THE LIMINAL EQUATION");
+    print("[23] ARCHIVE OF UNWRITTEN OUTCOMES");
+    print("[24] THE BEYOND");
 
     print("");
 
-};
-
-
-commands.terraria = function() {
-
-    section("ARCHIVAL ECHO // DEEP WORLD");
-
-    print("WORLD STATE: [CORRUPTED]");
-    print("HARDMODE: [UNKNOWN]");
-    print("COSMIC SIGNATURE: DETECTED");
+    print("[25] REALISATION");
+    print("[26] THE SUN NEVER SETS IN ERRATA");
 
     print("");
 
     print(
-        "A hostile record repeatedly references",
-        "dim"
+        "All records above belong to the established"
     );
 
     print(
-        "an avatar of emptiness.",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "WHY DOES NOTHING NEED AN AVATAR?",
-        "corrupt"
-    );
-
-    print("");
-
-};
-
-
-commands.calamity = function() {
-
-    section("ARCHIVAL ECHO // CALAMITY");
-
-    print("THREAT INDEX: EXCESSIVE");
-    print("MUSIC SIGNATURE: [RECOGNIZED]");
-    print("WORLD STATUS: UNWISE");
-
-    print("");
-
-    print("The archive has classified the event");
-    print("as a calamity.");
-
-    print("");
-
-    print(
-        "This is not considered useful information.",
-        "dim"
-    );
-
-    print("");
-
-};
-
-
-commands.celestia = function() {
-
-    section("ARCHIVAL ECHO // CELESTIAL OBSERVATION");
-
-    print("OBSERVATORY CONNECTION: STABLE");
-    print("STARFIELD: GENERATED");
-    print("PLANETARY MODEL: PRESENT");
-
-    print("");
-
-    print("Coordinates were requested.");
-    print("Coordinates were returned.");
-
-    print(
-        "The coordinates do not describe a place.",
-        "warning"
-    );
-
-    print("");
-
-};
-
-
-commands.theotown = function() {
-
-    section("ARCHIVAL ECHO // URBAN MODEL");
-
-    print("CITY STATUS: FUNCTIONAL");
-    print("POPULATION: UNKNOWN");
-    print("POWER: REQUIRED");
-    print("WATER: REQUIRED");
-    print("TRAFFIC: INEVITABLE");
-
-    print("");
-
-    print(
-        "Civilization remains dependent on roads.",
-        "egg"
-    );
-
-    print("");
-
-};
-
-
-commands.powder = function() {
-
-    section("ARCHIVAL ECHO // MATERIAL SYSTEM");
-
-    print("PARTICLE FIELD: ACTIVE");
-    print("MATERIAL INTERACTIONS: UNSTABLE");
-    print("GRAVITY: PRESENT");
-    print("THERMODYNAMICS: DISRESPECTED");
-
-    print("");
-
-    print(
-        "A single particle has crossed",
-        "dim"
-    );
-
-    print(
-        "a boundary it was never supposed to know existed.",
-        "corrupt"
-    );
-
-    print("");
-
-};
-
-
-commands.retroarch = function() {
-
-    section("ARCHIVAL ECHO // EMULATION");
-
-    print("CORE: UNKNOWN");
-    print("CONTENT: UNKNOWN");
-    print("STATE: LOADED");
-
-    print("");
-
-    print(
-        "The archive has discovered",
-        "dim"
-    );
-
-    print("that memory can be saved.");
-
-    print("");
-
-    print(
-        "It has not discovered",
-        "dim"
-    );
-
-    print("whether memory can be trusted.");
-
-    print("");
-
-};
-
-
-/* =========================================================
-   MARVEL EASTER EGG
-   ========================================================= */
-
-commands.doomsday = function() {
-
-    doomSeen = true;
-
-    section("EXTERNAL ECHO // DOOMSDAY");
-
-    print(
-        "[UNAUTHORIZED CROSS-FRANCHISE REFERENCE]",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "ARCHIVE DETECTS AN EXTERNAL ENTITY INDEX."
-    );
-
-    print("");
-
-    print(
-        "REFERENCE: AVENGERS",
-        "accent"
-    );
-
-    print(
-        "EVENT: DOOMSDAY",
-        "danger"
-    );
-
-    print("");
-
-    print("STATUS:");
-    print("[NOT PART OF NULLSHIFT CANON]");
-
-    print("");
-
-    print("However...");
-
-    print("");
-
-    print(
-        "ERRATA has detected a familiar pattern:"
-    );
-
-    print("A system approaching collapse.");
-    print("A boundary approaching failure.");
-    print("An observer attempting to understand");
-    print("something larger than the system.");
-
-    print("");
-
-    print("ARCHIVAL CROSS-REFERENCE:");
-
-    print(
-        "DOOMSDAY ≠ NULLSHIFT",
-        "dim"
-    );
-
-    print(
-        "NULLSHIFT ≠ DOOMSDAY",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "SIMILARITY INDEX: [UNCOMFORTABLY HIGH]",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "The archive recommends not investigating further."
-    );
-
-    print("");
-
-};
-
-
-commands.secretwars = function() {
-
-    secretWarsSeen = true;
-
-    section("EXTERNAL ECHO // SECRET WARS");
-
-    print(
-        "[MULTIVERSAL REFERENCE DETECTED]",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "REFERENCE: AVENGERS",
-        "accent"
-    );
-
-    print(
-        "EVENT: SECRET WARS",
-        "violet"
-    );
-
-    print("");
-
-    print("ARCHIVE STATUS:");
-
-    print("REALITY COUNT: [INCOMPATIBLE]");
-    print("BOUNDARY COUNT: [INCOMPATIBLE]");
-    print("SURVIVING STRUCTURES: [UNKNOWN]");
-
-    print("");
-
-    print(
-        "ERRATA has encountered a concept"
-    );
-
-    print(
-        "which resembles recursive reality collapse."
-    );
-
-    print("");
-
-    print("The archive creates a note:");
-
-    print(
-        "WHEN WORLDS COLLIDE, THE ARCHIVE REMEMBERS.",
-        "egg"
-    );
-
-    print("");
-
-    print("SECONDARY NOTE:");
-
-    print(
-        "NULLSHIFT DOES NOT REQUIRE A MULTIVERSE."
-    );
-
-    print(
-        "IT ONLY REQUIRES ONE WORLD TO BE WRONG.",
-        "danger"
-    );
-
-    print("");
-
-};
-
-
-commands.doom = async function() {
-
-    section("EXTERNAL ENTITY // DOOM");
-
-    print(
-        "IDENTIFIER: DOOM",
-        "danger"
-    );
-
-    print(
-        "CLASS: SOVEREIGN / INVENTOR / THREAT"
-    );
-
-    print(
-        "SOURCE: EXTERNAL ARCHIVE"
-    );
-
-    print("");
-
-    print(
-        "ERRATA has no authority over this record."
-    );
-
-    print("");
-
-    print(
-        "The archive attempted to index the entity."
-    );
-
-    print(
-        "The entity indexed the archive first.",
-        "warning"
-    );
-
-    print("");
-
-    print("ACCESS LEVEL:");
-
-    print(
-        "[REVERSED]",
-        "danger"
-    );
-
-    print("");
-
-    await sleep(500);
-
-    print("ERRATA ARCHIVE:");
-    print("WHO AUTHORIZED THIS RECORD?");
-
-    print("");
-
-    await sleep(700);
-
-    print("RESPONSE:");
-
-    print(
-        "NO ONE.",
-        "corrupt"
-    );
-
-    print("");
-
-};
-
-
-/* =========================================================
-   SECRET COMMANDS
-   ========================================================= */
-
-const hiddenCommands = {
-
-"777": async function() {
-
-    section("SIMULATION // #777");
-
-    print(
-        "INDEX MATCH FOUND.",
-        "warning"
-    );
-
-    print("");
-
-    print("SIMULATION: #777");
-    print("STATUS: [SEALED]");
-    print("CONTEXT: [WITHHELD]");
-
-    print("");
-
-    print("Known candidate:");
-
-    print(
-        "9502026#",
+        "NullShift archive.",
         "accent"
     );
 
     print("");
 
-    print("Known escape:");
+},
+
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+
+timeline() {
+
+    section("NULLSHIFT // KNOWN TIMELINE");
+
+    print(
+        "1. ERRATA establishes and operates"
+    );
+
+    print(
+        "   the Initiative.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "2. The ERRATA Initiative contains"
+    );
+
+    print(
+        "   candidates, simulations,"
+    );
+
+    print(
+        "   observational systems,"
+    );
+
+    print(
+        "   and the ERRATA Initiator.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "3. The ERRATA Initiator creates"
+    );
+
+    print(
+        "   planets, universes, and related"
+    );
+
+    print(
+        "   simulated reality structures.",
+        "dim"
+    );
+
+    print("");
+
+    print(
+        "4. Simulation #777 becomes a known"
+    );
+
+    print(
+        "   reference within the archive."
+    );
+
+    print("");
+
+    print(
+        "5. Candidate 0000395# becomes the"
+    );
+
+    print(
+        "   first recorded candidate to escape"
+    );
+
+    print(
+        "   Simulation #777.",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "6. Candidate 9502026# becomes the"
+    );
+
+    print(
+        "   primary recorded candidate."
+    );
+
+    print("");
+
+    print(
+        "7. THRENODY is deployed in relation"
+    );
+
+    print(
+        "   to Candidate 9502026#."
+    );
+
+    print("");
+
+    print(
+        "8. THRENODY encounters a space"
+    );
+
+    print(
+        "   associated with seventh-dimensional"
+    );
+
+    print(
+        "   interpretation failure.",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "9. The archive records the resulting"
+    );
+
+    print(
+        "   dimensional anomaly."
+    );
+
+    print("");
+
+    print(
+        "10. Further records become associated"
+    );
+
+    print(
+        "    with the boundary, the Axiom,"
+    );
+
+    print(
+        "    awareness, and the nature of"
+    );
+
+    print(
+        "    observation."
+    );
+
+    print("");
+
+    print(
+        "[TIMELINE ENDS AT CURRENT CANON]",
+        "accent"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   ENTITIES
+   ========================================================= */
+
+entities() {
+
+    section("NULLSHIFT // MAJOR ENTITIES");
+
+    print("ERRATA");
+    print(
+        "Corporate authority operating the Initiative.",
+        "dim"
+    );
+
+    print("");
+
+    print("ERRATA INITIATIVE");
+    print(
+        "Program containing candidates, simulations,"
+    );
+    print(
+        "observational systems, and the Initiator.",
+        "dim"
+    );
+
+    print("");
+
+    print("ERRATA INITIATOR");
+    print(
+        "System responsible for creating planets,"
+    );
+    print(
+        "universes, and related simulated realities.",
+        "dim"
+    );
+
+    print("");
+
+    print("CANDIDATE 9502026#");
+    print(
+        "Primary candidate of the current archive."
+    );
+
+    print("");
+
+    print("CANDIDATE 0000395#");
+    print(
+        "First recorded candidate to escape Simulation #777.",
+        "warning"
+    );
+
+    print("");
+
+    print("THRENODY");
+    print(
+        "A recorded system/entity deployed in relation"
+    );
+    print(
+        "to Candidate 9502026#."
+    );
+
+    print("");
+
+    print("THE AXIOM");
+    print(
+        "The relation connecting Matter, Pattern,"
+    );
+    print(
+        "Memory, and Awareness."
+    );
+
+    print("");
+
+    print("HADES SIGIL");
+    print(
+        "A symbolic record associated with transcendence"
+    );
+    print(
+        "beyond Matter."
+    );
+
+    print("");
+
+    print(
+        "THE SEVENTH DIMENSION",
+        "accent"
+    );
+
+    print(
+        "A dimensional state which cannot be"
+    );
+
+    print(
+        "stably interpreted by conventional geometry."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+status() {
+
+    section("NULLSHIFT // STATUS");
+
+    print("PROJECT: NULLSHIFT");
+    print("STATUS: IN DEVELOPMENT");
+
+    print("");
+
+    print("CANONICAL SIMULATION: #777");
+
+    print("");
+
+    print("PRIMARY CANDIDATE: 9502026#");
+    print("KNOWN ESCAPED CANDIDATE: 0000395#");
+
+    print("");
+
+    print("METAPHYSICAL METRIC:");
+
+    print("MATTER");
+    print("PATTERN");
+    print("MEMORY");
+    print("AWARENESS");
+
+    print("");
+
+    print("CONNECTIVE PRINCIPLE: AXIOM");
+
+    print("");
+
+    print("DIMENSIONAL RECORD: 7D");
+
+    print("");
+
+    print("CORPORATE AUTHORITY: ERRATA");
+    print("PROGRAM: ERRATA INITIATIVE");
+    print("SYSTEM: ERRATA INITIATOR");
+
+    print("");
+
+    print(
+        "THE FALL IS THE RISE.",
+        "accent"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   AXIOM
+   ========================================================= */
+
+axiom() {
+
+    section("THE AXIOM");
+
+    print(
+        "The Axiom is the connective principle"
+    );
+
+    print(
+        "between the four metaphysical layers."
+    );
+
+    print("");
+
+    print(
+        "MATTER"
+    );
+
+    print(
+        "The physical layer."
+    );
+
+    print("");
+
+    print(
+        "PATTERN"
+    );
+
+    print(
+        "The structural layer."
+    );
+
+    print("");
+
+    print(
+        "MEMORY"
+    );
+
+    print(
+        "The persistence and recorded-information layer."
+    );
+
+    print("");
+
+    print(
+        "AWARENESS"
+    );
+
+    print(
+        "The conscious observational layer."
+    );
+
+    print("");
+
+    print(
+        "THE AXIOM"
+    );
+
+    print(
+        "connects the four."
+    );
+
+    print("");
+
+    print(
+        "It is not merely another layer."
+    );
+
+    print(
+        "It is the relation through which"
+    );
+
+    print(
+        "the layers become connected."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   LAYERS
+   ========================================================= */
+
+layers() {
+
+    section("THE FOUR LAYERS");
+
+    print(
+        "LAYER I // MATTER",
+        "accent"
+    );
+
+    print(
+        "The physical foundation."
+    );
+
+    print("");
+
+    print(
+        "LAYER II // PATTERN",
+        "accent"
+    );
+
+    print(
+        "Structure, arrangement, and relation."
+    );
+
+    print("");
+
+    print(
+        "LAYER III // MEMORY",
+        "accent"
+    );
+
+    print(
+        "Persistence, record, and retained state."
+    );
+
+    print("");
+
+    print(
+        "LAYER IV // AWARENESS",
+        "accent"
+    );
+
+    print(
+        "Observation and consciousness."
+    );
+
+    print("");
+
+    print(
+        "THE AXIOM connects all four.",
+        "important"
+    );
+
+    print("");
+
+    print(
+        "The four layers form the core"
+    );
+
+    print(
+        "of NullShift's metaphysical metric."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   7D
+   ========================================================= */
+
+"7d"() {
+
+    section("THE SEVENTH DIMENSION");
+
+    print(
+        "The archive recognizes seven-dimensional"
+    );
+
+    print(
+        "space as a state beyond the stable"
+    );
+
+    print(
+        "interpretation of ordinary geometry."
+    );
+
+    print("");
+
+    print(
+        "DIMENSION 01: MATTER"
+    );
+
+    print(
+        "DIMENSION 02: PATTERN"
+    );
+
+    print(
+        "DIMENSION 03: MEMORY"
+    );
+
+    print(
+        "DIMENSION 04: AWARENESS"
+    );
+
+    print("");
+
+    print(
+        "DIMENSION 05: UNRESOLVED"
+    );
+
+    print(
+        "DIMENSION 06: UNRESOLVED"
+    );
+
+    print("");
+
+    print(
+        "DIMENSION 07: SEVENTH DIMENSION",
+        "danger"
+    );
+
+    print("");
+
+    print(
+        "Conventional spatial interpretation"
+    );
+
+    print(
+        "is insufficient."
+    );
+
+    print("");
+
+    print(
+        "A reference frame cannot remain stable"
+    );
+
+    print(
+        "when the system becomes part of"
+    );
+
+    print(
+        "the observation being interpreted."
+    );
+
+    print("");
+
+    print(
+        "This is associated with the known"
+    );
+
+    print(
+        "THRENODY interpretation failure."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   ERRATA
+   ========================================================= */
+
+errata() {
+
+    section("ERRATA // CORPORATE RECORD");
+
+    print(
+        "ENTITY: ERRATA",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "CLASSIFICATION: COMPANY"
+    );
+
+    print(
+        "STATUS: ACTIVE"
+    );
+
+    print("");
+
+    print(
+        "ERRATA operates the Initiative."
+    );
+
+    print(
+        "ERRATA owns the Initiative."
+    );
+
+    print(
+        "ERRATA owns the Initiator."
+    );
+
+    print("");
+
+    print(
+        "ERRATA INITIATIVE"
+    );
+
+    print(
+        "The primary organizational program"
+    );
+
+    print(
+        "containing the known simulations,"
+    );
+
+    print(
+        "candidates, observational systems,"
+    );
+
+    print(
+        "and the ERRATA Initiator."
+    );
+
+    print("");
+
+    print(
+        "ERRATA INITIATOR"
+    );
+
+    print(
+        "The reality-generation system associated"
+    );
+
+    print(
+        "with the Initiative."
+    );
+
+    print("");
+
+    print(
+        "Its recorded function includes creation of:"
+    );
+
+    print(
+        "• planets"
+    );
+
+    print(
+        "• universes"
+    );
+
+    print(
+        "• related simulated reality structures"
+    );
+
+    print("");
+
+    print(
+        "THE SUN NEVER SETS IN ERRATA.",
+        "accent"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   INITIATIVE
+   ========================================================= */
+
+initiative() {
+
+    section("ERRATA INITIATIVE");
+
+    print(
+        "PROGRAM: ERRATA INITIATIVE"
+    );
+
+    print(
+        "OWNER: ERRATA"
+    );
+
+    print(
+        "STATUS: ACTIVE"
+    );
+
+    print("");
+
+    print(
+        "KNOWN COMPONENTS:"
+    );
+
+    print(
+        "• CANDIDATES"
+    );
+
+    print(
+        "• SIMULATIONS"
+    );
+
+    print(
+        "• OBSERVATIONAL SYSTEMS"
+    );
+
+    print(
+        "• ERRATA INITIATOR"
+    );
+
+    print("");
+
+    print(
+        "KNOWN SIMULATION:"
+    );
+
+    print(
+        "#777",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "KNOWN CANDIDATES:"
+    );
+
+    print(
+        "9502026#"
+    );
+
+    print(
+        "0000395#"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   INITIATOR
+   ========================================================= */
+
+initiator() {
+
+    section("ERRATA INITIATOR");
+
+    print(
+        "SYSTEM: ERRATA INITIATOR"
+    );
+
+    print(
+        "OWNER: ERRATA"
+    );
+
+    print(
+        "PROGRAM: ERRATA INITIATIVE"
+    );
+
+    print("");
+
+    print(
+        "PRIMARY FUNCTION:"
+    );
+
+    print(
+        "Creation of planetary,"
+    );
+
+    print(
+        "universal,"
+    );
+
+    print(
+        "and related reality structures."
+    );
+
+    print("");
+
+    print(
+        "The Initiator is part of the"
+    );
+
+    print(
+        "ERRATA Initiative."
+    );
+
+    print("");
+
+    print(
+        "It is distinct from the Initiative itself."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   CANDIDATE INDEX
+   ========================================================= */
+
+candidate() {
+
+    section("CANDIDATE INDEX");
+
+    print(
+        "CANDIDATE 9502026#",
+        "accent"
+    );
+
+    print(
+        "PRIMARY RECORDED CANDIDATE."
+    );
+
+    print("");
+
+    print(
+        "CANDIDATE 0000395#",
+        "warning"
+    );
+
+    print(
+        "FIRST RECORDED CANDIDATE TO ESCAPE"
+    );
+
+    print(
+        "SIMULATION #777."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   9502026
+   ========================================================= */
+
+"9502026#"() {
+
+    section("CANDIDATE // 9502026#");
+
+    print(
+        "IDENTIFIER: 9502026#",
+        "accent"
+    );
+
+    print(
+        "SIMULATION: #777"
+    );
+
+    print(
+        "ROLE: PRIMARY CANDIDATE"
+    );
+
+    print("");
+
+    print(
+        "The candidate encounters a boundary"
+    );
+
+    print(
+        "associated with a dimensional state"
+    );
+
+    print(
+        "beyond conventional interpretation."
+    );
+
+    print("");
+
+    print(
+        "THRENODY is deployed."
+    );
+
+    print("");
+
+    print(
+        "The resulting record is associated with"
+    );
+
+    print(
+        "the Seventh Dimension."
+    );
+
+    print("");
+
+    print(
+        "The event forms one of the central"
+    );
+
+    print(
+        "records of the NullShift archive."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   0000395
+   ========================================================= */
+
+"0000395#"() {
+
+    section("CANDIDATE // 0000395#");
+
+    print(
+        "IDENTIFIER: 0000395#",
+        "accent"
+    );
+
+    print(
+        "SIMULATION: #777"
+    );
+
+    print(
+        "STATUS: ESCAPED",
+        "warning"
+    );
+
+    print("");
+
+    print(
+        "0000395# is the first recorded candidate"
+    );
+
+    print(
+        "known to have escaped Simulation #777."
+    );
+
+    print("");
+
+    print(
+        "The archive records the escape"
+    );
+
+    print(
+        "without assigning an external destination."
+    );
+
+    print("");
+
+    print(
+        "No additional destination is established"
+    );
+
+    print(
+        "within the current canon."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   HADES
+   ========================================================= */
+
+hades() {
+
+    section("HADES SIGIL");
+
+    print(
+        "              ◇",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "[HADES SIGIL]"
+    );
+
+    print("");
+
+    print(
+        "INSCRIPTION:",
+        "accent"
+    );
+
+    print(
+        "AS YOUR MIND TRANSCENDS MATTER.",
+        "important"
+    );
+
+    print("");
+
+    print(
+        "The sigil is associated with"
+    );
+
+    print(
+        "transcendence beyond the Matter layer."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   THRENODY
+   ========================================================= */
+
+threnody() {
+
+    section("THRENODY");
+
+    print(
+        "CLASSIFICATION: THRENODY",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "THRENODY is a major recorded entity/system"
+    );
+
+    print(
+        "within the NullShift archive."
+    );
+
+    print("");
+
+    print(
+        "It is deployed in relation to"
+    );
+
+    print(
+        "Candidate 9502026#."
+    );
+
+    print("");
+
+    print(
+        "THRENODY encounters a space"
+    );
+
+    print(
+        "associated with seventh-dimensional"
+    );
+
+    print(
+        "structure."
+    );
+
+    print("");
+
+    print(
+        "The space cannot be successfully"
+    );
+
+    print(
+        "interpreted by THRENODY."
+    );
+
+    print("");
+
+    print(
+        "INTERPRETATION: FAILED",
+        "danger"
+    );
+
+    print("");
+
+    print(
+        "THRENODY exits the simulation."
+    );
+
+    print("");
+
+    print(
+        "The record establishes THRENODY's"
+    );
+
+    print(
+        "inability to interpret the encountered"
+    );
+
+    print(
+        "seventh-dimensional space."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   UNDENIABLE
+   ========================================================= */
+
+undeniable() {
+
+    section("THE UNDENIABLE");
+
+    print(
+        "THE UNDENIABLE."
+    );
+
+    print("");
+
+    print(
+        "A distinct NullShift record."
+    );
+
+    print("");
+
+    print(
+        "It is not presented as a final answer."
+    );
+
+    print(
+        "It is not the complete explanation"
+    );
+
+    print(
+        "of the surrounding phenomena."
+    );
+
+    print("");
+
+    print(
+        "The record is associated with"
+    );
+
+    print(
+        "boundaries and incomplete understanding."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   LAST PARIES
+   ========================================================= */
+
+paries() {
+
+    section("THE LAST PARIES");
+
+    print(
+        "THE LAST PARIES"
+    );
+
+    print("");
+
+    print(
+        "A named NullShift fragment."
+    );
+
+    print("");
+
+    print(
+        "The archive recognizes the term"
+    );
+
+    print(
+        "as an established record."
+    );
+
+    print("");
+
+    print(
+        "Additional interpretation:"
+    );
+
+    print(
+        "[CURRENTLY NOT DEFINED IN CANON]"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   INFINITE COSINE
+   ========================================================= */
+
+cosine() {
+
+    section("THE INFINITE COSINE");
+
+    print(
+        "THE INFINITE COSINE"
+    );
+
+    print("");
+
+    print(
+        "THE INFINITE COSINE DISTILLS"
+    );
+
+    print(
+        "BEHIND A BLESSED CINQUAIN."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   ABYSSAL ASYMPTOTE
+   ========================================================= */
+
+asymptote() {
+
+    section("THE ABYSSAL ASYMPTOTE");
+
+    print(
+        "THE ABYSSAL ASYMPTOTE"
+    );
+
+    print("");
+
+    print(
+        "THE ABYSSAL ASYMPTOTE"
+    );
+
+    print(
+        "COALESCES BENEATH"
+    );
+
+    print(
+        "A HALLOWED THRENODY."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   LIMINAL EQUATION
+   ========================================================= */
+
+equation() {
+
+    section("THE LIMINAL EQUATION");
+
+    print(
+        "THE LIMINAL EQUATION"
+    );
+
+    print("");
+
+    print(
+        "DREAMS IN FRACTURED"
+    );
+
+    print(
+        "GEOMETRIES."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   OUTCOMES
+   ========================================================= */
+
+outcomes() {
+
+    section("ARCHIVE OF UNWRITTEN OUTCOMES");
+
+    print(
+        "THE ARCHIVE OF"
+    );
+
+    print(
+        "UNWRITTEN OUTCOMES"
+    );
+
+    print(
+        "BREATHES BETWEEN"
+    );
+
+    print(
+        "OBSERVATIONS."
+    );
+
+    print("");
+
+    print(
+        "The record concerns outcomes"
+    );
+
+    print(
+        "which remain unwritten."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   BEYOND
+   ========================================================= */
+
+beyond() {
+
+    section("THE BEYOND");
+
+    print(
+        "THE BEYOND"
+    );
+
+    print("");
+
+    print(
+        "A NullShift boundary record."
+    );
+
+    print("");
+
+    print(
+        "It is associated with a state"
+    );
+
+    print(
+        "beyond conventional classification."
+    );
+
+    print("");
+
+    print(
+        "It is not defined as:"
+    );
+
+    print(
+        "• Matter"
+    );
+
+    print(
+        "• Thought"
+    );
+
+    print(
+        "• Absence"
+    );
+
+    print(
+        "• Presence"
+    );
+
+    print("");
+
+    print(
+        "The record remains categorized"
+    );
+
+    print(
+        "as THE BEYOND."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   FALL
+   ========================================================= */
+
+fall() {
+
+    section("THE FALL IS THE RISE");
+
+    print(
+        "THE FALL IS THE RISE.",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "A canonical NullShift phrase."
+    );
+
+    print("");
+
+    print(
+        "The phrase represents a central"
+    );
+
+    print(
+        "axiomatic principle of the project."
+    );
+
+    print("");
+
+    print(
+        "FALL = RISE",
+        "accent"
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   SUN
+   ========================================================= */
+
+sun() {
+
+    section("ERRATA // SOLAR RECORD");
+
+    print(
+        "THE SUN NEVER SETS IN ERRATA.",
+        "title"
+    );
+
+    print("");
+
+    print(
+        "Canonical NullShift phrase."
+    );
+
+    print("");
+
+    print(
+        "Associated with ERRATA."
+    );
+
+    print("");
+
+},
+
+
+/* =========================================================
+   MATRIX
+   ========================================================= */
+
+matrix() {
+
+    section("SIMULATION MATRIX");
+
+    print(
+        "KNOWN PRIMARY SIMULATION:"
+    );
+
+    print(
+        "#777",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "KNOWN CANDIDATES:"
+    );
+
+    print(
+        "9502026#"
+    );
+
+    print(
+        "0000395#"
+    );
+
+    print("");
+
+    print(
+        "KNOWN ESCAPE:"
+    );
 
     print(
         "0000395#",
-        "danger"
-    );
-
-    print("");
-
-    print(
-        "The archive recommends forgetting",
-        "dim"
-    );
-
-    print("that this number was entered.");
-
-    print("");
-
-},
-
-
-"nothing": async function() {
-
-    section("EMPTY RECORD");
-
-    print("NOTHING FOUND.");
-
-    print("");
-
-    print("The archive hesitates.");
-
-    print("");
-
-    print(
-        "That should have been impossible.",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-"null": async function() {
-
-    section("NULL RECORD");
-
-    print("NULL VALUE DETECTED.");
-
-    print("");
-
-    print("NULL IS NOT ABSENCE.");
-
-    print(
-        "NULL IS WHAT THE ARCHIVE CALLS",
-        "dim"
-    );
-
-    print("THE SPACE WHERE AN ANSWER SHOULD BE.");
-
-    print("");
-
-},
-
-
-"errata.exe": async function() {
-
-    section("ERRATA EXECUTABLE");
-
-    print("EXECUTION REQUEST RECEIVED.");
-
-    print("");
-
-    print(
-        "ERRATA IS ALREADY RUNNING.",
         "warning"
     );
 
     print("");
 
     print(
-        "YOU ARE INSIDE IT.",
+        "METAPHYSICAL FRAMEWORK:"
+    );
+
+    print(
+        "MATTER"
+    );
+
+    print(
+        "PATTERN"
+    );
+
+    print(
+        "MEMORY"
+    );
+
+    print(
+        "AWARENESS"
+    );
+
+    print("");
+
+    print(
+        "CONNECTIVE PRINCIPLE:"
+    );
+
+    print(
+        "AXIOM",
+        "accent"
+    );
+
+    print("");
+
+    print(
+        "DIMENSIONAL RECORD:"
+    );
+
+    print(
+        "7D",
         "danger"
     );
 
@@ -2673,64 +2436,140 @@ const hiddenCommands = {
 },
 
 
-"threnody.exe": async function() {
+/* =========================================================
+   REALISATION
+   ========================================================= */
 
-    section("THRENODY // EXECUTION");
+realisation() {
 
-    print("PROCESS STARTING...");
-
-    await sleep(400);
-
-    print("INTERPRETING SPACE...");
-
-    await sleep(400);
+    section("REALISATION");
 
     print(
-        "INTERPRETATION FAILED.",
-        "warning"
+        "TITLE: REALISATION"
     );
 
-    await sleep(350);
-
     print(
-        "7D SIGNATURE DETECTED.",
-        "danger"
+        "TYPE: NULLSHIFT AUDIO RECORD"
     );
 
-    await sleep(400);
-
     print(
-        "THRENODY HAS LEFT THE SIMULATION.",
-        "danger"
+        "STATUS: RECOVERED"
     );
 
     print("");
 
-    print("PROCESS: NOT FOUND.");
+    print(
+        "REALISATION is associated with"
+    );
+
+    print(
+        "the NullShift project."
+    );
+
+    print("");
+
+    print(
+        "The record exists as an audio component"
+    );
+
+    print(
+        "of the project."
+    );
+
+    print("");
+
+    print(
+        "SIMULATION REFERENCE:"
+    );
+
+    print(
+        "#777"
+    );
 
     print("");
 
 },
 
 
-"axiom?": async function() {
+/* =========================================================
+   ARCHIVE
+   ========================================================= */
 
-    section("AXIOM // QUERY");
+archive() {
 
-    print("The question was accepted.");
+    section("NULLSHIFT://ARCHIVE");
+
+    print("/NULLSHIFT");
+    print("  ├─ about.dat");
+    print("  ├─ lore.dat");
+    print("  ├─ timeline.dat");
+    print("  └─ canon.idx");
 
     print("");
 
-    print("The answer was not.");
+    print("/METAPHYSICS");
+    print("  ├─ axiom.dat");
+    print("  ├─ matter.dat");
+    print("  ├─ pattern.dat");
+    print("  ├─ memory.dat");
+    print("  ├─ awareness.dat");
+    print("  └─ four_layers.dat");
+
+    print("");
+
+    print("/DIMENSIONS");
+    print("  └─ seventh_dimension.dat");
+
+    print("");
+
+    print("/ERRATA");
+    print("  ├─ company.dat");
+    print("  ├─ initiative.dat");
+    print("  └─ initiator.dat");
+
+    print("");
+
+    print("/CANDIDATES");
+    print("  ├─ 9502026#.dat");
+    print("  └─ 0000395#.dat");
+
+    print("");
+
+    print("/RECORDS");
+    print("  ├─ hades.sig");
+    print("  ├─ threnody.dat");
+    print("  ├─ undeniable.dat");
+    print("  ├─ paries.dat");
+    print("  ├─ infinite_cosine.dat");
+    print("  ├─ abyssal_asymptote.dat");
+    print("  ├─ liminal_equation.dat");
+    print("  ├─ unwritten_outcomes.dat");
+    print("  └─ beyond.dat");
+
+    print("");
+
+    print("/AUDIO");
+    print("  └─ realisation.dat");
 
     print("");
 
     print(
-        "Try observing the layers.",
-        "dim"
+        "ARCHIVE INDEX: COMPLETE FOR CURRENT CANON",
+        "accent"
     );
 
     print("");
+
+},
+
+
+/* =========================================================
+   CLEAR
+   ========================================================= */
+
+clear() {
+
+    output.innerHTML = "";
 
 }
 
@@ -2743,57 +2582,67 @@ const hiddenCommands = {
 
 const aliases = {
 
-    "realization": "realisation",
-    "realise": "realisation",
-    "realize": "realisation",
+    "nullshift": "about",
 
-    "last paries": "paries",
-    "infinite cosine": "cosine",
-
-    "abyssal asymptote": "asymptote",
-    "liminal equation": "equation",
-
-    "the undeniable": "undeniable",
-    "the beyond": "beyond",
+    "the axiom": "axiom",
 
     "four layers": "layers",
-    "seventh dimension": "7d",
+
     "7th dimension": "7d",
 
-    /* =====================================================
-       ERRATA CANON
-       No Paraxiom / Paraxium references remain.
-       ===================================================== */
+    "seventh dimension": "7d",
 
-    "errata": "errata",
     "errata company": "errata",
 
+    "errata corporation": "errata",
+
     "errata initiative": "initiative",
+
     "errata initiator": "initiator",
 
     "candidate 9502026": "9502026#",
+
     "candidate 0000395": "0000395#",
 
-    "portal 2": "portal",
-    "portal2": "portal",
+    "hades sigil": "hades",
 
-    "mc": "minecraft",
+    "the threnody": "threnody",
 
-    "wrath of the gods": "terraria",
+    "the undeniable": "undeniable",
 
-    "the powder toy": "powder",
-    "powder toy": "powder",
+    "the last paries": "paries",
 
-    "theo town": "theotown",
+    "infinite cosine": "cosine",
 
-    "avengers doomsday": "doomsday",
-    "avengers: doomsday": "doomsday",
+    "the infinite cosine": "cosine",
 
-    "secret wars": "secretwars",
-    "avengers secret wars": "secretwars",
-    "avengers: secret wars": "secretwars",
+    "abyssal asymptote": "asymptote",
 
-    "doctor doom": "doom"
+    "the abyssal asymptote": "asymptote",
+
+    "liminal equation": "equation",
+
+    "the liminal equation": "equation",
+
+    "unwritten outcomes": "outcomes",
+
+    "archive of unwritten outcomes": "outcomes",
+
+    "the beyond": "beyond",
+
+    "fall is the rise": "fall",
+
+    "the fall is the rise": "fall",
+
+    "sun": "sun",
+
+    "realization": "realisation",
+
+    "realise": "realisation",
+
+    "realize": "realisation",
+
+    "777": "matrix"
 
 };
 
@@ -2806,8 +2655,7 @@ function getCommandNames() {
 
     return [
         ...Object.keys(commands),
-        ...Object.keys(aliases),
-        ...Object.keys(hiddenCommands)
+        ...Object.keys(aliases)
     ];
 
 }
@@ -2822,8 +2670,9 @@ function autocomplete(value) {
 
     const matches =
         getCommandNames()
-            .filter(command =>
-                command.startsWith(query)
+            .filter(
+                command =>
+                    command.startsWith(query)
             );
 
     if (matches.length === 1) {
@@ -2843,14 +2692,13 @@ function autocomplete(value) {
             "dim"
         );
 
-        matches.forEach(command => {
-
-            print(
-                "  " + command,
-                "dim"
-            );
-
-        });
+        matches.forEach(
+            command =>
+                print(
+                    "  " + command,
+                    "dim"
+                )
+        );
 
         print("");
 
@@ -2884,17 +2732,7 @@ async function executeCommand(raw) {
         commandHistory.length;
 
 
-    /* HIDDEN */
-
-    if (hiddenCommands[command]) {
-
-        await hiddenCommands[command]();
-
-        return;
-    }
-
-
-    /* DIRECT */
+    /* DIRECT COMMAND */
 
     if (commands[command]) {
 
@@ -2916,18 +2754,7 @@ async function executeCommand(raw) {
     }
 
 
-    /* SECRET PHRASES */
-
-    if (
-        command ===
-        "the abyssal asymptote coalesces"
-    ) {
-
-        await commands.asymptote();
-
-        return;
-    }
-
+    /* CANONICAL PHRASES */
 
     if (
         command ===
@@ -2961,11 +2788,6 @@ async function executeCommand(raw) {
     );
 
     print(
-        "The archive cannot interpret:",
-        "dim"
-    );
-
-    print(
         `"${original}"`,
         "danger"
     );
@@ -2989,6 +2811,8 @@ input.addEventListener(
     "keydown",
     async function(event) {
 
+        /* ENTER */
+
         if (event.key === "Enter") {
 
             const command =
@@ -3004,6 +2828,8 @@ input.addEventListener(
         }
 
 
+        /* UP */
+
         if (event.key === "ArrowUp") {
 
             event.preventDefault();
@@ -3015,7 +2841,9 @@ input.addEventListener(
             historyIndex--;
 
             if (historyIndex < 0) {
+
                 historyIndex = 0;
+
             }
 
             input.value =
@@ -3026,6 +2854,8 @@ input.addEventListener(
             return;
         }
 
+
+        /* DOWN */
 
         if (event.key === "ArrowDown") {
 
@@ -3059,6 +2889,8 @@ input.addEventListener(
         }
 
 
+        /* TAB */
+
         if (event.key === "Tab") {
 
             event.preventDefault();
@@ -3067,7 +2899,6 @@ input.addEventListener(
                 input.value
             );
 
-            return;
         }
 
     }
