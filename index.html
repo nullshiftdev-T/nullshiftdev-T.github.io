@@ -42,7 +42,6 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
-
     background: var(--bg);
     color: var(--text);
 
@@ -53,10 +52,6 @@ body {
 
     overflow: hidden;
 }
-
-/* =========================================================
-   CRT
-   ========================================================= */
 
 body {
     position: relative;
@@ -72,12 +67,9 @@ body {
 
 body::before {
     content: "";
-
     position: fixed;
     inset: 0;
-
     pointer-events: none;
-
     z-index: 1000;
 
     background:
@@ -92,18 +84,14 @@ body::before {
         );
 
     opacity: 0.72;
-
     mix-blend-mode: screen;
 }
 
 body::after {
     content: "";
-
     position: fixed;
     inset: 0;
-
     pointer-events: none;
-
     z-index: 999;
 
     background:
@@ -122,7 +110,6 @@ body::after {
 }
 
 @keyframes crtPulse {
-
     0%, 100% {
         opacity: 0.92;
     }
@@ -131,10 +118,6 @@ body::after {
         opacity: 1;
     }
 }
-
-/* =========================================================
-   TERMINAL
-   ========================================================= */
 
 #terminal {
     width: 100%;
@@ -177,7 +160,6 @@ body::after {
 }
 
 @keyframes screenFlicker {
-
     0% {
         opacity: 0.32;
     }
@@ -191,17 +173,11 @@ body::after {
     }
 }
 
-/* =========================================================
-   OUTPUT
-   ========================================================= */
-
 #output {
     max-width: 1050px;
-
     margin: 0 auto;
 
     white-space: pre-wrap;
-
     word-break: break-word;
 
     line-height: 1.55;
@@ -228,7 +204,6 @@ body::after {
 }
 
 @keyframes lineAppear {
-
     from {
         opacity: 0;
         transform: translateX(-2px);
@@ -239,10 +214,6 @@ body::after {
         transform: translateX(0);
     }
 }
-
-/* =========================================================
-   TEXT
-   ========================================================= */
 
 .dim {
     color: var(--dim);
@@ -279,7 +250,6 @@ body::after {
 
 .title {
     color: var(--bright);
-
     font-weight: bold;
 
     text-shadow:
@@ -322,7 +292,6 @@ body::after {
 }
 
 @keyframes corruption {
-
     0%, 100% {
         opacity: 0.86;
     }
@@ -331,10 +300,6 @@ body::after {
         opacity: 1;
     }
 }
-
-/* =========================================================
-   INPUT
-   ========================================================= */
 
 .input-line {
     display: flex;
@@ -349,9 +314,7 @@ body::after {
 
 .prompt {
     color: #8dbd98;
-
     margin-right: 8px;
-
     user-select: none;
 
     text-shadow:
@@ -369,7 +332,6 @@ body::after {
     color: var(--bright);
 
     font-family: inherit;
-
     font-size: inherit;
 
     caret-color: var(--bright);
@@ -390,7 +352,6 @@ body::after {
 }
 
 @keyframes inputGlow {
-
     0%, 100% {
         text-shadow:
             0 0 5px rgba(100,255,150,0.25);
@@ -402,10 +363,6 @@ body::after {
     }
 }
 
-/* =========================================================
-   GLITCH
-   ========================================================= */
-
 .glitch {
     animation:
         glitch
@@ -414,7 +371,6 @@ body::after {
 }
 
 @keyframes glitch {
-
     0% {
         transform: translate(0);
     }
@@ -440,12 +396,7 @@ body::after {
     }
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
 @media (max-width: 600px) {
-
     #terminal {
         padding: 15px;
     }
@@ -461,14 +412,11 @@ body::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
+        animation-iteration-count: 1 !important;
     }
 }
 </style>
@@ -519,15 +467,10 @@ const terminal =
    ========================================================= */
 
 let commandHistory = [];
-
 let historyIndex = -1;
-
 let booted = false;
-
 let archiveDepth = 0;
-
 let doomSeen = false;
-
 let secretWarsSeen = false;
 
 
@@ -714,21 +657,10 @@ async function boot() {
 
     print("");
 
-    print(
-        "ARCHIVE STATUS: UNKNOWN"
-    );
-
-    print(
-        "INTEGRITY: PARTIAL"
-    );
-
-    print(
-        "INDEX: INCOMPLETE"
-    );
-
-    print(
-        "ORIGIN: UNRESOLVED"
-    );
+    print("ARCHIVE STATUS: UNKNOWN");
+    print("INTEGRITY: PARTIAL");
+    print("INDEX: INCOMPLETE");
+    print("ORIGIN: UNRESOLVED");
 
     print("");
 
@@ -772,10 +704,6 @@ async function boot() {
 
 const commands = {
 
-
-/* =========================================================
-   HELP
-   ========================================================= */
 
 help() {
 
@@ -845,6 +773,9 @@ help() {
     print("theotown      Urban-model echo");
     print("powder        Material-system echo");
     print("retroarch     Emulation echo");
+    print("doomsday      External Doomsday echo");
+    print("secretwars    External Secret Wars echo");
+    print("doom          External Doom echo");
 
     print("");
 
@@ -867,10 +798,6 @@ help() {
 
 },
 
-
-/* =========================================================
-   STATUS
-   ========================================================= */
 
 status() {
 
@@ -900,11 +827,15 @@ status() {
 
     print("");
 
-    print("SEVENTH DIMENSION: [UNINTERPRETABLE]",
-        "warning");
+    print(
+        "SEVENTH DIMENSION: [UNINTERPRETABLE]",
+        "warning"
+    );
 
-    print("ANOMALIES:   DETECTED",
-        "warning");
+    print(
+        "ANOMALIES:   DETECTED",
+        "warning"
+    );
 
     print("UNRESOLVED:  07");
 
@@ -932,10 +863,6 @@ status() {
 },
 
 
-/* =========================================================
-   LS
-   ========================================================= */
-
 ls() {
 
     section("ERRATA://ARCHIVE");
@@ -960,10 +887,6 @@ ls() {
 
 },
 
-
-/* =========================================================
-   LORE
-   ========================================================= */
 
 lore() {
 
@@ -993,9 +916,7 @@ lore() {
 
     print("");
 
-    print(
-        "[19] NON-LOCAL ARCHIVAL ECHOES"
-    );
+    print("[19] NON-LOCAL ARCHIVAL ECHOES");
 
     print(
         "[20] RECORDS WHICH PREDATE THEIR OWN CREATION",
@@ -1018,10 +939,6 @@ lore() {
 
 },
 
-
-/* =========================================================
-   ARCHIVE
-   ========================================================= */
 
 archive() {
 
@@ -1067,7 +984,6 @@ archive() {
     print("");
 
     print("/SIMULATIONS");
-
     print("  └─ #777.sim");
 
     print("");
@@ -1091,10 +1007,6 @@ archive() {
 
 },
 
-
-/* =========================================================
-   SCAN
-   ========================================================= */
 
 async scan() {
 
@@ -1167,9 +1079,7 @@ async scan() {
 
     print("");
 
-    print(
-        "TERTIARY SIGNATURE:"
-    );
+    print("TERTIARY SIGNATURE:");
 
     print(
         "7D",
@@ -1188,10 +1098,6 @@ async scan() {
 },
 
 
-/* =========================================================
-   AXIOM
-   ========================================================= */
-
 axiom() {
 
     section("FRAGMENT // AXIOM");
@@ -1207,20 +1113,12 @@ axiom() {
 
     print("");
 
-    print(
-        "Four conditions.",
-        "accent"
-    );
-
-    print(
-        "One relation."
-    );
+    print("Four conditions.", "accent");
+    print("One relation.");
 
     print("");
 
-    print(
-        "The archive labels the relation:"
-    );
+    print("The archive labels the relation:");
 
     print(
         "AXIOM",
@@ -1229,9 +1127,7 @@ axiom() {
 
     print("");
 
-    print(
-        "The Axiom does not explain existence."
-    );
+    print("The Axiom does not explain existence.");
 
     print(
         "It connects the layers through which",
@@ -1245,18 +1141,11 @@ axiom() {
 
     print("");
 
-    print(
-        "[REMAINDER UNAVAILABLE]"
-    );
-
+    print("[REMAINDER UNAVAILABLE]");
     print("");
 
 },
 
-
-/* =========================================================
-   LAYERS
-   ========================================================= */
 
 layers() {
 
@@ -1282,9 +1171,7 @@ layers() {
 
     print("");
 
-    print(
-        "The archive refuses to elaborate."
-    );
+    print("The archive refuses to elaborate.");
 
     print("");
 
@@ -1295,9 +1182,7 @@ layers() {
 
     print("");
 
-    print(
-        "A second annotation exists."
-    );
+    print("A second annotation exists.");
 
     print(
         "It was written from outside the four layers.",
@@ -1315,10 +1200,6 @@ layers() {
 
 },
 
-
-/* =========================================================
-   7D
-   ========================================================= */
 
 "7d"() {
 
@@ -1355,28 +1236,14 @@ layers() {
 
     print("");
 
-    print(
-        "The system attempted geometry."
-    );
-
-    print(
-        "The geometry attempted to observe itself."
-    );
-
-    print(
-        "The observation became part of the geometry."
-    );
+    print("The system attempted geometry.");
+    print("The geometry attempted to observe itself.");
+    print("The observation became part of the geometry.");
 
     print("");
 
-    print(
-        "RESULT:",
-        "warning"
-    );
-
-    print(
-        "NO STABLE REFERENCE FRAME."
-    );
+    print("RESULT:", "warning");
+    print("NO STABLE REFERENCE FRAME.");
 
     print("");
 
@@ -1385,9 +1252,7 @@ layers() {
         "dim"
     );
 
-    print(
-        "THRENODY did not interpret it."
-    );
+    print("THRENODY did not interpret it.");
 
     print(
         "THRENODY exited.",
@@ -1395,11 +1260,7 @@ layers() {
     );
 
     print("");
-
-    print(
-        "[7D RECORD CLOSED]"
-    );
-
+    print("[7D RECORD CLOSED]");
     print("");
 
 },
@@ -1413,17 +1274,9 @@ errata() {
 
     section("CORPORATE RECORD // ERRATA");
 
-    print(
-        "ENTITY: ERRATA"
-    );
-
-    print(
-        "CLASS: COMPANY"
-    );
-
-    print(
-        "STATUS: ACTIVE / UNVERIFIED"
-    );
+    print("ENTITY: ERRATA");
+    print("CLASS: COMPANY");
+    print("STATUS: ACTIVE / UNVERIFIED");
 
     print("");
 
@@ -1444,17 +1297,9 @@ errata() {
 
     print("");
 
-    print(
-        "The archive contains no founding date."
-    );
-
-    print(
-        "The archive contains no verified founder."
-    );
-
-    print(
-        "The archive contains no confirmed endpoint."
-    );
+    print("The archive contains no founding date.");
+    print("The archive contains no verified founder.");
+    print("The archive contains no confirmed endpoint.");
 
     print("");
 
@@ -1465,20 +1310,9 @@ errata() {
 
     print("");
 
-    print(
-        "Corporate slogan?",
-        "dim"
-    );
-
-    print(
-        "Warning?",
-        "dim"
-    );
-
-    print(
-        "Observation?",
-        "dim"
-    );
+    print("Corporate slogan?", "dim");
+    print("Warning?", "dim");
+    print("Observation?", "dim");
 
     print("");
 
@@ -1492,57 +1326,27 @@ errata() {
 },
 
 
-/* =========================================================
-   INITIATIVE
-   ========================================================= */
-
 initiative() {
 
     section("RECORD // ERRATA INITIATIVE");
 
-    print(
-        "PROGRAM: ERRATA INITIATIVE"
-    );
-
-    print(
-        "OWNER: ERRATA"
-    );
-
-    print(
-        "STATUS: ACTIVE"
-    );
+    print("PROGRAM: ERRATA INITIATIVE");
+    print("OWNER: ERRATA");
+    print("STATUS: ACTIVE");
 
     print("");
 
-    print(
-        "The Initiative contains:"
-    );
+    print("The Initiative contains:");
 
-    print(
-        "• candidates"
-    );
-
-    print(
-        "• simulations"
-    );
-
-    print(
-        "• observational systems"
-    );
-
-    print(
-        "• the ERRATA Initiator"
-    );
+    print("• candidates");
+    print("• simulations");
+    print("• observational systems");
+    print("• the ERRATA Initiator");
 
     print("");
 
-    print(
-        "SIMULATION COUNT: [WITHHELD]"
-    );
-
-    print(
-        "KNOWN REFERENCE: #777"
-    );
+    print("SIMULATION COUNT: [WITHHELD]");
+    print("KNOWN REFERENCE: #777");
 
     print("");
 
@@ -1556,64 +1360,31 @@ initiative() {
 },
 
 
-/* =========================================================
-   INITIATOR
-   ========================================================= */
-
 initiator() {
 
     section("RECORD // ERRATA INITIATOR");
 
-    print(
-        "SYSTEM: ERRATA INITIATOR"
-    );
-
-    print(
-        "OWNER: ERRATA"
-    );
-
-    print(
-        "PROJECT: ERRATA INITIATIVE"
-    );
+    print("SYSTEM: ERRATA INITIATOR");
+    print("OWNER: ERRATA");
+    print("PROJECT: ERRATA INITIATIVE");
 
     print("");
 
-    print(
-        "FUNCTION:"
-    );
+    print("FUNCTION:");
 
-    print(
-        "CREATION OF PLANETARY,"
-    );
-
-    print(
-        "UNIVERSAL,"
-    );
-
-    print(
-        "AND RELATED REALITY STRUCTURES."
-    );
+    print("CREATION OF PLANETARY,");
+    print("UNIVERSAL,");
+    print("AND RELATED REALITY STRUCTURES.");
 
     print("");
 
-    print(
-        "STATUS: [RESTRICTED]"
-    );
-
-    print(
-        "ACCESS: [RESTRICTED]"
-    );
-
-    print(
-        "OUTPUT HISTORY: [WITHHELD]"
-    );
+    print("STATUS: [RESTRICTED]");
+    print("ACCESS: [RESTRICTED]");
+    print("OUTPUT HISTORY: [WITHHELD]");
 
     print("");
 
-    print(
-        "WARNING:",
-        "warning"
-    );
+    print("WARNING:", "warning");
 
     print(
         "DO NOT CONFUSE THE INITIATOR",
@@ -1641,10 +1412,6 @@ initiator() {
 },
 
 
-/* =========================================================
-   CANDIDATE
-   ========================================================= */
-
 candidate() {
 
     section("CANDIDATE INDEX");
@@ -1656,9 +1423,7 @@ candidate() {
 
     print("");
 
-    print(
-        "PRIMARY CANDIDATE:"
-    );
+    print("PRIMARY CANDIDATE:");
 
     print(
         "9502026#",
@@ -1667,40 +1432,18 @@ candidate() {
 
     print("");
 
-    print(
-        "STATUS: [RECORD PARTIAL]"
-    );
-
-    print(
-        "IDENTITY: [WITHHELD]"
-    );
-
-    print(
-        "ORIGIN: [WITHHELD]"
-    );
-
-    print(
-        "OBSERVATION: [ACTIVE]",
-        "warning"
-    );
+    print("STATUS: [RECORD PARTIAL]");
+    print("IDENTITY: [WITHHELD]");
+    print("ORIGIN: [WITHHELD]");
+    print("OBSERVATION: [ACTIVE]", "warning");
 
     print("");
 
-    print(
-        "ASSOCIATED EVENTS:"
-    );
+    print("ASSOCIATED EVENTS:");
 
-    print(
-        "• SIMULATION #777"
-    );
-
-    print(
-        "• THRENODY"
-    );
-
-    print(
-        "• 7D INTERPRETATION FAILURE"
-    );
+    print("• SIMULATION #777");
+    print("• THRENODY");
+    print("• 7D INTERPRETATION FAILURE");
 
     print("");
 
@@ -1721,24 +1464,15 @@ candidate() {
         "danger"
     );
 
-    print(
-        "FIRST RECORDED IRREGULARITY."
-    );
+    print("FIRST RECORDED IRREGULARITY.");
 
     print("");
 
-    print(
-        "[REMAINING CANDIDATE DATA SEALED]"
-    );
-
+    print("[REMAINING CANDIDATE DATA SEALED]");
     print("");
 
 },
 
-
-/* =========================================================
-   9502026
-   ========================================================= */
 
 "9502026#"() {
 
@@ -1749,40 +1483,22 @@ candidate() {
         "accent"
     );
 
-    print(
-        "SIMULATION: #777"
-    );
-
-    print(
-        "STATUS: ACTIVE / UNRESOLVED"
-    );
+    print("SIMULATION: #777");
+    print("STATUS: ACTIVE / UNRESOLVED");
 
     print("");
 
-    print(
-        "The candidate reached a boundary."
-    );
-
-    print(
-        "The boundary was not a wall."
-    );
+    print("The candidate reached a boundary.");
+    print("The boundary was not a wall.");
 
     print("");
 
-    print(
-        "THRENODY was deployed."
-    );
-
-    print(
-        "THRENODY failed to interpret the observed space."
-    );
+    print("THRENODY was deployed.");
+    print("THRENODY failed to interpret the observed space.");
 
     print("");
 
-    print(
-        "REFERENCE:",
-        "warning"
-    );
+    print("REFERENCE:", "warning");
 
     print(
         "SEVENTH DIMENSION",
@@ -1791,22 +1507,13 @@ candidate() {
 
     print("");
 
-    print(
-        "The candidate remained."
-    );
-
-    print(
-        "The archive did not."
-    );
+    print("The candidate remained.");
+    print("The archive did not.");
 
     print("");
 
 },
 
-
-/* =========================================================
-   0000395
-   ========================================================= */
 
 "0000395#"() {
 
@@ -1819,33 +1526,18 @@ candidate() {
 
     print("");
 
-    print(
-        "FIRST RECORDED CANDIDATE",
-    );
-
-    print(
-        "TO ESCAPE SIMULATION #777."
-    );
+    print("FIRST RECORDED CANDIDATE");
+    print("TO ESCAPE SIMULATION #777.");
 
     print("");
 
-    print(
-        "No external destination was recorded."
-    );
-
-    print(
-        "No transit event was recorded."
-    );
-
-    print(
-        "No exit vector was recorded."
-    );
+    print("No external destination was recorded.");
+    print("No transit event was recorded.");
+    print("No exit vector was recorded.");
 
     print("");
 
-    print(
-        "Only the absence of the candidate."
-    );
+    print("Only the absence of the candidate.");
 
     print("");
 
@@ -1864,10 +1556,6 @@ candidate() {
 },
 
 
-/* =========================================================
-   HADES
-   ========================================================= */
-
 hades() {
 
     section("FRAGMENT // HADES SIGIL");
@@ -1879,9 +1567,7 @@ hades() {
 
     print("");
 
-    print(
-        "        [SYMBOL INDEXED]"
-    );
+    print("[SYMBOL INDEXED]");
 
     print("");
 
@@ -1894,28 +1580,16 @@ hades() {
 
     print("");
 
-    print(
-        "The sigil appears to function as"
-    );
-
-    print(
-        "both boundary marker and warning."
-    );
+    print("The sigil appears to function as");
+    print("both boundary marker and warning.");
 
     print("");
 
-    print(
-        "[NO FURTHER CONTEXT FOUND]"
-    );
-
+    print("[NO FURTHER CONTEXT FOUND]");
     print("");
 
 },
 
-
-/* =========================================================
-   THRENODY
-   ========================================================= */
 
 threnody() {
 
@@ -1946,13 +1620,8 @@ threnody() {
 
     print("");
 
-    print(
-        "It encountered space"
-    );
-
-    print(
-        "which did not remain interpretable."
-    );
+    print("It encountered space");
+    print("which did not remain interpretable.");
 
     print("");
 
@@ -1963,13 +1632,8 @@ threnody() {
 
     print("");
 
-    print(
-        "THRENODY ATTEMPTED INTERPRETATION."
-    );
-
-    print(
-        "THRENODY FAILED."
-    );
+    print("THRENODY ATTEMPTED INTERPRETATION.");
+    print("THRENODY FAILED.");
 
     print(
         "THRENODY EXITED THE SIMULATION.",
@@ -1978,30 +1642,19 @@ threnody() {
 
     print("");
 
-    print(
-        "The archive does not describe THRENODY."
-    );
-
-    print(
-        "It only permits the name to remain."
-    );
+    print("The archive does not describe THRENODY.");
+    print("It only permits the name to remain.");
 
     print("");
 
 },
 
 
-/* =========================================================
-   UNDENIABLE
-   ========================================================= */
-
 undeniable() {
 
     section("FRAGMENT // THE UNDENIABLE");
 
-    print(
-        "[PROTECTIVE RECORD]"
-    );
+    print("[PROTECTIVE RECORD]");
 
     print("");
 
@@ -2030,9 +1683,7 @@ undeniable() {
 
     print("");
 
-    print(
-        "The archive marks this record as"
-    );
+    print("The archive marks this record as");
 
     print(
         "\"sufficiently early.\"",
@@ -2043,10 +1694,6 @@ undeniable() {
 
 },
 
-
-/* =========================================================
-   LAST PARIES
-   ========================================================= */
 
 paries() {
 
@@ -2062,62 +1709,35 @@ paries() {
 
     print("");
 
-    print(
-        "The archive contains the phrase."
-    );
-
-    print(
-        "Nothing more."
-    );
+    print("The archive contains the phrase.");
+    print("Nothing more.");
 
     print("");
 
 },
 
-
-/* =========================================================
-   INFINITE COSINE
-   ========================================================= */
 
 cosine() {
 
     section("FRAGMENT // THE INFINITE COSINE");
 
-    print(
-        "THE INFINITE COSINE DISTILLS"
-    );
-
-    print(
-        "BEHIND A BLESSED CINQUAIN."
-    );
+    print("THE INFINITE COSINE DISTILLS");
+    print("BEHIND A BLESSED CINQUAIN.");
 
     print("");
 
-    print(
-        "[END OF FRAGMENT]"
-    );
-
+    print("[END OF FRAGMENT]");
     print("");
 
 },
 
 
-/* =========================================================
-   ABYSSAL ASYMPTOTE
-   ========================================================= */
-
 asymptote() {
 
     section("FRAGMENT // ABYSSAL ASYMPTOTE");
 
-    print(
-        "THE ABYSSAL ASYMPTOTE"
-    );
-
-    print(
-        "COALESCES BENEATH"
-    );
-
+    print("THE ABYSSAL ASYMPTOTE");
+    print("COALESCES BENEATH");
     print(
         "A HALLOWED THRENODY.",
         "accent"
@@ -2125,49 +1745,27 @@ asymptote() {
 
     print("");
 
-    print(
-        "[FRAGMENT ENDS]"
-    );
-
+    print("[FRAGMENT ENDS]");
     print("");
 
 },
 
-
-/* =========================================================
-   LIMINAL EQUATION
-   ========================================================= */
 
 equation() {
 
     section("FRAGMENT // LIMINAL EQUATION");
 
-    print(
-        "THE LIMINAL EQUATION"
-    );
-
-    print(
-        "DREAMS IN FRACTURED"
-    );
-
-    print(
-        "GEOMETRIES."
-    );
+    print("THE LIMINAL EQUATION");
+    print("DREAMS IN FRACTURED");
+    print("GEOMETRIES.");
 
     print("");
 
-    print(
-        "[FRAGMENT ENDS]"
-    );
-
+    print("[FRAGMENT ENDS]");
     print("");
 
 },
 
-
-/* =========================================================
-   OUTCOMES
-   ========================================================= */
 
 outcomes() {
 
@@ -2182,28 +1780,16 @@ outcomes() {
 
     print("");
 
-    print(
-        "Some outcomes are not absent."
-    );
-
-    print(
-        "They are simply not written."
-    );
+    print("Some outcomes are not absent.");
+    print("They are simply not written.");
 
     print("");
 
-    print(
-        "[FRAGMENT ENDS]"
-    );
-
+    print("[FRAGMENT ENDS]");
     print("");
 
 },
 
-
-/* =========================================================
-   FALL
-   ========================================================= */
 
 fall() {
 
@@ -2216,17 +1802,9 @@ fall() {
 
     print("");
 
-    print(
-        "The archive contains no explanation."
-    );
-
-    print(
-        "Every attempt to derive one produces"
-    );
-
-    print(
-        "the same result."
-    );
+    print("The archive contains no explanation.");
+    print("Every attempt to derive one produces");
+    print("the same result.");
 
     print("");
 
@@ -2237,22 +1815,13 @@ fall() {
 
     print("");
 
-    print(
-        "The equation is not mathematical."
-    );
-
-    print(
-        "It is observational."
-    );
+    print("The equation is not mathematical.");
+    print("It is observational.");
 
     print("");
 
 },
 
-
-/* =========================================================
-   SUN
-   ========================================================= */
 
 sun() {
 
@@ -2265,9 +1834,7 @@ sun() {
 
     print("");
 
-    print(
-        "RESPONSE:"
-    );
+    print("RESPONSE:");
 
     print("");
 
@@ -2278,32 +1845,18 @@ sun() {
 
     print("");
 
-    print(
-        "TIME REFERENCE: UNAVAILABLE"
-    );
-
-    print(
-        "LOCATION REFERENCE: UNAVAILABLE"
-    );
-
-    print(
-        "SOLAR REFERENCE: SYMBOLIC / PHYSICAL / UNKNOWN"
-    );
+    print("TIME REFERENCE: UNAVAILABLE");
+    print("LOCATION REFERENCE: UNAVAILABLE");
+    print("SOLAR REFERENCE: SYMBOLIC / PHYSICAL / UNKNOWN");
 
     print("");
 
-    print(
-        "The archive refuses to choose."
-    );
+    print("The archive refuses to choose.");
 
     print("");
 
 },
 
-
-/* =========================================================
-   MATRIX
-   ========================================================= */
 
 matrix() {
 
@@ -2316,21 +1869,10 @@ matrix() {
 
     print("");
 
-    print(
-        "SIMULATION #777"
-    );
-
-    print(
-        "STATE: ACTIVE"
-    );
-
-    print(
-        "BOUNDARY: NON-EUCLIDEAN"
-    );
-
-    print(
-        "DIMENSIONALITY: INCONSISTENT"
-    );
+    print("SIMULATION #777");
+    print("STATE: ACTIVE");
+    print("BOUNDARY: NON-EUCLIDEAN");
+    print("DIMENSIONALITY: INCONSISTENT");
 
     print("");
 
@@ -2343,10 +1885,6 @@ matrix() {
 
 },
 
-
-/* =========================================================
-   BEYOND
-   ========================================================= */
 
 beyond() {
 
@@ -2377,13 +1915,8 @@ beyond() {
 
     print("");
 
-    print(
-        "The archive attempts classification."
-    );
-
-    print(
-        "The archive fails."
-    );
+    print("The archive attempts classification.");
+    print("The archive fails.");
 
     print("");
 
@@ -2392,19 +1925,12 @@ beyond() {
         "danger"
     );
 
-    print(
-        "The entity is not understood."
-    );
-
-    print(
-        "The entity is not contained."
-    );
+    print("The entity is not understood.");
+    print("The entity is not contained.");
 
     print("");
 
-    print(
-        "REFERENCE:"
-    );
+    print("REFERENCE:");
 
     print(
         "BEYOND NOTHING",
@@ -2428,18 +1954,11 @@ beyond() {
         "warning"
     );
 
-    print(
-        "[RECORD TERMINATED]"
-    );
-
+    print("[RECORD TERMINATED]");
     print("");
 
 },
 
-
-/* =========================================================
-   ECHO
-   ========================================================= */
 
 echo() {
 
@@ -2454,29 +1973,12 @@ echo() {
 
     print("[FOUND]");
 
-    print(
-        "A chamber with no door."
-    );
-
-    print(
-        "A world with no sky."
-    );
-
-    print(
-        "A city that remembers its roads."
-    );
-
-    print(
-        "A star that has never been observed."
-    );
-
-    print(
-        "A particle which crossed the boundary."
-    );
-
-    print(
-        "A candidate who was never assigned."
-    );
+    print("A chamber with no door.");
+    print("A world with no sky.");
+    print("A city that remembers its roads.");
+    print("A star that has never been observed.");
+    print("A particle which crossed the boundary.");
+    print("A candidate who was never assigned.");
 
     print("");
 
@@ -2485,9 +1987,7 @@ echo() {
         "warning"
     );
 
-    print(
-        "One common signature."
-    );
+    print("One common signature.");
 
     print("");
 
@@ -2501,10 +2001,6 @@ echo() {
 },
 
 
-/* =========================================================
-   REALISATION
-   ========================================================= */
-
 realisation() {
 
     section("RECOVERED AUDIO RECORD");
@@ -2515,56 +2011,33 @@ realisation() {
 
     print("");
 
-    print(
-        "The archive contains an audio reference"
-    );
-
-    print(
-        "whose complete contents are not indexed."
-    );
+    print("The archive contains an audio reference");
+    print("whose complete contents are not indexed.");
 
     print("");
 
-    print(
-        "The waveform contains irregular intervals."
-    );
-
-    print(
-        "Cause: UNKNOWN."
-    );
+    print("The waveform contains irregular intervals.");
+    print("Cause: UNKNOWN.");
 
     print("");
 
-    print(
-        "One timestamp repeats."
-    );
-
-    print(
-        "777."
-    );
+    print("One timestamp repeats.");
+    print("777.");
 
     print("");
 
-    print(
-        "No additional information available."
-    );
+    print("No additional information available.");
 
     print("");
 
 },
 
 
-/* =========================================================
-   ABOUT
-   ========================================================= */
-
 about() {
 
     section("NULLSHIFT");
 
-    print(
-        "A game about discovery."
-    );
+    print("A game about discovery.");
 
     print("");
 
@@ -2575,35 +2048,16 @@ about() {
 
     print("");
 
-    print(
-        "Something is wrong."
-    );
-
-    print(
-        "The archive knows."
-    );
-
-    print(
-        "The archive will not explain."
-    );
+    print("Something is wrong.");
+    print("The archive knows.");
+    print("The archive will not explain.");
 
     print("");
 
-    print(
-        "MATTER."
-    );
-
-    print(
-        "PATTERN."
-    );
-
-    print(
-        "MEMORY."
-    );
-
-    print(
-        "AWARENESS."
-    );
+    print("MATTER.");
+    print("PATTERN.");
+    print("MEMORY.");
+    print("AWARENESS.");
 
     print("");
 
@@ -2615,20 +2069,37 @@ about() {
     print("");
 
     print(
+        "ERRATA // NULLSHIFT ARCHIVE",
+        "accent"
+    );
+
+    print(
+        "CORPORATE OWNER: ERRATA",
+        "dim"
+    );
+
+    print(
+        "INITIATIVE: ERRATA INITIATIVE",
+        "dim"
+    );
+
+    print(
+        "INITIATOR: ERRATA INITIATOR",
+        "dim"
+    );
+
+    print("");
+
+    print(
         "PROJECT STATUS: IN DEVELOPMENT",
         "accent"
     );
 
     print("");
 
-}
+},
 
 
-/* =========================================================
-   CLEAR
-   ========================================================= */
-
-,
 clear() {
 
     clearScreen();
@@ -2646,16 +2117,11 @@ commands.portal = function() {
 
     section("ARCHIVAL ECHO // TEST CHAMBER");
 
-    print(
-        "TEST CHAMBER STATUS: UNAVAILABLE"
-    );
+    print("TEST CHAMBER STATUS: UNAVAILABLE");
 
     print("");
 
-    print(
-        "Aperture:"
-    );
-
+    print("Aperture:");
     print(
         "[NO APERTURE DETECTED]",
         "dim"
@@ -2668,9 +2134,7 @@ commands.portal = function() {
         "egg"
     );
 
-    print(
-        "RESEARCH IS NOT TESTING."
-    );
+    print("RESEARCH IS NOT TESTING.");
 
     print("");
 
@@ -2688,17 +2152,9 @@ commands.minecraft = function() {
 
     section("ARCHIVAL ECHO // BLOCK WORLD");
 
-    print(
-        "WORLD GENERATION: FAMILIAR"
-    );
-
-    print(
-        "CHUNK STATUS: [LOADED]"
-    );
-
-    print(
-        "BEDROCK LAYER: [UNVERIFIED]"
-    );
+    print("WORLD GENERATION: FAMILIAR");
+    print("CHUNK STATUS: [LOADED]");
+    print("BEDROCK LAYER: [UNVERIFIED]");
 
     print("");
 
@@ -2709,13 +2165,8 @@ commands.minecraft = function() {
 
     print("");
 
-    print(
-        "One block remains unnamed."
-    );
-
-    print(
-        "One world remains unexplored."
-    );
+    print("One block remains unnamed.");
+    print("One world remains unexplored.");
 
     print("");
 
@@ -2726,17 +2177,9 @@ commands.terraria = function() {
 
     section("ARCHIVAL ECHO // DEEP WORLD");
 
-    print(
-        "WORLD STATE: [CORRUPTED]"
-    );
-
-    print(
-        "HARDMODE: [UNKNOWN]"
-    );
-
-    print(
-        "COSMIC SIGNATURE: DETECTED"
-    );
+    print("WORLD STATE: [CORRUPTED]");
+    print("HARDMODE: [UNKNOWN]");
+    print("COSMIC SIGNATURE: DETECTED");
 
     print("");
 
@@ -2766,27 +2209,14 @@ commands.calamity = function() {
 
     section("ARCHIVAL ECHO // CALAMITY");
 
-    print(
-        "THREAT INDEX: EXCESSIVE"
-    );
-
-    print(
-        "MUSIC SIGNATURE: [RECOGNIZED]"
-    );
-
-    print(
-        "WORLD STATUS: UNWISE"
-    );
+    print("THREAT INDEX: EXCESSIVE");
+    print("MUSIC SIGNATURE: [RECOGNIZED]");
+    print("WORLD STATUS: UNWISE");
 
     print("");
 
-    print(
-        "The archive has classified the event"
-    );
-
-    print(
-        "as a calamity."
-    );
+    print("The archive has classified the event");
+    print("as a calamity.");
 
     print("");
 
@@ -2804,27 +2234,14 @@ commands.celestia = function() {
 
     section("ARCHIVAL ECHO // CELESTIAL OBSERVATION");
 
-    print(
-        "OBSERVATORY CONNECTION: STABLE"
-    );
-
-    print(
-        "STARFIELD: GENERATED"
-    );
-
-    print(
-        "PLANETARY MODEL: PRESENT"
-    );
+    print("OBSERVATORY CONNECTION: STABLE");
+    print("STARFIELD: GENERATED");
+    print("PLANETARY MODEL: PRESENT");
 
     print("");
 
-    print(
-        "Coordinates were requested."
-    );
-
-    print(
-        "Coordinates were returned."
-    );
+    print("Coordinates were requested.");
+    print("Coordinates were returned.");
 
     print(
         "The coordinates do not describe a place.",
@@ -2840,25 +2257,11 @@ commands.theotown = function() {
 
     section("ARCHIVAL ECHO // URBAN MODEL");
 
-    print(
-        "CITY STATUS: FUNCTIONAL"
-    );
-
-    print(
-        "POPULATION: UNKNOWN"
-    );
-
-    print(
-        "POWER: REQUIRED"
-    );
-
-    print(
-        "WATER: REQUIRED"
-    );
-
-    print(
-        "TRAFFIC: INEVITABLE"
-    );
+    print("CITY STATUS: FUNCTIONAL");
+    print("POPULATION: UNKNOWN");
+    print("POWER: REQUIRED");
+    print("WATER: REQUIRED");
+    print("TRAFFIC: INEVITABLE");
 
     print("");
 
@@ -2876,21 +2279,10 @@ commands.powder = function() {
 
     section("ARCHIVAL ECHO // MATERIAL SYSTEM");
 
-    print(
-        "PARTICLE FIELD: ACTIVE"
-    );
-
-    print(
-        "MATERIAL INTERACTIONS: UNSTABLE"
-    );
-
-    print(
-        "GRAVITY: PRESENT"
-    );
-
-    print(
-        "THERMODYNAMICS: DISRESPECTED"
-    );
+    print("PARTICLE FIELD: ACTIVE");
+    print("MATERIAL INTERACTIONS: UNSTABLE");
+    print("GRAVITY: PRESENT");
+    print("THERMODYNAMICS: DISRESPECTED");
 
     print("");
 
@@ -2913,17 +2305,9 @@ commands.retroarch = function() {
 
     section("ARCHIVAL ECHO // EMULATION");
 
-    print(
-        "CORE: UNKNOWN"
-    );
-
-    print(
-        "CONTENT: UNKNOWN"
-    );
-
-    print(
-        "STATE: LOADED"
-    );
+    print("CORE: UNKNOWN");
+    print("CONTENT: UNKNOWN");
+    print("STATE: LOADED");
 
     print("");
 
@@ -2932,9 +2316,7 @@ commands.retroarch = function() {
         "dim"
     );
 
-    print(
-        "that memory can be saved."
-    );
+    print("that memory can be saved.");
 
     print("");
 
@@ -2943,9 +2325,7 @@ commands.retroarch = function() {
         "dim"
     );
 
-    print(
-        "whether memory can be trusted."
-    );
+    print("whether memory can be trusted.");
 
     print("");
 
@@ -2955,11 +2335,6 @@ commands.retroarch = function() {
 /* =========================================================
    MARVEL EASTER EGG
    ========================================================= */
-
-/*
-   These are intentionally original archive references,
-   not copied movie dialogue.
-*/
 
 commands.doomsday = function() {
 
@@ -2992,19 +2367,12 @@ commands.doomsday = function() {
 
     print("");
 
-    print(
-        "STATUS:"
-    );
-
-    print(
-        "[NOT PART OF NULLSHIFT CANON]"
-    );
+    print("STATUS:");
+    print("[NOT PART OF NULLSHIFT CANON]");
 
     print("");
 
-    print(
-        "However..."
-    );
+    print("However...");
 
     print("");
 
@@ -3012,27 +2380,14 @@ commands.doomsday = function() {
         "ERRATA has detected a familiar pattern:"
     );
 
-    print(
-        "A system approaching collapse."
-    );
-
-    print(
-        "A boundary approaching failure."
-    );
-
-    print(
-        "An observer attempting to understand"
-    );
-
-    print(
-        "something larger than the system."
-    );
+    print("A system approaching collapse.");
+    print("A boundary approaching failure.");
+    print("An observer attempting to understand");
+    print("something larger than the system.");
 
     print("");
 
-    print(
-        "ARCHIVAL CROSS-REFERENCE:"
-    );
+    print("ARCHIVAL CROSS-REFERENCE:");
 
     print(
         "DOOMSDAY ≠ NULLSHIFT",
@@ -3087,21 +2442,11 @@ commands.secretwars = function() {
 
     print("");
 
-    print(
-        "ARCHIVE STATUS:"
-    );
+    print("ARCHIVE STATUS:");
 
-    print(
-        "REALITY COUNT: [INCOMPATIBLE]"
-    );
-
-    print(
-        "BOUNDARY COUNT: [INCOMPATIBLE]"
-    );
-
-    print(
-        "SURVIVING STRUCTURES: [UNKNOWN]"
-    );
+    print("REALITY COUNT: [INCOMPATIBLE]");
+    print("BOUNDARY COUNT: [INCOMPATIBLE]");
+    print("SURVIVING STRUCTURES: [UNKNOWN]");
 
     print("");
 
@@ -3115,9 +2460,7 @@ commands.secretwars = function() {
 
     print("");
 
-    print(
-        "The archive creates a note:"
-    );
+    print("The archive creates a note:");
 
     print(
         "WHEN WORLDS COLLIDE, THE ARCHIVE REMEMBERS.",
@@ -3126,9 +2469,7 @@ commands.secretwars = function() {
 
     print("");
 
-    print(
-        "SECONDARY NOTE:"
-    );
+    print("SECONDARY NOTE:");
 
     print(
         "NULLSHIFT DOES NOT REQUIRE A MULTIVERSE."
@@ -3180,9 +2521,7 @@ commands.doom = async function() {
 
     print("");
 
-    print(
-        "ACCESS LEVEL:"
-    );
+    print("ACCESS LEVEL:");
 
     print(
         "[REVERSED]",
@@ -3193,21 +2532,14 @@ commands.doom = async function() {
 
     await sleep(500);
 
-    print(
-        "ERRATA ARCHIVE:"
-    );
-
-    print(
-        "WHO AUTHORIZED THIS RECORD?"
-    );
+    print("ERRATA ARCHIVE:");
+    print("WHO AUTHORIZED THIS RECORD?");
 
     print("");
 
     await sleep(700);
 
-    print(
-        "RESPONSE:"
-    );
+    print("RESPONSE:");
 
     print(
         "NO ONE.",
@@ -3225,7 +2557,6 @@ commands.doom = async function() {
 
 const hiddenCommands = {
 
-
 "777": async function() {
 
     section("SIMULATION // #777");
@@ -3237,23 +2568,13 @@ const hiddenCommands = {
 
     print("");
 
-    print(
-        "SIMULATION: #777"
-    );
-
-    print(
-        "STATUS: [SEALED]"
-    );
-
-    print(
-        "CONTEXT: [WITHHELD]"
-    );
+    print("SIMULATION: #777");
+    print("STATUS: [SEALED]");
+    print("CONTEXT: [WITHHELD]");
 
     print("");
 
-    print(
-        "Known candidate:"
-    );
+    print("Known candidate:");
 
     print(
         "9502026#",
@@ -3262,9 +2583,7 @@ const hiddenCommands = {
 
     print("");
 
-    print(
-        "Known escape:"
-    );
+    print("Known escape:");
 
     print(
         "0000395#",
@@ -3278,9 +2597,7 @@ const hiddenCommands = {
         "dim"
     );
 
-    print(
-        "that this number was entered."
-    );
+    print("that this number was entered.");
 
     print("");
 
@@ -3291,15 +2608,11 @@ const hiddenCommands = {
 
     section("EMPTY RECORD");
 
-    print(
-        "NOTHING FOUND."
-    );
+    print("NOTHING FOUND.");
 
     print("");
 
-    print(
-        "The archive hesitates."
-    );
+    print("The archive hesitates.");
 
     print("");
 
@@ -3317,24 +2630,18 @@ const hiddenCommands = {
 
     section("NULL RECORD");
 
-    print(
-        "NULL VALUE DETECTED."
-    );
+    print("NULL VALUE DETECTED.");
 
     print("");
 
-    print(
-        "NULL IS NOT ABSENCE."
-    );
+    print("NULL IS NOT ABSENCE.");
 
     print(
         "NULL IS WHAT THE ARCHIVE CALLS",
         "dim"
     );
 
-    print(
-        "THE SPACE WHERE AN ANSWER SHOULD BE."
-    );
+    print("THE SPACE WHERE AN ANSWER SHOULD BE.");
 
     print("");
 
@@ -3345,9 +2652,7 @@ const hiddenCommands = {
 
     section("ERRATA EXECUTABLE");
 
-    print(
-        "EXECUTION REQUEST RECEIVED."
-    );
+    print("EXECUTION REQUEST RECEIVED.");
 
     print("");
 
@@ -3372,15 +2677,11 @@ const hiddenCommands = {
 
     section("THRENODY // EXECUTION");
 
-    print(
-        "PROCESS STARTING..."
-    );
+    print("PROCESS STARTING...");
 
     await sleep(400);
 
-    print(
-        "INTERPRETING SPACE..."
-    );
+    print("INTERPRETING SPACE...");
 
     await sleep(400);
 
@@ -3405,9 +2706,7 @@ const hiddenCommands = {
 
     print("");
 
-    print(
-        "PROCESS: NOT FOUND."
-    );
+    print("PROCESS: NOT FOUND.");
 
     print("");
 
@@ -3418,15 +2717,11 @@ const hiddenCommands = {
 
     section("AXIOM // QUERY");
 
-    print(
-        "The question was accepted."
-    );
+    print("The question was accepted.");
 
     print("");
 
-    print(
-        "The answer was not."
-    );
+    print("The answer was not.");
 
     print("");
 
@@ -3465,11 +2760,13 @@ const aliases = {
     "seventh dimension": "7d",
     "7th dimension": "7d",
 
-    "paraxiom": "errata",
-    "paraxium": "initiator",
-    "paraxium initiator": "initiator",
+    /* =====================================================
+       ERRATA CANON
+       No Paraxiom / Paraxium references remain.
+       ===================================================== */
 
-    "paraxiom initiative": "initiative",
+    "errata": "errata",
+    "errata company": "errata",
 
     "errata initiative": "initiative",
     "errata initiator": "initiator",
@@ -3692,9 +2989,6 @@ input.addEventListener(
     "keydown",
     async function(event) {
 
-
-        /* ENTER */
-
         if (event.key === "Enter") {
 
             const command =
@@ -3710,8 +3004,6 @@ input.addEventListener(
         }
 
 
-        /* UP */
-
         if (event.key === "ArrowUp") {
 
             event.preventDefault();
@@ -3723,9 +3015,7 @@ input.addEventListener(
             historyIndex--;
 
             if (historyIndex < 0) {
-
                 historyIndex = 0;
-
             }
 
             input.value =
@@ -3736,8 +3026,6 @@ input.addEventListener(
             return;
         }
 
-
-        /* DOWN */
 
         if (event.key === "ArrowDown") {
 
@@ -3770,8 +3058,6 @@ input.addEventListener(
             return;
         }
 
-
-        /* TAB */
 
         if (event.key === "Tab") {
 
