@@ -928,4 +928,1476 @@
       margin-left: auto;
       margin-right: auto;
       font-family: var(--mono);
-   
+         font-size: 8px;
+      letter-spacing: .18em;
+      color: var(--dim);
+    }
+
+    .terminal-body {
+      min-height: 420px;
+      padding: 28px;
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 2;
+      color: #b7b7bd;
+    }
+
+    .terminal-line {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 5px;
+    }
+
+    .terminal-prompt {
+      color: var(--gold);
+      user-select: none;
+    }
+
+    .terminal-command {
+      color: #eeeae0;
+    }
+
+    .terminal-output {
+      color: #66666f;
+      padding-left: 24px;
+      margin-bottom: 15px;
+    }
+
+    .terminal-output strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 7px;
+      height: 13px;
+      background: var(--gold);
+      vertical-align: -2px;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    footer {
+      width: min(var(--max), calc(100% - 50px));
+      margin: 0 auto;
+      padding: 80px 0 35px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr .5fr .5fr .8fr;
+      gap: 40px;
+      padding: 40px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-brand {
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: .3em;
+      margin-bottom: 15px;
+    }
+
+    .footer-description {
+      max-width: 420px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      line-height: 2;
+    }
+
+    .footer-heading {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .2em;
+      color: var(--gold);
+      margin-bottom: 17px;
+    }
+
+    .footer-link {
+      display: block;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      margin-bottom: 9px;
+      transition: color .2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--text);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .16em;
+    }
+
+    /* =========================================================
+       REVEAL ANIMATION
+       ========================================================= */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition:
+        opacity .8s ease,
+        transform .8s cubic-bezier(.2,.7,.2,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================
+       IMAGE LIGHTBOX
+       ========================================================= */
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      background: rgba(0,0,0,.92);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: min(1100px, 92vw);
+      max-height: 86vh;
+      object-fit: contain;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 30px 100px rgba(0,0,0,.65);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line-bright);
+      background: rgba(0,0,0,.4);
+      color: var(--text);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 18px;
+    }
+
+    .lightbox-label {
+      position: absolute;
+      left: 30px;
+      bottom: 25px;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .18em;
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 950px) {
+      .nav {
+        display: none;
+      }
+
+      .control-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .control-cell:nth-child(2) {
+        border-right: none;
+      }
+
+      .control-cell:nth-child(-n+2) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .archive-card:nth-child(1),
+      .archive-card:nth-child(2) {
+        grid-column: span 6;
+      }
+
+      .archive-card:nth-child(n+3) {
+        grid-column: span 4;
+      }
+
+      .data-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .topbar {
+        padding: 0 17px;
+      }
+
+      .brand {
+        font-size: 10px;
+      }
+
+      .status {
+        font-size: 7px;
+      }
+
+      .hero {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .hero-title {
+        font-size: clamp(36px, 13vw, 75px);
+        letter-spacing: .16em;
+        margin-right: -.16em;
+      }
+
+      .hero-meta {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .section {
+        width: min(100% - 30px, var(--max));
+        padding: 80px 0;
+      }
+
+      .section-header {
+        display: block;
+      }
+
+      .section-note {
+        text-align: left;
+        margin-top: 18px;
+      }
+
+      .control-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .control-cell {
+        border-right: none !important;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .control-cell:last-child {
+        border-bottom: none;
+      }
+
+      .archive-grid {
+        display: block;
+      }
+
+      .archive-card,
+      .archive-card:nth-child(n) {
+        min-height: 420px;
+        margin-bottom: 12px;
+      }
+
+      .archive-card:nth-child(3),
+      .archive-card:nth-child(4),
+      .archive-card:nth-child(5) {
+        min-height: 500px;
+      }
+
+      .data-panel {
+        min-height: 350px;
+        padding: 25px;
+      }
+
+      .coordinates {
+        width: 120px;
+        height: 120px;
+        right: 20px;
+        bottom: 20px;
+      }
+
+      .wall {
+        columns: 2 150px;
+      }
+
+      .terminal-body {
+        font-size: 9px;
+        padding: 20px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grid-overlay"></div>
+
+  <!-- =======================================================
+       TOP NAVIGATION
+       ======================================================= -->
+
+  <header class="topbar">
+
+    <a href="#top" class="brand">
+      <span class="brand-mark"></span>
+      <span>NULLSHIFT // ARCHIVE</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#archive">ARCHIVE</a>
+      <a href="#data">DATA</a>
+      <a href="#visuals">VISUALS</a>
+      <a href="#terminal">TERMINAL</a>
+    </nav>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      ARCHIVE ONLINE
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       HERO
+       ======================================================= -->
+
+  <main id="top">
+
+    <section class="hero">
+
+      <div class="hero-orbit"></div>
+      <div class="hero-crosshair"></div>
+
+      <div class="hero-inner reveal">
+
+        <div class="hero-kicker">
+          DIGITAL ARCHIVE // RESTRICTED ACCESS
+        </div>
+
+        <img
+          class="hero-logo"
+          src="NullShift Logo.webp"
+          alt="NULLSHIFT"
+        />
+
+        <h1 class="hero-title">
+          NULL<span>SHIFT</span>
+        </h1>
+
+        <div class="hero-line"></div>
+
+        <p class="hero-subtitle">
+          ARCHIVE // VISUAL INDEX // SYSTEM RECORDS
+        </p>
+
+        <div class="hero-meta">
+          <span>
+            ARCHIVE:
+            <strong>NS-A/001</strong>
+          </span>
+
+          <span>
+            ACCESS:
+            <strong>OPEN</strong>
+          </span>
+
+          <span>
+            STATUS:
+            <strong>ACTIVE</strong>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="scroll-indicator">
+        SCROLL TO ACCESS
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ARCHIVE CONTROL
+         ===================================================== -->
+
+    <section class="section reveal" id="archive">
+
+      <div class="section-header">
+
+        <div>
+          <div class="section-index">01 // ARCHIVE</div>
+          <h2 class="section-title">
+            The Archive
+          </h2>
+        </div>
+
+        <p class="section-note">
+          A curated visual index of material associated with
+          NULLSHIFT. Explore the records without disturbing
+          what remains undocumented.
+        </p>
+
+      </div>
+
+
+      <div class="control-grid">
+
+        <div class="control-cell">
+
+          <div class="cell-label">
+            ARCHIVE STATUS
+          </div>
+
+          <div class="cell-value gold">
+            ONLINE
+          </div>
+
+          <div class="meter">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="control-cell">
+
+          <div class="cell-label">
+            ACCESS
+          </div>
+
+          <div class="cell-value">
+            PUBLIC
+          </div>
+
+        </div>
+
+
+        <div class="control-cell">
+
+          <div class="cell-label">
+            RECORDS
+          </div>
+
+          <div class="cell-value">
+            09
+          </div>
+
+        </div>
+
+
+        <div class="control-cell">
+
+          <div class="cell-label">
+            INDEX
+          </div>
+
+          <div class="cell-value">
+            NS-A
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         IMAGE ARCHIVE
+         ===================================================== -->
+
+    <section class="section reveal">
+
+      <div class="section-header">
+
+        <div>
+          <div class="section-index">02 // RECORDS</div>
+          <h2 class="section-title">
+            Visual Records
+          </h2>
+        </div>
+
+        <p class="section-note">
+          Selected imagery preserved within the archive.
+          Click any record to inspect it at full resolution.
+        </p>
+
+      </div>
+
+
+      <div class="archive-grid">
+
+        <article class="archive-card image-open">
+
+          <img
+            src="T H R E N O D Y.png"
+            alt="Archive artwork"
+          />
+
+          <span class="archive-number">
+            REC // 001
+          </span>
+
+          <span class="archive-corner"></span>
+
+          <div class="archive-info">
+
+            <div class="archive-label">
+              ARCHIVE ARTWORK
+            </div>
+
+            <div class="archive-name">
+              THRENODY
+            </div>
+
+            <div class="archive-desc">
+              Visual record preserved within the NULLSHIFT archive.
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="archive-card image-open">
+
+          <img
+            src="e988c12d3a3efa598806079ea4d00084 (2).jpg"
+            alt="Cosmic visual record"
+          />
+
+          <span class="archive-number">
+            REC // 002
+          </span>
+
+          <span class="archive-corner"></span>
+
+          <div class="archive-info">
+
+            <div class="archive-label">
+              CELESTIAL RECORD
+            </div>
+
+            <div class="archive-name">
+              EVENT HORIZON
+            </div>
+
+            <div class="archive-desc">
+              A captured visual fragment from the archive.
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="archive-card image-open">
+
+          <img
+            src="6e1bccb39bb7a2225ecc4978a173bfe7.jpg"
+            alt="Celestial archive record"
+          />
+
+          <span class="archive-number">
+            REC // 003
+          </span>
+
+          <span class="archive-corner"></span>
+
+          <div class="archive-info">
+
+            <div class="archive-label">
+              CELESTIAL
+            </div>
+
+            <div class="archive-name">
+              OBSERVATION
+            </div>
+
+            <div class="archive-desc">
+              Archived astronomical imagery.
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="archive-card image-open">
+
+          <img
+            src="download.jpg"
+            alt="NULLSHIFT archive image"
+          />
+
+          <span class="archive-number">
+            REC // 004
+          </span>
+
+          <span class="archive-corner"></span>
+
+          <div class="archive-info">
+
+            <div class="archive-label">
+              SYSTEM IMAGE
+            </div>
+
+            <div class="archive-name">
+              NULL
+            </div>
+
+            <div class="archive-desc">
+              An isolated visual artifact.
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="archive-card image-open">
+
+          <img
+            src="MCV_MountsOfMayhem_reward_wallpaper_TeamGold_1080x1920.png"
+            alt="Archive visual"
+          />
+
+          <span class="archive-number">
+            REC // 005
+          </span>
+
+          <span class="archive-corner"></span>
+
+          <div class="archive-info">
+
+            <div class="archive-label">
+              EXTERNAL RECORD
+            </div>
+
+            <div class="archive-name">
+              MOUNTED
+            </div>
+
+            <div class="archive-desc">
+              External visual reference stored in the archive.
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DATA
+         ===================================================== -->
+
+    <section class="section reveal" id="data">
+
+      <div class="section-header">
+
+        <div>
+          <div class="section-index">03 // DATA</div>
+          <h2 class="section-title">
+            Archive Metrics
+          </h2>
+        </div>
+
+        <p class="section-note">
+          Non-narrative system information maintained for
+          archival presentation.
+        </p>
+
+      </div>
+
+
+      <div class="data-layout">
+
+
+        <div class="data-panel">
+
+          <div class="panel-top">
+
+            <span class="panel-code">
+              NS // 9502026#
+            </span>
+
+            <span class="panel-state">
+              INDEXED
+            </span>
+
+          </div>
+
+          <div class="data-big">
+            9502026#
+          </div>
+
+          <p class="data-description">
+            Registered archive identifier. This record is
+            presented as an index reference only.
+          </p>
+
+          <div class="coordinates">
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <div class="data-panel">
+
+          <div class="panel-top">
+
+            <span class="panel-code">
+              SIGNAL // MATRIX
+            </span>
+
+            <span class="panel-state">
+              MONITORING
+            </span>
+
+          </div>
+
+          <div class="data-big">
+            04.77
+          </div>
+
+          <p class="data-description">
+            Abstract archive signal visualization.
+            Values are intentionally non-narrative.
+          </p>
+
+          <div class="matrix">
+
+            <i style="--h:42;--d:0"></i>
+            <i style="--h:68;--d:80"></i>
+            <i style="--h:31;--d:150"></i>
+            <i style="--h:87;--d:220"></i>
+            <i style="--h:55;--d:290"></i>
+            <i style="--h:74;--d:350"></i>
+            <i style="--h:38;--d:410"></i>
+            <i style="--h:92;--d:470"></i>
+            <i style="--h:61;--d:530"></i>
+            <i style="--h:45;--d:590"></i>
+            <i style="--h:79;--d:650"></i>
+            <i style="--h:52;--d:710"></i>
+            <i style="--h:88;--d:770"></i>
+            <i style="--h:35;--d:830"></i>
+            <i style="--h:70;--d:890"></i>
+            <i style="--h:48;--d:950"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MANIFEST
+         ===================================================== -->
+
+    <div class="manifest">
+
+      <div class="manifest-track">
+
+        <span>
+          NULLSHIFT • ARCHIVE • NULLSHIFT • ARCHIVE •
+        </span>
+
+        <span>
+          NULLSHIFT • ARCHIVE • NULLSHIFT • ARCHIVE •
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VISUAL WALL
+         ===================================================== -->
+
+    <section class="section reveal" id="visuals">
+
+      <div class="section-header">
+
+        <div>
+          <div class="section-index">04 // VISUALS</div>
+          <h2 class="section-title">
+            Peripheral Records
+          </h2>
+        </div>
+
+        <p class="section-note">
+          Additional imagery arranged as a visual field.
+        </p>
+
+      </div>
+
+
+      <div class="wall">
+
+
+        <div class="wall-item image-open">
+
+          <img
+            src="tiko-sticker.webp"
+            alt="Archive sticker"
+          />
+
+          <span class="wall-tag">
+            REC // 006
+          </span>
+
+        </div>
+
+
+        <div class="wall-item image-open">
+
+          <img
+            src="theveller-sticker.webp"
+            alt="Archive sticker"
+          />
+
+          <span class="wall-tag">
+            REC // 007
+          </span>
+
+        </div>
+
+
+        <div class="wall-item image-open">
+
+          <img
+            src="doraemon-sticker.webp"
+            alt="Archive sticker"
+          />
+
+          <span class="wall-tag">
+            REC // 008
+          </span>
+
+        </div>
+
+
+        <div class="wall-item image-open">
+
+          <img
+            src="download.jpg"
+            alt="Archive record"
+          />
+
+          <span class="wall-tag">
+            REC // 009
+          </span>
+
+        </div>
+
+
+        <div class="wall-item image-open">
+
+          <img
+            src="6e1bccb39bb7a2225ecc4978a173bfe7.jpg"
+            alt="Archive record"
+          />
+
+          <span class="wall-tag">
+            REC // 010
+          </span>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TERMINAL
+         ===================================================== -->
+
+    <section class="section reveal" id="terminal">
+
+      <div class="section-header">
+
+        <div>
+          <div class="section-index">05 // TERMINAL</div>
+          <h2 class="section-title">
+            Archive Terminal
+          </h2>
+        </div>
+
+        <p class="section-note">
+          A simulated interface for navigating the visual
+          archive.
+        </p>
+
+      </div>
+
+
+      <div class="terminal">
+
+        <div class="terminal-bar">
+
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+
+          <span class="terminal-title">
+            NS_ARCHIVE_TERMINAL
+          </span>
+
+        </div>
+
+
+        <div class="terminal-body">
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              connect archive
+            </span>
+          </div>
+
+          <div class="terminal-output">
+            connection established...<br />
+            archive node: <strong>NS-A/001</strong><br />
+            encryption: <strong>ACTIVE</strong><br />
+            records available: <strong>010</strong>
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              index --status
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            querying archive status...<br />
+            system state: <strong>ONLINE</strong><br />
+            archive integrity: <strong>73%</strong><br />
+            external access: <strong>PERMITTED</strong>
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              records --list
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            <strong>REC // 001</strong> — THRENODY<br />
+            <strong>REC // 002</strong> — EVENT HORIZON<br />
+            <strong>REC // 003</strong> — OBSERVATION<br />
+            <strong>REC // 004</strong> — NULL<br />
+            <strong>REC // 005</strong> — MOUNTED<br />
+            <strong>REC // 006</strong> — TIKO<br />
+            <strong>REC // 007</strong> — THE VELLER<br />
+            <strong>REC // 008</strong> — DORAEMON<br />
+            <strong>REC // 009</strong> — NULL<br />
+            <strong>REC // 010</strong> — OBSERVATION
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              query --candidate 9502026#
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            candidate identifier recognized.<br />
+            classification: <strong>REGISTERED</strong><br />
+            simulation reference: <strong>#777</strong><br />
+            status: <strong>ACTIVE</strong>
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              observe
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            observation request received.<br />
+            processing...<br />
+            processing...<br />
+            <strong>WARNING:</strong> requested observation exceeds
+            standard archival parameters.
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              transcend
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            command recognized.<br />
+            matter ........ <strong>STABLE</strong><br />
+            pattern ....... <strong>STABLE</strong><br />
+            memory ........ <strong>UNSTABLE</strong><br />
+            awareness ..... <strong>UNKNOWN</strong><br /><br />
+
+            <strong>THE AXIOM</strong> // CONNECTION DETECTED
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="terminal-command">
+              exit
+            </span>
+
+          </div>
+
+          <div class="terminal-output">
+            session terminated.<br />
+            archive remains online.
+          </div>
+
+
+          <div class="terminal-line">
+
+            <span class="terminal-prompt">
+              $
+            </span>
+
+            <span class="cursor"></span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+      <div class="footer-grid">
+
+        <div>
+
+          <div class="footer-brand">
+            NULLSHIFT
+          </div>
+
+          <p class="footer-description">
+            A visual and digital archive documenting fragments,
+            records, imagery, and system observations associated
+            with the NULLSHIFT project.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            NAVIGATE
+          </div>
+
+          <a class="footer-link" href="#archive">
+            ARCHIVE
+          </a>
+
+          <a class="footer-link" href="#data">
+            DATA
+          </a>
+
+          <a class="footer-link" href="#visuals">
+            VISUALS
+          </a>
+
+          <a class="footer-link" href="#terminal">
+            TERMINAL
+          </a>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            SYSTEM
+          </div>
+
+          <span class="footer-link">
+            NS-A/001
+          </span>
+
+          <span class="footer-link">
+            NODE // 777
+          </span>
+
+          <span class="footer-link">
+            STATUS // ACTIVE
+          </span>
+
+          <span class="footer-link">
+            ACCESS // OPEN
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <div class="footer-heading">
+            ARCHIVE
+          </div>
+
+          <span class="footer-link">
+            RECORDS // 010
+          </span>
+
+          <span class="footer-link">
+            INDEX // NS-A
+          </span>
+
+          <span class="footer-link">
+            SIGNAL // 04.77
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <span>
+          NULLSHIFT // ARCHIVE SYSTEM
+        </span>
+
+        <span>
+          ALL RECORDS PRESERVED // 2026
+        </span>
+
+        <span>
+          ERRATA // SYSTEM NODE
+        </span>
+
+      </div>
+
+    </footer>
+
+
+  </main>
+
+
+  <!-- =======================================================
+       LIGHTBOX
+       ======================================================= -->
+
+  <div class="lightbox" id="lightbox">
+
+    <button
+      class="lightbox-close"
+      id="lightboxClose"
+      aria-label="Close image"
+    >
+      ×
+    </button>
+
+    <img
+      id="lightboxImage"
+      src=""
+      alt="Expanded archive record"
+    />
+
+    <div class="lightbox-label" id="lightboxLabel">
+      ARCHIVE RECORD
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+       ======================================================= -->
+
+  <script>
+
+    /* =======================================================
+       SCROLL REVEAL
+       ======================================================= */
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+
+        entries.forEach((entry) => {
+
+          if (entry.isIntersecting) {
+
+            entry.target.classList.add("visible");
+
+            revealObserver.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.12
+      }
+    );
+
+
+    revealElements.forEach((element) => {
+      revealObserver.observe(element);
+    });
+
+
+    /* =======================================================
+       IMAGE LIGHTBOX
+       ======================================================= */
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxClose = document.getElementById("lightboxClose");
+    const lightboxLabel = document.getElementById("lightboxLabel");
+
+    const imageOpeners = document.querySelectorAll(".image-open");
+
+
+    imageOpeners.forEach((card) => {
+
+      card.addEventListener("click", () => {
+
+        const image = card.querySelector("img");
+
+        if (!image) return;
+
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+
+        const number =
+          card.querySelector(".archive-number") ||
+          card.querySelector(".wall-tag");
+
+        if (number) {
+          lightboxLabel.textContent = number.textContent.trim();
+        } else {
+          lightboxLabel.textContent = "ARCHIVE RECORD";
+        }
+
+        lightbox.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+      });
+
+    });
+
+
+    function closeLightbox() {
+
+      lightbox.classList.remove("active");
+
+      document.body.style.overflow = "";
+
+      setTimeout(() => {
+        lightboxImage.src = "";
+      }, 300);
+
+    }
+
+
+    lightboxClose.addEventListener("click", closeLightbox);
+
+
+    lightbox.addEventListener("click", (event) => {
+
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+
+    });
+
+
+    document.addEventListener("keydown", (event) => {
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+
+    });
+
+
+    /* =======================================================
+       TERMINAL TYPE EFFECT
+       ======================================================= */
+
+    const terminalCommands =
+      document.querySelectorAll(".terminal-command");
+
+
+    terminalCommands.forEach((command) => {
+
+      command.addEventListener("mouseenter", () => {
+
+        command.style.textShadow =
+          "0 0 12px rgba(215,181,109,.35)";
+
+      });
+
+
+      command.addEventListener("mouseleave", () => {
+
+        command.style.textShadow = "";
+
+      });
+
+    });
+
+
+    /* =======================================================
+       IMAGE ERROR HANDLING
+       ======================================================= */
+
+    document.querySelectorAll("img").forEach((image) => {
+
+      image.addEventListener("error", () => {
+
+        image.style.display = "none";
+
+        const parent = image.parentElement;
+
+        if (parent) {
+          parent.style.background =
+            "linear-gradient(135deg,#0a0a0e,#15151b)";
+        }
+
+      });
+
+    });
+
+
+    /* =======================================================
+       CURRENT YEAR
+       ======================================================= */
+
+    const year = new Date().getFullYear();
+
+    document.querySelectorAll(".footer-bottom").forEach((footer) => {
+
+      footer.innerHTML =
+        footer.innerHTML.replace("2026", year);
+
+    });
+
+  </script>
+
+</body>
+</html>
+        
+      
