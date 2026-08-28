@@ -1,2931 +1,931 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07070a" />
+  <meta
+    name="description"
+    content="NULLSHIFT ARCHIVE — a visual and digital archive."
+  />
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NULLSHIFT // ARCHIVE</title>
 
-<title>NULLSHIFT // ARCHIVE</title>
+  <style>
+    /* =========================================================
+       NULLSHIFT ARCHIVE
+       Single-file interface
+       Put the supplied image files beside this index.html.
+       ========================================================= */
 
-<style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-/* =========================================================
-   NULLSHIFT // ARCHIVE
-   CANONICAL LORE ARCHIVE
-   BUILD 1.0
-   ========================================================= */
+    :root {
+      --bg: #050507;
+      --bg-2: #09090d;
+      --panel: rgba(14, 14, 19, 0.72);
+      --panel-solid: #0d0d12;
+      --line: rgba(255,255,255,.11);
+      --line-bright: rgba(255,255,255,.25);
+      --text: #f2f0ea;
+      --muted: #85858e;
+      --dim: #4d4d56;
+      --gold: #d7b56d;
+      --gold-bright: #f1d895;
+      --violet: #8d78ad;
+      --violet-dark: #251d30;
+      --red: #8e384b;
+      --green: #799b88;
 
-:root {
+      --mono: "IBM Plex Mono", monospace;
+      --sans: "Space Grotesk", sans-serif;
 
-    --bg: #010201;
-    --bg-soft: #050906;
+      --radius: 3px;
+      --max: 1480px;
+    }
 
-    --text: #d7ffe3;
-    --bright: #effff3;
-    --accent: #9ee6ad;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    --dim: #587360;
-    --muted: #354a3b;
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
 
-    --warning: #d2cf9a;
-    --danger: #d58b8b;
-    --violet: #aaa0d4;
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 75% 12%, rgba(100,72,120,.12), transparent 30%),
+        radial-gradient(circle at 10% 70%, rgba(80,50,100,.08), transparent 28%),
+        var(--bg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
 
-    --line: rgba(220,255,230,0.11);
+    ::selection {
+      color: #050507;
+      background: var(--gold);
+    }
 
-    --glow:
-        rgba(90,255,130,0.24);
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    --scanline:
-        rgba(210,255,225,0.075);
-}
+    button {
+      color: inherit;
+      font: inherit;
+    }
 
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
-/* =========================================================
-   GLOBAL
-   ========================================================= */
+    /* =========================================================
+       NOISE / GRID
+       ========================================================= */
 
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-
-    margin: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background: var(--bg);
-    color: var(--text);
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   CRT
-   ========================================================= */
-
-body {
-
-    position: relative;
-
-    background:
-
-        radial-gradient(
-            ellipse at center,
-            #07100a 0%,
-            #030704 48%,
-            #010201 100%
-        );
-}
-
-
-body::before {
-
-    content: "";
-
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 1000;
-
-    background:
-
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .045;
+      background-image:
         repeating-linear-gradient(
-            to bottom,
-            transparent 0px,
-            transparent 2px,
-            var(--scanline) 2px,
-            var(--scanline) 3px,
-            transparent 3px,
-            transparent 5px
+          0deg,
+          rgba(255,255,255,.5) 0,
+          rgba(255,255,255,.5) 1px,
+          transparent 1px,
+          transparent 4px
         );
+      mix-blend-mode: overlay;
+    }
 
-    opacity: 0.72;
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: .16;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
 
-    mix-blend-mode: screen;
-}
+    /* =========================================================
+       SCROLLBAR
+       ========================================================= */
 
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
 
-body::after {
+    ::-webkit-scrollbar-track {
+      background: #050507;
+    }
 
-    content: "";
+    ::-webkit-scrollbar-thumb {
+      background: #292932;
+    }
 
-    position: fixed;
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gold);
+    }
 
-    inset: 0;
+    /* =========================================================
+       TOP BAR
+       ========================================================= */
 
-    pointer-events: none;
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5,5,7,.78);
+      backdrop-filter: blur(18px);
+    }
 
-    z-index: 999;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-family: var(--mono);
+      letter-spacing: .28em;
+      font-size: 12px;
+      font-weight: 600;
+    }
 
-    background:
+    .brand-mark {
+      width: 27px;
+      height: 27px;
+      border: 1px solid var(--gold);
+      display: grid;
+      place-items: center;
+      transform: rotate(45deg);
+      position: relative;
+    }
 
-        radial-gradient(
-            ellipse at center,
-            transparent 48%,
-            rgba(0,0,0,0.18) 72%,
-            rgba(0,0,0,0.72) 100%
+    .brand-mark::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(255,255,255,.3);
+    }
+
+    .brand-mark > * {
+      transform: rotate(-45deg);
+    }
+
+    .nav {
+      display: flex;
+      gap: 28px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: var(--muted);
+    }
+
+    .nav a {
+      transition: color .2s ease;
+      position: relative;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width .25s ease;
+    }
+
+    .nav a:hover {
+      color: var(--gold-bright);
+    }
+
+    .nav a:hover::after {
+      width: 100%;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: .12em;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: .4; }
+      50% { opacity: 1; }
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 120px 30px 80px;
+      overflow: hidden;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      width: min(72vw, 920px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 50%;
+      animation: slowRotate 45s linear infinite;
+    }
+
+    .hero-orbit::before,
+    .hero-orbit::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 1px solid rgba(215,181,109,.09);
+      border-radius: 50%;
+    }
+
+    .hero-orbit::after {
+      inset: 28%;
+      border-color: rgba(141,120,173,.11);
+    }
+
+    @keyframes slowRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-crosshair {
+      position: absolute;
+      width: min(88vw, 1200px);
+      height: min(88vw, 1200px);
+      pointer-events: none;
+    }
+
+    .hero-crosshair::before,
+    .hero-crosshair::after {
+      content: "";
+      position: absolute;
+      background: rgba(255,255,255,.055);
+    }
+
+    .hero-crosshair::before {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+    }
+
+    .hero-crosshair::after {
+      height: 1px;
+      width: 100%;
+      top: 50%;
+    }
+
+    .hero-inner {
+      position: relative;
+      width: min(1120px, 100%);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero-kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .48em;
+      color: var(--gold);
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    .hero-logo {
+      width: min(180px, 35vw);
+      aspect-ratio: 1;
+      object-fit: cover;
+      margin: 0 auto 34px;
+      filter:
+        grayscale(.1)
+        contrast(1.15)
+        drop-shadow(0 0 35px rgba(215,181,109,.08));
+      opacity: .96;
+    }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(45px, 10vw, 125px);
+      font-weight: 400;
+      line-height: .82;
+      letter-spacing: .24em;
+      margin-right: -.24em;
+      text-indent: .24em;
+    }
+
+    .hero-title span {
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      margin-top: 34px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .28em;
+      line-height: 2;
+      text-transform: uppercase;
+    }
+
+    .hero-line {
+      width: 150px;
+      height: 1px;
+      margin: 38px auto;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        transparent
+      );
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 45px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: var(--dim);
+    }
+
+    .hero-meta strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .3em;
+      color: var(--dim);
+    }
+
+    .scroll-indicator::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 35px;
+      margin: 12px auto 0;
+      background: linear-gradient(var(--gold), transparent);
+    }
+
+    /* =========================================================
+       GENERAL SECTION
+       ========================================================= */
+
+    .section {
+      width: min(var(--max), calc(100% - 50px));
+      margin: 0 auto;
+      padding: 120px 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 55px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    .section-index {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .25em;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(27px, 4vw, 52px);
+      font-weight: 500;
+      letter-spacing: -.035em;
+    }
+
+    .section-note {
+      max-width: 390px;
+      font-family: var(--mono);
+      font-size: 9px;
+      line-height: 1.8;
+      letter-spacing: .08em;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* =========================================================
+       CONTROL PANEL
+       ========================================================= */
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: 1.4fr .6fr .6fr .6fr;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.015);
+    }
+
+    .control-cell {
+      min-height: 135px;
+      padding: 25px;
+      border-right: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .control-cell:last-child {
+      border-right: none;
+    }
+
+    .control-cell::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      right: -50px;
+      bottom: -50px;
+      border: 1px solid rgba(215,181,109,.12);
+      transform: rotate(45deg);
+    }
+
+    .cell-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--dim);
+      letter-spacing: .2em;
+      margin-bottom: 19px;
+    }
+
+    .cell-value {
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: .08em;
+    }
+
+    .cell-value.gold {
+      color: var(--gold);
+    }
+
+    .meter {
+      width: 100%;
+      height: 2px;
+      margin-top: 17px;
+      background: #1b1b20;
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 73%;
+      background: var(--gold);
+      animation: meter 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes meter {
+      from { width: 57%; }
+      to { width: 81%; }
+    }
+
+    /* =========================================================
+       VISUAL ARCHIVE
+       ========================================================= */
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .archive-card {
+      position: relative;
+      min-height: 380px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #09090d;
+      isolation: isolate;
+    }
+
+    .archive-card:nth-child(1) {
+      grid-column: span 7;
+      min-height: 520px;
+    }
+
+    .archive-card:nth-child(2) {
+      grid-column: span 5;
+      min-height: 520px;
+    }
+
+    .archive-card:nth-child(3) {
+      grid-column: span 4;
+      min-height: 580px;
+    }
+
+    .archive-card:nth-child(4) {
+      grid-column: span 4;
+      min-height: 580px;
+    }
+
+    .archive-card:nth-child(5) {
+      grid-column: span 4;
+      min-height: 580px;
+    }
+
+    .archive-card:nth-child(n+6) {
+      grid-column: span 3;
+      min-height: 320px;
+    }
+
+    .archive-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition:
+        transform .8s cubic-bezier(.2,.7,.2,1),
+        filter .8s ease;
+      filter: grayscale(.15) contrast(1.05);
+    }
+
+    .archive-card:hover img {
+      transform: scale(1.055);
+      filter: grayscale(0) contrast(1.12);
+    }
+
+    .archive-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,.12),
+          transparent 40%,
+          rgba(0,0,0,.88)
         );
-
-    box-shadow:
-
-        inset 0 0 140px
-        rgba(0,255,100,0.08),
-
-        inset 0 0 35px
-        rgba(0,255,100,0.06);
-
-    animation:
-        crtPulse
-        5s
-        ease-in-out
-        infinite;
-}
-
-
-@keyframes crtPulse {
-
-    0%, 100% {
-        opacity: 0.92;
+      pointer-events: none;
     }
 
-    50% {
-        opacity: 1;
+    .archive-number {
+      position: absolute;
+      z-index: 3;
+      top: 16px;
+      left: 17px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: rgba(255,255,255,.65);
     }
 
-}
-
-
-/* =========================================================
-   TERMINAL
-   ========================================================= */
-
-#terminal {
-
-    width: 100%;
-    height: 100%;
-
-    padding:
-        clamp(18px, 4vw, 42px);
-
-    overflow-y: auto;
-
-    scrollbar-width: thin;
-
-    scrollbar-color:
-        #315c3d
-        #020403;
-}
-
-
-#output {
-
-    max-width: 1100px;
-
-    margin: 0 auto;
-
-    white-space: pre-wrap;
-
-    word-break: break-word;
-
-    line-height: 1.55;
-
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            16px
-        );
-
-    text-shadow:
-
-        0 0 4px
-        rgba(100,255,150,0.28),
-
-        0 0 14px
-        rgba(70,255,120,0.08);
-}
-
-
-.line {
-
-    margin: 3px 0;
-
-    animation:
-        lineAppear
-        0.08s
-        ease-out;
-}
-
-
-@keyframes lineAppear {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateX(-2px);
-
+    .archive-corner {
+      position: absolute;
+      z-index: 3;
+      top: 14px;
+      right: 15px;
+      width: 17px;
+      height: 17px;
+      border-top: 1px solid rgba(255,255,255,.5);
+      border-right: 1px solid rgba(255,255,255,.5);
     }
 
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateX(0);
-
+    .archive-info {
+      position: absolute;
+      z-index: 3;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 26px;
     }
 
-}
-
-
-/* =========================================================
-   TEXT
-   ========================================================= */
-
-.dim {
-    color: var(--dim);
-}
-
-.muted {
-    color: var(--muted);
-}
-
-.warning {
-
-    color: var(--warning);
-
-    text-shadow:
-        0 0 7px
-        rgba(210,205,120,0.22);
-}
-
-.danger {
-
-    color: var(--danger);
-
-    text-shadow:
-        0 0 8px
-        rgba(255,80,80,0.2);
-}
-
-.accent {
-    color: var(--accent);
-}
-
-.violet {
-
-    color: var(--violet);
-
-    text-shadow:
-        0 0 8px
-        rgba(160,130,230,0.25);
-}
-
-.title {
-
-    color: var(--bright);
-
-    font-weight: bold;
-
-    text-shadow:
-
-        0 0 5px
-        rgba(180,255,200,0.42),
-
-        0 0 20px
-        rgba(80,255,120,0.16);
-}
-
-.command {
-    color: #ffffff;
-}
-
-.corrupt {
-
-    color: #9bc5a4;
-
-    animation:
-        corruption
-        0.16s
-        infinite;
-}
-
-.important {
-
-    color: #dffff0;
-
-    font-weight: bold;
-}
-
-@keyframes corruption {
-
-    0%, 100% {
-        opacity: 0.86;
+    .archive-label {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: 8px;
+      letter-spacing: .22em;
+      margin-bottom: 8px;
     }
 
-    50% {
-        opacity: 1;
+    .archive-name {
+      font-size: 23px;
+      font-weight: 500;
+      letter-spacing: -.02em;
     }
 
-}
-
-
-/* =========================================================
-   INPUT
-   ========================================================= */
-
-.input-line {
-
-    display: flex;
-
-    max-width: 1100px;
-
-    margin:
-        12px auto 0;
-
-    position: relative;
-}
-
-.prompt {
-
-    color: #8dbd98;
-
-    margin-right: 8px;
-
-    user-select: none;
-
-    text-shadow:
-        0 0 7px
-        rgba(100,255,140,0.25);
-}
-
-#commandInput {
-
-    flex: 1;
-
-    border: none;
-    outline: none;
-
-    background: transparent;
-
-    color: var(--bright);
-
-    font-family: inherit;
-
-    font-size: inherit;
-
-    caret-color: var(--bright);
-
-    text-shadow:
-        0 0 6px
-        rgba(100,255,150,0.35);
-}
-
-#commandInput::selection {
-
-    background:
-        rgba(150,255,170,0.2);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    #terminal {
-        padding: 15px;
+    .archive-desc {
+      color: rgba(255,255,255,.52);
+      font-family: var(--mono);
+      font-size: 8px;
+      line-height: 1.7;
+      margin-top: 8px;
+      max-width: 420px;
     }
 
-    #output,
-    #commandInput {
-        font-size: 12px;
+    /* =========================================================
+       DATA PANELS
+       ========================================================= */
+
+    .data-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
 
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-
-        animation-duration:
-            0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
+    .data-panel {
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.025), transparent),
+        var(--panel);
+      padding: 34px;
+      min-height: 390px;
+      position: relative;
+      overflow: hidden;
     }
 
-}
-
-</style>
-</head>
-
-
-<body>
-
-<div id="terminal">
-
-    <div id="output"></div>
-
-    <div class="input-line">
-
-        <span class="prompt">&gt;</span>
-
-        <input
-            id="commandInput"
-            type="text"
-            autocomplete="off"
-            spellcheck="false"
-            autofocus
-            aria-label="NullShift archive command input"
-        >
-
-    </div>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   NULLSHIFT // ARCHIVE
-   CANONICAL LORE DATABASE
-   ========================================================= */
-
-
-const output =
-    document.getElementById("output");
-
-const input =
-    document.getElementById("commandInput");
-
-const terminal =
-    document.getElementById("terminal");
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
-
-let commandHistory = [];
-
-let historyIndex = -1;
-
-
-/* =========================================================
-   OUTPUT ENGINE
-   ========================================================= */
-
-function print(text = "", className = "") {
-
-    const line =
-        document.createElement("div");
-
-    line.className =
-        "line " + className;
-
-    line.textContent =
-        text;
-
-    output.appendChild(line);
-
-    terminal.scrollTop =
-        terminal.scrollHeight;
-}
-
-
-function sleep(ms) {
-
-    return new Promise(
-        resolve => setTimeout(resolve, ms)
-    );
-
-}
-
-
-function separator() {
-
-    print(
-        "────────────────────────────────────────────────────────",
-        "dim"
-    );
-
-}
-
-
-function section(title) {
-
-    print("");
-
-    print(
-        title,
-        "title"
-    );
-
-    separator();
-
-}
-
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-
-async function boot() {
-
-    print(
-        "NULLSHIFT",
-        "title"
-    );
-
-    print(
-        "// ARCHIVE",
-        "accent"
-    );
-
-    print(
-        "CANONICAL LORE DATABASE // BUILD 1.0",
-        "dim"
-    );
-
-    separator();
-
-    await sleep(250);
-
-    print(
-        "INITIALIZING ARCHIVE..."
-    );
-
-    await sleep(250);
-
-    print(
-        "LOADING NULLSHIFT INDEX..."
-    );
-
-    await sleep(250);
-
-    print(
-        "LOADING CANONICAL RECORDS..."
-    );
-
-    await sleep(300);
-
-    print(
-        "ARCHIVE READY.",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "PROJECT: NULLSHIFT"
-    );
-
-    print(
-        "ARCHIVE CLASS: LORE / DEVELOPMENT"
-    );
-
-    print(
-        "STATUS: IN DEVELOPMENT"
-    );
-
-    print("");
-
-    print(
-        'Type "help" to access the archive.',
-        "accent"
-    );
-
-    print("");
-
-}
-
-
-/* =========================================================
-   COMMANDS
-   ========================================================= */
-
-const commands = {
-
-
-/* =========================================================
-   HELP
-   ========================================================= */
-
-help() {
-
-    section("NULLSHIFT // COMMAND INDEX");
-
-    print("help          Command index");
-    print("about         NullShift overview");
-    print("lore          Complete canonical lore index");
-    print("timeline      Known chronological records");
-    print("entities      Major entities and systems");
-    print("archive       Archive directory");
-    print("status        Project/archive status");
-
-    print("");
-
-    print("axiom         The Axiom");
-    print("layers        The Four Layers");
-    print("7d            The Seventh Dimension");
-
-    print("");
-
-    print("errata        ERRATA corporate record");
-    print("initiative    ERRATA Initiative");
-    print("initiator     ERRATA Initiator");
-
-    print("");
-
-    print("candidate     Candidate index");
-    print("9502026#      Candidate 9502026#");
-    print("0000395#      Candidate 0000395#");
-
-    print("");
-
-    print("hades         HADES SIGIL");
-    print("threnody      THRENODY");
-    print("undeniable    THE UNDENIABLE");
-    print("paries        THE LAST PARIES");
-    print("cosine        THE INFINITE COSINE");
-    print("asymptote     THE ABYSSAL ASYMPTOTE");
-    print("equation      THE LIMINAL EQUATION");
-    print("outcomes      ARCHIVE OF UNWRITTEN OUTCOMES");
-    print("beyond        THE BEYOND");
-
-    print("");
-
-    print("fall          THE FALL IS THE RISE");
-    print("sun           THE SUN NEVER SETS IN ERRATA");
-    print("matrix        Simulation matrix");
-    print("realisation   REALISATION");
-
-    print("");
-
-    print("clear         Clear archive");
-
-    print("");
-
-    print(
-        "The archive contains established lore only.",
-        "dim"
-    );
-
-    print(
-        "No unreleased plot information is indexed.",
-        "dim"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   ABOUT
-   ========================================================= */
-
-about() {
-
-    section("NULLSHIFT");
-
-    print(
-        "NULLSHIFT",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "NullShift is a game centered around"
-    );
-
-    print(
-        "discovery, consciousness, memory,"
-    );
-
-    print(
-        "creation, responsibility,"
-    );
-
-    print(
-        "and the limits of observation."
-    );
-
-    print("");
-
-    print(
-        "Its central framework consists of"
-    );
-
-    print(
-        "four metaphysical layers:",
-        "accent"
-    );
-
-    print("");
-
-    print("1. MATTER");
-    print("2. PATTERN");
-    print("3. MEMORY");
-    print("4. AWARENESS");
-
-    print("");
-
-    print(
-        "The Axiom connects these layers."
-    );
-
-    print("");
-
-    print(
-        "NullShift contains simulated realities,"
-    );
-
-    print(
-        "candidates, observations,"
-    );
-
-    print(
-        "dimensional boundaries,"
-    );
-
-    print(
-        "and systems capable of creating"
-    );
-
-    print(
-        "planets, universes, and related realities."
-    );
-
-    print("");
-
-    print(
-        "The known primary simulation is:"
-    );
-
-    print(
-        "#777",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "The primary candidate associated with"
-    );
-
-    print(
-        "the current record is:"
-    );
-
-    print(
-        "9502026#",
-        "important"
-    );
-
-    print("");
-
-    print(
-        "Another candidate, 0000395#, is recorded"
-    );
-
-    print(
-        "as the first known candidate to escape"
-    );
-
-    print(
-        "Simulation #777.",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "THE FALL IS THE RISE.",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "PROJECT STATUS: IN DEVELOPMENT",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   LORE INDEX
-   ========================================================= */
-
-lore() {
-
-    section("NULLSHIFT // CANONICAL LORE");
-
-    print("[01] NULLSHIFT");
-    print("[02] THE AXIOM");
-    print("[03] MATTER");
-    print("[04] PATTERN");
-    print("[05] MEMORY");
-    print("[06] AWARENESS");
-    print("[07] THE FOUR LAYERS");
-    print("[08] THE FALL IS THE RISE");
-    print("[09] SIMULATION #777");
-
-    print("");
-
-    print("[10] ERRATA");
-    print("[11] ERRATA INITIATIVE");
-    print("[12] ERRATA INITIATOR");
-
-    print("");
-
-    print("[13] CANDIDATE 9502026#");
-    print("[14] CANDIDATE 0000395#");
-
-    print("");
-
-    print("[15] HADES SIGIL");
-    print("[16] THRENODY");
-    print("[17] THE SEVENTH DIMENSION");
-    print("[18] THE UNDENIABLE");
-
-    print("");
-
-    print("[19] THE LAST PARIES");
-    print("[20] THE INFINITE COSINE");
-    print("[21] THE ABYSSAL ASYMPTOTE");
-    print("[22] THE LIMINAL EQUATION");
-    print("[23] ARCHIVE OF UNWRITTEN OUTCOMES");
-    print("[24] THE BEYOND");
-
-    print("");
-
-    print("[25] REALISATION");
-    print("[26] THE SUN NEVER SETS IN ERRATA");
-
-    print("");
-
-    print(
-        "All records above belong to the established"
-    );
-
-    print(
-        "NullShift archive.",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   TIMELINE
-   ========================================================= */
-
-timeline() {
-
-    section("NULLSHIFT // KNOWN TIMELINE");
-
-    print(
-        "1. ERRATA establishes and operates"
-    );
-
-    print(
-        "   the Initiative.",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "2. The ERRATA Initiative contains"
-    );
-
-    print(
-        "   candidates, simulations,"
-    );
-
-    print(
-        "   observational systems,"
-    );
-
-    print(
-        "   and the ERRATA Initiator.",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "3. The ERRATA Initiator creates"
-    );
-
-    print(
-        "   planets, universes, and related"
-    );
-
-    print(
-        "   simulated reality structures.",
-        "dim"
-    );
-
-    print("");
-
-    print(
-        "4. Simulation #777 becomes a known"
-    );
-
-    print(
-        "   reference within the archive."
-    );
-
-    print("");
-
-    print(
-        "5. Candidate 0000395# becomes the"
-    );
-
-    print(
-        "   first recorded candidate to escape"
-    );
-
-    print(
-        "   Simulation #777.",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "6. Candidate 9502026# becomes the"
-    );
-
-    print(
-        "   primary recorded candidate."
-    );
-
-    print("");
-
-    print(
-        "7. THRENODY is deployed in relation"
-    );
-
-    print(
-        "   to Candidate 9502026#."
-    );
-
-    print("");
-
-    print(
-        "8. THRENODY encounters a space"
-    );
-
-    print(
-        "   associated with seventh-dimensional"
-    );
-
-    print(
-        "   interpretation failure.",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "9. The archive records the resulting"
-    );
-
-    print(
-        "   dimensional anomaly."
-    );
-
-    print("");
-
-    print(
-        "10. Further records become associated"
-    );
-
-    print(
-        "    with the boundary, the Axiom,"
-    );
-
-    print(
-        "    awareness, and the nature of"
-    );
-
-    print(
-        "    observation."
-    );
-
-    print("");
-
-    print(
-        "[TIMELINE ENDS AT CURRENT CANON]",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   ENTITIES
-   ========================================================= */
-
-entities() {
-
-    section("NULLSHIFT // MAJOR ENTITIES");
-
-    print("ERRATA");
-    print(
-        "Corporate authority operating the Initiative.",
-        "dim"
-    );
-
-    print("");
-
-    print("ERRATA INITIATIVE");
-    print(
-        "Program containing candidates, simulations,"
-    );
-    print(
-        "observational systems, and the Initiator.",
-        "dim"
-    );
-
-    print("");
-
-    print("ERRATA INITIATOR");
-    print(
-        "System responsible for creating planets,"
-    );
-    print(
-        "universes, and related simulated realities.",
-        "dim"
-    );
-
-    print("");
-
-    print("CANDIDATE 9502026#");
-    print(
-        "Primary candidate of the current archive."
-    );
-
-    print("");
-
-    print("CANDIDATE 0000395#");
-    print(
-        "First recorded candidate to escape Simulation #777.",
-        "warning"
-    );
-
-    print("");
-
-    print("THRENODY");
-    print(
-        "A recorded system/entity deployed in relation"
-    );
-    print(
-        "to Candidate 9502026#."
-    );
-
-    print("");
-
-    print("THE AXIOM");
-    print(
-        "The relation connecting Matter, Pattern,"
-    );
-    print(
-        "Memory, and Awareness."
-    );
-
-    print("");
-
-    print("HADES SIGIL");
-    print(
-        "A symbolic record associated with transcendence"
-    );
-    print(
-        "beyond Matter."
-    );
-
-    print("");
-
-    print(
-        "THE SEVENTH DIMENSION",
-        "accent"
-    );
-
-    print(
-        "A dimensional state which cannot be"
-    );
-
-    print(
-        "stably interpreted by conventional geometry."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-status() {
-
-    section("NULLSHIFT // STATUS");
-
-    print("PROJECT: NULLSHIFT");
-    print("STATUS: IN DEVELOPMENT");
-
-    print("");
-
-    print("CANONICAL SIMULATION: #777");
-
-    print("");
-
-    print("PRIMARY CANDIDATE: 9502026#");
-    print("KNOWN ESCAPED CANDIDATE: 0000395#");
-
-    print("");
-
-    print("METAPHYSICAL METRIC:");
-
-    print("MATTER");
-    print("PATTERN");
-    print("MEMORY");
-    print("AWARENESS");
-
-    print("");
-
-    print("CONNECTIVE PRINCIPLE: AXIOM");
-
-    print("");
-
-    print("DIMENSIONAL RECORD: 7D");
-
-    print("");
-
-    print("CORPORATE AUTHORITY: ERRATA");
-    print("PROGRAM: ERRATA INITIATIVE");
-    print("SYSTEM: ERRATA INITIATOR");
-
-    print("");
-
-    print(
-        "THE FALL IS THE RISE.",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   AXIOM
-   ========================================================= */
-
-axiom() {
-
-    section("THE AXIOM");
-
-    print(
-        "The Axiom is the connective principle"
-    );
-
-    print(
-        "between the four metaphysical layers."
-    );
-
-    print("");
-
-    print(
-        "MATTER"
-    );
-
-    print(
-        "The physical layer."
-    );
-
-    print("");
-
-    print(
-        "PATTERN"
-    );
-
-    print(
-        "The structural layer."
-    );
-
-    print("");
-
-    print(
-        "MEMORY"
-    );
-
-    print(
-        "The persistence and recorded-information layer."
-    );
-
-    print("");
-
-    print(
-        "AWARENESS"
-    );
-
-    print(
-        "The conscious observational layer."
-    );
-
-    print("");
-
-    print(
-        "THE AXIOM"
-    );
-
-    print(
-        "connects the four."
-    );
-
-    print("");
-
-    print(
-        "It is not merely another layer."
-    );
-
-    print(
-        "It is the relation through which"
-    );
-
-    print(
-        "the layers become connected."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   LAYERS
-   ========================================================= */
-
-layers() {
-
-    section("THE FOUR LAYERS");
-
-    print(
-        "LAYER I // MATTER",
-        "accent"
-    );
-
-    print(
-        "The physical foundation."
-    );
-
-    print("");
-
-    print(
-        "LAYER II // PATTERN",
-        "accent"
-    );
-
-    print(
-        "Structure, arrangement, and relation."
-    );
-
-    print("");
-
-    print(
-        "LAYER III // MEMORY",
-        "accent"
-    );
-
-    print(
-        "Persistence, record, and retained state."
-    );
-
-    print("");
-
-    print(
-        "LAYER IV // AWARENESS",
-        "accent"
-    );
-
-    print(
-        "Observation and consciousness."
-    );
-
-    print("");
-
-    print(
-        "THE AXIOM connects all four.",
-        "important"
-    );
-
-    print("");
-
-    print(
-        "The four layers form the core"
-    );
-
-    print(
-        "of NullShift's metaphysical metric."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   7D
-   ========================================================= */
-
-"7d"() {
-
-    section("THE SEVENTH DIMENSION");
-
-    print(
-        "The archive recognizes seven-dimensional"
-    );
-
-    print(
-        "space as a state beyond the stable"
-    );
-
-    print(
-        "interpretation of ordinary geometry."
-    );
-
-    print("");
-
-    print(
-        "DIMENSION 01: MATTER"
-    );
-
-    print(
-        "DIMENSION 02: PATTERN"
-    );
-
-    print(
-        "DIMENSION 03: MEMORY"
-    );
-
-    print(
-        "DIMENSION 04: AWARENESS"
-    );
-
-    print("");
-
-    print(
-        "DIMENSION 05: UNRESOLVED"
-    );
-
-    print(
-        "DIMENSION 06: UNRESOLVED"
-    );
-
-    print("");
-
-    print(
-        "DIMENSION 07: SEVENTH DIMENSION",
-        "danger"
-    );
-
-    print("");
-
-    print(
-        "Conventional spatial interpretation"
-    );
-
-    print(
-        "is insufficient."
-    );
-
-    print("");
-
-    print(
-        "A reference frame cannot remain stable"
-    );
-
-    print(
-        "when the system becomes part of"
-    );
-
-    print(
-        "the observation being interpreted."
-    );
-
-    print("");
-
-    print(
-        "This is associated with the known"
-    );
-
-    print(
-        "THRENODY interpretation failure."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   ERRATA
-   ========================================================= */
-
-errata() {
-
-    section("ERRATA // CORPORATE RECORD");
-
-    print(
-        "ENTITY: ERRATA",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "CLASSIFICATION: COMPANY"
-    );
-
-    print(
-        "STATUS: ACTIVE"
-    );
-
-    print("");
-
-    print(
-        "ERRATA operates the Initiative."
-    );
-
-    print(
-        "ERRATA owns the Initiative."
-    );
-
-    print(
-        "ERRATA owns the Initiator."
-    );
-
-    print("");
-
-    print(
-        "ERRATA INITIATIVE"
-    );
-
-    print(
-        "The primary organizational program"
-    );
-
-    print(
-        "containing the known simulations,"
-    );
-
-    print(
-        "candidates, observational systems,"
-    );
-
-    print(
-        "and the ERRATA Initiator."
-    );
-
-    print("");
-
-    print(
-        "ERRATA INITIATOR"
-    );
-
-    print(
-        "The reality-generation system associated"
-    );
-
-    print(
-        "with the Initiative."
-    );
-
-    print("");
-
-    print(
-        "Its recorded function includes creation of:"
-    );
-
-    print(
-        "• planets"
-    );
-
-    print(
-        "• universes"
-    );
-
-    print(
-        "• related simulated reality structures"
-    );
-
-    print("");
-
-    print(
-        "THE SUN NEVER SETS IN ERRATA.",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   INITIATIVE
-   ========================================================= */
-
-initiative() {
-
-    section("ERRATA INITIATIVE");
-
-    print(
-        "PROGRAM: ERRATA INITIATIVE"
-    );
-
-    print(
-        "OWNER: ERRATA"
-    );
-
-    print(
-        "STATUS: ACTIVE"
-    );
-
-    print("");
-
-    print(
-        "KNOWN COMPONENTS:"
-    );
-
-    print(
-        "• CANDIDATES"
-    );
-
-    print(
-        "• SIMULATIONS"
-    );
-
-    print(
-        "• OBSERVATIONAL SYSTEMS"
-    );
-
-    print(
-        "• ERRATA INITIATOR"
-    );
-
-    print("");
-
-    print(
-        "KNOWN SIMULATION:"
-    );
-
-    print(
-        "#777",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "KNOWN CANDIDATES:"
-    );
-
-    print(
-        "9502026#"
-    );
-
-    print(
-        "0000395#"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   INITIATOR
-   ========================================================= */
-
-initiator() {
-
-    section("ERRATA INITIATOR");
-
-    print(
-        "SYSTEM: ERRATA INITIATOR"
-    );
-
-    print(
-        "OWNER: ERRATA"
-    );
-
-    print(
-        "PROGRAM: ERRATA INITIATIVE"
-    );
-
-    print("");
-
-    print(
-        "PRIMARY FUNCTION:"
-    );
-
-    print(
-        "Creation of planetary,"
-    );
-
-    print(
-        "universal,"
-    );
-
-    print(
-        "and related reality structures."
-    );
-
-    print("");
-
-    print(
-        "The Initiator is part of the"
-    );
-
-    print(
-        "ERRATA Initiative."
-    );
-
-    print("");
-
-    print(
-        "It is distinct from the Initiative itself."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   CANDIDATE INDEX
-   ========================================================= */
-
-candidate() {
-
-    section("CANDIDATE INDEX");
-
-    print(
-        "CANDIDATE 9502026#",
-        "accent"
-    );
-
-    print(
-        "PRIMARY RECORDED CANDIDATE."
-    );
-
-    print("");
-
-    print(
-        "CANDIDATE 0000395#",
-        "warning"
-    );
-
-    print(
-        "FIRST RECORDED CANDIDATE TO ESCAPE"
-    );
-
-    print(
-        "SIMULATION #777."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   9502026
-   ========================================================= */
-
-"9502026#"() {
-
-    section("CANDIDATE // 9502026#");
-
-    print(
-        "IDENTIFIER: 9502026#",
-        "accent"
-    );
-
-    print(
-        "SIMULATION: #777"
-    );
-
-    print(
-        "ROLE: PRIMARY CANDIDATE"
-    );
-
-    print("");
-
-    print(
-        "The candidate encounters a boundary"
-    );
-
-    print(
-        "associated with a dimensional state"
-    );
-
-    print(
-        "beyond conventional interpretation."
-    );
-
-    print("");
-
-    print(
-        "THRENODY is deployed."
-    );
-
-    print("");
-
-    print(
-        "The resulting record is associated with"
-    );
-
-    print(
-        "the Seventh Dimension."
-    );
-
-    print("");
-
-    print(
-        "The event forms one of the central"
-    );
-
-    print(
-        "records of the NullShift archive."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   0000395
-   ========================================================= */
-
-"0000395#"() {
-
-    section("CANDIDATE // 0000395#");
-
-    print(
-        "IDENTIFIER: 0000395#",
-        "accent"
-    );
-
-    print(
-        "SIMULATION: #777"
-    );
-
-    print(
-        "STATUS: ESCAPED",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "0000395# is the first recorded candidate"
-    );
-
-    print(
-        "known to have escaped Simulation #777."
-    );
-
-    print("");
-
-    print(
-        "The archive records the escape"
-    );
-
-    print(
-        "without assigning an external destination."
-    );
-
-    print("");
-
-    print(
-        "No additional destination is established"
-    );
-
-    print(
-        "within the current canon."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   HADES
-   ========================================================= */
-
-hades() {
-
-    section("HADES SIGIL");
-
-    print(
-        "              ◇",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "[HADES SIGIL]"
-    );
-
-    print("");
-
-    print(
-        "INSCRIPTION:",
-        "accent"
-    );
-
-    print(
-        "AS YOUR MIND TRANSCENDS MATTER.",
-        "important"
-    );
-
-    print("");
-
-    print(
-        "The sigil is associated with"
-    );
-
-    print(
-        "transcendence beyond the Matter layer."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   THRENODY
-   ========================================================= */
-
-threnody() {
-
-    section("THRENODY");
-
-    print(
-        "CLASSIFICATION: THRENODY",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "THRENODY is a major recorded entity/system"
-    );
-
-    print(
-        "within the NullShift archive."
-    );
-
-    print("");
-
-    print(
-        "It is deployed in relation to"
-    );
-
-    print(
-        "Candidate 9502026#."
-    );
-
-    print("");
-
-    print(
-        "THRENODY encounters a space"
-    );
-
-    print(
-        "associated with seventh-dimensional"
-    );
-
-    print(
-        "structure."
-    );
-
-    print("");
-
-    print(
-        "The space cannot be successfully"
-    );
-
-    print(
-        "interpreted by THRENODY."
-    );
-
-    print("");
-
-    print(
-        "INTERPRETATION: FAILED",
-        "danger"
-    );
-
-    print("");
-
-    print(
-        "THRENODY exits the simulation."
-    );
-
-    print("");
-
-    print(
-        "The record establishes THRENODY's"
-    );
-
-    print(
-        "inability to interpret the encountered"
-    );
-
-    print(
-        "seventh-dimensional space."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   UNDENIABLE
-   ========================================================= */
-
-undeniable() {
-
-    section("THE UNDENIABLE");
-
-    print(
-        "THE UNDENIABLE."
-    );
-
-    print("");
-
-    print(
-        "A distinct NullShift record."
-    );
-
-    print("");
-
-    print(
-        "It is not presented as a final answer."
-    );
-
-    print(
-        "It is not the complete explanation"
-    );
-
-    print(
-        "of the surrounding phenomena."
-    );
-
-    print("");
-
-    print(
-        "The record is associated with"
-    );
-
-    print(
-        "boundaries and incomplete understanding."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   LAST PARIES
-   ========================================================= */
-
-paries() {
-
-    section("THE LAST PARIES");
-
-    print(
-        "THE LAST PARIES"
-    );
-
-    print("");
-
-    print(
-        "A named NullShift fragment."
-    );
-
-    print("");
-
-    print(
-        "The archive recognizes the term"
-    );
-
-    print(
-        "as an established record."
-    );
-
-    print("");
-
-    print(
-        "Additional interpretation:"
-    );
-
-    print(
-        "[CURRENTLY NOT DEFINED IN CANON]"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   INFINITE COSINE
-   ========================================================= */
-
-cosine() {
-
-    section("THE INFINITE COSINE");
-
-    print(
-        "THE INFINITE COSINE"
-    );
-
-    print("");
-
-    print(
-        "THE INFINITE COSINE DISTILLS"
-    );
-
-    print(
-        "BEHIND A BLESSED CINQUAIN."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   ABYSSAL ASYMPTOTE
-   ========================================================= */
-
-asymptote() {
-
-    section("THE ABYSSAL ASYMPTOTE");
-
-    print(
-        "THE ABYSSAL ASYMPTOTE"
-    );
-
-    print("");
-
-    print(
-        "THE ABYSSAL ASYMPTOTE"
-    );
-
-    print(
-        "COALESCES BENEATH"
-    );
-
-    print(
-        "A HALLOWED THRENODY."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   LIMINAL EQUATION
-   ========================================================= */
-
-equation() {
-
-    section("THE LIMINAL EQUATION");
-
-    print(
-        "THE LIMINAL EQUATION"
-    );
-
-    print("");
-
-    print(
-        "DREAMS IN FRACTURED"
-    );
-
-    print(
-        "GEOMETRIES."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   OUTCOMES
-   ========================================================= */
-
-outcomes() {
-
-    section("ARCHIVE OF UNWRITTEN OUTCOMES");
-
-    print(
-        "THE ARCHIVE OF"
-    );
-
-    print(
-        "UNWRITTEN OUTCOMES"
-    );
-
-    print(
-        "BREATHES BETWEEN"
-    );
-
-    print(
-        "OBSERVATIONS."
-    );
-
-    print("");
-
-    print(
-        "The record concerns outcomes"
-    );
-
-    print(
-        "which remain unwritten."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   BEYOND
-   ========================================================= */
-
-beyond() {
-
-    section("THE BEYOND");
-
-    print(
-        "THE BEYOND"
-    );
-
-    print("");
-
-    print(
-        "A NullShift boundary record."
-    );
-
-    print("");
-
-    print(
-        "It is associated with a state"
-    );
-
-    print(
-        "beyond conventional classification."
-    );
-
-    print("");
-
-    print(
-        "It is not defined as:"
-    );
-
-    print(
-        "• Matter"
-    );
-
-    print(
-        "• Thought"
-    );
-
-    print(
-        "• Absence"
-    );
-
-    print(
-        "• Presence"
-    );
-
-    print("");
-
-    print(
-        "The record remains categorized"
-    );
-
-    print(
-        "as THE BEYOND."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   FALL
-   ========================================================= */
-
-fall() {
-
-    section("THE FALL IS THE RISE");
-
-    print(
-        "THE FALL IS THE RISE.",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "A canonical NullShift phrase."
-    );
-
-    print("");
-
-    print(
-        "The phrase represents a central"
-    );
-
-    print(
-        "axiomatic principle of the project."
-    );
-
-    print("");
-
-    print(
-        "FALL = RISE",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   SUN
-   ========================================================= */
-
-sun() {
-
-    section("ERRATA // SOLAR RECORD");
-
-    print(
-        "THE SUN NEVER SETS IN ERRATA.",
-        "title"
-    );
-
-    print("");
-
-    print(
-        "Canonical NullShift phrase."
-    );
-
-    print("");
-
-    print(
-        "Associated with ERRATA."
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   MATRIX
-   ========================================================= */
-
-matrix() {
-
-    section("SIMULATION MATRIX");
-
-    print(
-        "KNOWN PRIMARY SIMULATION:"
-    );
-
-    print(
-        "#777",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "KNOWN CANDIDATES:"
-    );
-
-    print(
-        "9502026#"
-    );
-
-    print(
-        "0000395#"
-    );
-
-    print("");
-
-    print(
-        "KNOWN ESCAPE:"
-    );
-
-    print(
-        "0000395#",
-        "warning"
-    );
-
-    print("");
-
-    print(
-        "METAPHYSICAL FRAMEWORK:"
-    );
-
-    print(
-        "MATTER"
-    );
-
-    print(
-        "PATTERN"
-    );
-
-    print(
-        "MEMORY"
-    );
-
-    print(
-        "AWARENESS"
-    );
-
-    print("");
-
-    print(
-        "CONNECTIVE PRINCIPLE:"
-    );
-
-    print(
-        "AXIOM",
-        "accent"
-    );
-
-    print("");
-
-    print(
-        "DIMENSIONAL RECORD:"
-    );
-
-    print(
-        "7D",
-        "danger"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   REALISATION
-   ========================================================= */
-
-realisation() {
-
-    section("REALISATION");
-
-    print(
-        "TITLE: REALISATION"
-    );
-
-    print(
-        "TYPE: NULLSHIFT AUDIO RECORD"
-    );
-
-    print(
-        "STATUS: RECOVERED"
-    );
-
-    print("");
-
-    print(
-        "REALISATION is associated with"
-    );
-
-    print(
-        "the NullShift project."
-    );
-
-    print("");
-
-    print(
-        "The record exists as an audio component"
-    );
-
-    print(
-        "of the project."
-    );
-
-    print("");
-
-    print(
-        "SIMULATION REFERENCE:"
-    );
-
-    print(
-        "#777"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   ARCHIVE
-   ========================================================= */
-
-archive() {
-
-    section("NULLSHIFT://ARCHIVE");
-
-    print("/NULLSHIFT");
-    print("  ├─ about.dat");
-    print("  ├─ lore.dat");
-    print("  ├─ timeline.dat");
-    print("  └─ canon.idx");
-
-    print("");
-
-    print("/METAPHYSICS");
-    print("  ├─ axiom.dat");
-    print("  ├─ matter.dat");
-    print("  ├─ pattern.dat");
-    print("  ├─ memory.dat");
-    print("  ├─ awareness.dat");
-    print("  └─ four_layers.dat");
-
-    print("");
-
-    print("/DIMENSIONS");
-    print("  └─ seventh_dimension.dat");
-
-    print("");
-
-    print("/ERRATA");
-    print("  ├─ company.dat");
-    print("  ├─ initiative.dat");
-    print("  └─ initiator.dat");
-
-    print("");
-
-    print("/CANDIDATES");
-    print("  ├─ 9502026#.dat");
-    print("  └─ 0000395#.dat");
-
-    print("");
-
-    print("/RECORDS");
-    print("  ├─ hades.sig");
-    print("  ├─ threnody.dat");
-    print("  ├─ undeniable.dat");
-    print("  ├─ paries.dat");
-    print("  ├─ infinite_cosine.dat");
-    print("  ├─ abyssal_asymptote.dat");
-    print("  ├─ liminal_equation.dat");
-    print("  ├─ unwritten_outcomes.dat");
-    print("  └─ beyond.dat");
-
-    print("");
-
-    print("/AUDIO");
-    print("  └─ realisation.dat");
-
-    print("");
-
-    print(
-        "ARCHIVE INDEX: COMPLETE FOR CURRENT CANON",
-        "accent"
-    );
-
-    print("");
-
-},
-
-
-/* =========================================================
-   CLEAR
-   ========================================================= */
-
-clear() {
-
-    output.innerHTML = "";
-
-}
-
-};
-
-
-/* =========================================================
-   ALIASES
-   ========================================================= */
-
-const aliases = {
-
-    "nullshift": "about",
-
-    "the axiom": "axiom",
-
-    "four layers": "layers",
-
-    "7th dimension": "7d",
-
-    "seventh dimension": "7d",
-
-    "errata company": "errata",
-
-    "errata corporation": "errata",
-
-    "errata initiative": "initiative",
-
-    "errata initiator": "initiator",
-
-    "candidate 9502026": "9502026#",
-
-    "candidate 0000395": "0000395#",
-
-    "hades sigil": "hades",
-
-    "the threnody": "threnody",
-
-    "the undeniable": "undeniable",
-
-    "the last paries": "paries",
-
-    "infinite cosine": "cosine",
-
-    "the infinite cosine": "cosine",
-
-    "abyssal asymptote": "asymptote",
-
-    "the abyssal asymptote": "asymptote",
-
-    "liminal equation": "equation",
-
-    "the liminal equation": "equation",
-
-    "unwritten outcomes": "outcomes",
-
-    "archive of unwritten outcomes": "outcomes",
-
-    "the beyond": "beyond",
-
-    "fall is the rise": "fall",
-
-    "the fall is the rise": "fall",
-
-    "sun": "sun",
-
-    "realization": "realisation",
-
-    "realise": "realisation",
-
-    "realize": "realisation",
-
-    "777": "matrix"
-
-};
-
-
-/* =========================================================
-   AUTOCOMPLETE
-   ========================================================= */
-
-function getCommandNames() {
-
-    return [
-        ...Object.keys(commands),
-        ...Object.keys(aliases)
-    ];
-
-}
-
-
-function autocomplete(value) {
-
-    const query =
-        value.trim().toLowerCase();
-
-    if (!query) return;
-
-    const matches =
-        getCommandNames()
-            .filter(
-                command =>
-                    command.startsWith(query)
-            );
-
-    if (matches.length === 1) {
-
-        input.value =
-            matches[0];
-
-        return;
+    .data-panel::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,.025);
+      pointer-events: none;
     }
 
-    if (matches.length > 1) {
-
-        print("");
-
-        print(
-            "POSSIBLE COMMANDS:",
-            "dim"
-        );
-
-        matches.forEach(
-            command =>
-                print(
-                    "  " + command,
-                    "dim"
-                )
-        );
-
-        print("");
-
+    .panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 40px;
     }
 
-}
-
-
-/* =========================================================
-   COMMAND PROCESSOR
-   ========================================================= */
-
-async function executeCommand(raw) {
-
-    const original =
-        raw.trim();
-
-    const command =
-        original.toLowerCase();
-
-    if (!command) return;
-
-    print(
-        "> " + original,
-        "command"
-    );
-
-    commandHistory.push(original);
-
-    historyIndex =
-        commandHistory.length;
-
-
-    /* DIRECT COMMAND */
-
-    if (commands[command]) {
-
-        await commands[command]();
-
-        return;
+    .panel-code {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: var(--gold);
     }
 
-
-    /* ALIAS */
-
-    if (aliases[command]) {
-
-        await commands[
-            aliases[command]
-        ]();
-
-        return;
+    .panel-state {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--green);
+      letter-spacing: .14em;
     }
 
-
-    /* CANONICAL PHRASES */
-
-    if (
-        command ===
-        "the fall is the rise"
-    ) {
-
-        await commands.fall();
-
-        return;
+    .data-big {
+      position: relative;
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: clamp(32px, 5vw, 66px);
+      letter-spacing: .04em;
+      margin-bottom: 12px;
     }
 
-
-    if (
-        command ===
-        "the sun never sets in errata"
-    ) {
-
-        await commands.sun();
-
-        return;
+    .data-description {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      line-height: 2;
     }
 
-
-    /* UNKNOWN */
-
-    print("");
-
-    print(
-        "COMMAND NOT RECOGNIZED.",
-        "warning"
-    );
-
-    print(
-        `"${original}"`,
-        "danger"
-    );
-
-    print("");
-
-    print(
-        'Type "help" for available commands.'
-    );
-
-    print("");
-
-}
-
-
-/* =========================================================
-   KEYBOARD
-   ========================================================= */
-
-input.addEventListener(
-    "keydown",
-    async function(event) {
-
-        /* ENTER */
-
-        if (event.key === "Enter") {
-
-            const command =
-                input.value;
-
-            input.value = "";
-
-            await executeCommand(
-                command
-            );
-
-            return;
-        }
-
-
-        /* UP */
-
-        if (event.key === "ArrowUp") {
-
-            event.preventDefault();
-
-            if (
-                commandHistory.length === 0
-            ) return;
-
-            historyIndex--;
-
-            if (historyIndex < 0) {
-
-                historyIndex = 0;
-
-            }
-
-            input.value =
-                commandHistory[
-                    historyIndex
-                ] || "";
-
-            return;
-        }
-
-
-        /* DOWN */
-
-        if (event.key === "ArrowDown") {
-
-            event.preventDefault();
-
-            if (
-                commandHistory.length === 0
-            ) return;
-
-            historyIndex++;
-
-            if (
-                historyIndex >=
-                commandHistory.length
-            ) {
-
-                historyIndex =
-                    commandHistory.length;
-
-                input.value = "";
-
-                return;
-            }
-
-            input.value =
-                commandHistory[
-                    historyIndex
-                ] || "";
-
-            return;
-        }
-
-
-        /* TAB */
-
-        if (event.key === "Tab") {
-
-            event.preventDefault();
-
-            autocomplete(
-                input.value
-            );
-
-        }
-
+    .coordinates {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      width: 170px;
+      height: 170px;
+      border: 1px solid rgba(215,181,109,.12);
+      border-radius: 50%;
     }
-);
 
-
-/* =========================================================
-   FOCUS
-   ========================================================= */
-
-document.addEventListener(
-    "click",
-    function() {
-
-        input.focus();
-
+    .coordinates::before,
+    .coordinates::after {
+      content: "";
+      position: absolute;
+      background: rgba(215,181,109,.14);
     }
-);
 
+    .coordinates::before {
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+    }
 
-/* =========================================================
-   START
-   ========================================================= */
+    .coordinates::after {
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+    }
 
-boot();
+    .coordinates span {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      top: 37%;
+      left: 62%;
+      box-shadow: 0 0 15px var(--gold);
+    }
 
-</script>
+    /* =========================================================
+       SIGNAL MATRIX
+       ========================================================= */
 
-</body>
-</html>
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      gap: 5px;
+      height: 180px;
+      align-items: end;
+      margin-top: 28px;
+    }
+
+    .matrix i {
+      display: block;
+      height: calc(var(--h) * 1%);
+      background: rgba(215,181,109,.65);
+      opacity: .5;
+      animation: signal 1.8s ease-in-out infinite alternate;
+      animation-delay: calc(var(--d) * 1ms);
+    }
+
+    @keyframes signal {
+      from {
+        transform: scaleY(.65);
+        opacity: .35;
+      }
+      to {
+        transform: scaleY(1);
+        opacity: .8;
+      }
+    }
+
+    /* =========================================================
+       TYPOGRAPHIC MANIFEST
+       ========================================================= */
+
+    .manifest {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 55px 0;
+      overflow: hidden;
+    }
+
+    .manifest-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 32s linear infinite;
+    }
+
+    .manifest-track span {
+      font-family: var(--mono);
+      font-size: clamp(28px, 4vw, 56px);
+      letter-spacing: .15em;
+      white-space: nowrap;
+      color: rgba(255,255,255,.09);
+      padding-right: 50px;
+    }
+
+    .manifest-track span:nth-child(even) {
+      color: rgba(215,181,109,.22);
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    /* =========================================================
+       IMAGE WALL
+       ========================================================= */
+
+    .wall {
+      columns: 4 250px;
+      column-gap: 12px;
+    }
+
+    .wall-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #0a0a0e;
+    }
+
+    .wall-item img {
+      width: 100%;
+      transition: transform .7s ease, filter .7s ease;
+      filter: saturate(.82);
+    }
+
+    .wall-item:hover img {
+      transform: scale(1.035);
+      filter: saturate(1.05);
+    }
+
+    .wall-tag {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 6px 8px;
+      background: rgba(0,0,0,.72);
+      border: 1px solid rgba(255,255,255,.13);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .16em;
+      color: rgba(255,255,255,.7);
+      backdrop-filter: blur(8px);
+    }
+
+    /* =========================================================
+       TERMINAL
+       ========================================================= */
+
+    .terminal {
+      border: 1px solid var(--line);
+      background: #07070a;
+      box-shadow: 0 25px 80px rgba(0,0,0,.35);
+    }
+
+    .terminal-bar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 17px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .terminal-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #383840;
+    }
+
+    .terminal-title {
+      margin-left: auto;
+      margin-right: auto;
+      font-family: var(--mono);
+   
