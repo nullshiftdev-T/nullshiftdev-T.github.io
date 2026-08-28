@@ -1,2403 +1,2150 @@
-<!DOCTYPE html>
+ 
+       <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#07070a" />
-  <meta
-    name="description"
-    content="NULLSHIFT ARCHIVE — a visual and digital archive."
-  />
-
-  <title>NULLSHIFT // ARCHIVE</title>
-
-  <style>
-    /* =========================================================
-       NULLSHIFT ARCHIVE
-       Single-file interface
-       Put the supplied image files beside this index.html.
-       ========================================================= */
-
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-    :root {
-      --bg: #050507;
-      --bg-2: #09090d;
-      --panel: rgba(14, 14, 19, 0.72);
-      --panel-solid: #0d0d12;
-      --line: rgba(255,255,255,.11);
-      --line-bright: rgba(255,255,255,.25);
-      --text: #f2f0ea;
-      --muted: #85858e;
-      --dim: #4d4d56;
-      --gold: #d7b56d;
-      --gold-bright: #f1d895;
-      --violet: #8d78ad;
-      --violet-dark: #251d30;
-      --red: #8e384b;
-      --green: #799b88;
-
-      --mono: "IBM Plex Mono", monospace;
-      --sans: "Space Grotesk", sans-serif;
-
-      --radius: 3px;
-      --max: 1480px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
-    body {
-      min-height: 100vh;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 75% 12%, rgba(100,72,120,.12), transparent 30%),
-        radial-gradient(circle at 10% 70%, rgba(80,50,100,.08), transparent 28%),
-        var(--bg);
-      font-family: var(--sans);
-      overflow-x: hidden;
-      cursor: crosshair;
-    }
-
-    ::selection {
-      color: #050507;
-      background: var(--gold);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      color: inherit;
-      font: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    /* =========================================================
-       NOISE / GRID
-       ========================================================= */
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999;
-      opacity: .045;
-      background-image:
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.5) 0,
-          rgba(255,255,255,.5) 1px,
-          transparent 1px,
-          transparent 4px
-        );
-      mix-blend-mode: overlay;
-    }
-
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      opacity: .16;
-      background-image:
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: linear-gradient(to bottom, black, transparent 90%);
-    }
-
-    /* =========================================================
-       SCROLLBAR
-       ========================================================= */
-
-    ::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #050507;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #292932;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--gold);
-    }
-
-    /* =========================================================
-       TOP BAR
-       ========================================================= */
-
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 28px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(5,5,7,.78);
-      backdrop-filter: blur(18px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      font-family: var(--mono);
-      letter-spacing: .28em;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .brand-mark {
-      width: 27px;
-      height: 27px;
-      border: 1px solid var(--gold);
-      display: grid;
-      place-items: center;
-      transform: rotate(45deg);
-      position: relative;
-    }
-
-    .brand-mark::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-    }
-
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 5px;
-      border: 1px solid rgba(255,255,255,.3);
-    }
-
-    .brand-mark > * {
-      transform: rotate(-45deg);
-    }
-
-    .nav {
-      display: flex;
-      gap: 28px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .18em;
-      color: var(--muted);
-    }
-
-    .nav a {
-      transition: color .2s ease;
-      position: relative;
-    }
-
-    .nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -7px;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width .25s ease;
-    }
-
-    .nav a:hover {
-      color: var(--gold-bright);
-    }
-
-    .nav a:hover::after {
-      width: 100%;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      letter-spacing: .12em;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 12px var(--green);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: .4; }
-      50% { opacity: 1; }
-    }
-
-    /* =========================================================
-       HERO
-       ========================================================= */
-
-    .hero {
-      min-height: 100vh;
-      position: relative;
-      display: grid;
-      place-items: center;
-      padding: 120px 30px 80px;
-      overflow: hidden;
-    }
-
-    .hero-orbit {
-      position: absolute;
-      width: min(72vw, 920px);
-      aspect-ratio: 1;
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 50%;
-      animation: slowRotate 45s linear infinite;
-    }
-
-    .hero-orbit::before,
-    .hero-orbit::after {
-      content: "";
-      position: absolute;
-      inset: 12%;
-      border: 1px solid rgba(215,181,109,.09);
-      border-radius: 50%;
-    }
-
-    .hero-orbit::after {
-      inset: 28%;
-      border-color: rgba(141,120,173,.11);
-    }
-
-    @keyframes slowRotate {
-      to { transform: rotate(360deg); }
-    }
-
-    .hero-crosshair {
-      position: absolute;
-      width: min(88vw, 1200px);
-      height: min(88vw, 1200px);
-      pointer-events: none;
-    }
-
-    .hero-crosshair::before,
-    .hero-crosshair::after {
-      content: "";
-      position: absolute;
-      background: rgba(255,255,255,.055);
-    }
-
-    .hero-crosshair::before {
-      width: 1px;
-      height: 100%;
-      left: 50%;
-    }
-
-    .hero-crosshair::after {
-      height: 1px;
-      width: 100%;
-      top: 50%;
-    }
-
-    .hero-inner {
-      position: relative;
-      width: min(1120px, 100%);
-      text-align: center;
-      z-index: 2;
-    }
-
-    .hero-kicker {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .48em;
-      color: var(--gold);
-      margin-bottom: 28px;
-      text-transform: uppercase;
-    }
-
-    .hero-logo {
-      width: min(180px, 35vw);
-      aspect-ratio: 1;
-      object-fit: cover;
-      margin: 0 auto 34px;
-      filter:
-        grayscale(.1)
-        contrast(1.15)
-        drop-shadow(0 0 35px rgba(215,181,109,.08));
-      opacity: .96;
-    }
-
-    .hero-title {
-      font-family: var(--mono);
-      font-size: clamp(45px, 10vw, 125px);
-      font-weight: 400;
-      line-height: .82;
-      letter-spacing: .24em;
-      margin-right: -.24em;
-      text-indent: .24em;
-    }
-
-    .hero-title span {
-      color: var(--gold);
-    }
-
-    .hero-subtitle {
-      margin-top: 34px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .28em;
-      line-height: 2;
-      text-transform: uppercase;
-    }
-
-    .hero-line {
-      width: 150px;
-      height: 1px;
-      margin: 38px auto;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        var(--gold),
-        transparent
-      );
-    }
-
-    .hero-meta {
-      display: flex;
-      justify-content: center;
-      gap: 45px;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .15em;
-      color: var(--dim);
-    }
-
-    .hero-meta strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .3em;
-      color: var(--dim);
-    }
-
-    .scroll-indicator::after {
-      content: "";
-      display: block;
-      width: 1px;
-      height: 35px;
-      margin: 12px auto 0;
-      background: linear-gradient(var(--gold), transparent);
-    }
-
-    /* =========================================================
-       GENERAL SECTION
-       ========================================================= */
-
-    .section {
-      width: min(var(--max), calc(100% - 50px));
-      margin: 0 auto;
-      padding: 120px 0;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 30px;
-      margin-bottom: 55px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 18px;
-    }
-
-    .section-index {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .25em;
-      color: var(--gold);
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-size: clamp(27px, 4vw, 52px);
-      font-weight: 500;
-      letter-spacing: -.035em;
-    }
-
-    .section-note {
-      max-width: 390px;
-      font-family: var(--mono);
-      font-size: 9px;
-      line-height: 1.8;
-      letter-spacing: .08em;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    /* =========================================================
-       CONTROL PANEL
-       ========================================================= */
-
-    .control-grid {
-      display: grid;
-      grid-template-columns: 1.4fr .6fr .6fr .6fr;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.015);
-    }
-
-    .control-cell {
-      min-height: 135px;
-      padding: 25px;
-      border-right: 1px solid var(--line);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .control-cell:last-child {
-      border-right: none;
-    }
-
-    .control-cell::after {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      right: -50px;
-      bottom: -50px;
-      border: 1px solid rgba(215,181,109,.12);
-      transform: rotate(45deg);
-    }
-
-    .cell-label {
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--dim);
-      letter-spacing: .2em;
-      margin-bottom: 19px;
-    }
-
-    .cell-value {
-      font-family: var(--mono);
-      font-size: 18px;
-      letter-spacing: .08em;
-    }
-
-    .cell-value.gold {
-      color: var(--gold);
-    }
-
-    .meter {
-      width: 100%;
-      height: 2px;
-      margin-top: 17px;
-      background: #1b1b20;
-      overflow: hidden;
-    }
-
-    .meter span {
-      display: block;
-      height: 100%;
-      width: 73%;
-      background: var(--gold);
-      animation: meter 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes meter {
-      from { width: 57%; }
-      to { width: 81%; }
-    }
-
-    /* =========================================================
-       VISUAL ARCHIVE
-       ========================================================= */
-
-    .archive-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-    }
-
-    .archive-card {
-      position: relative;
-      min-height: 380px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: #09090d;
-      isolation: isolate;
-    }
-
-    .archive-card:nth-child(1) {
-      grid-column: span 7;
-      min-height: 520px;
-    }
-
-    .archive-card:nth-child(2) {
-      grid-column: span 5;
-      min-height: 520px;
-    }
-
-    .archive-card:nth-child(3) {
-      grid-column: span 4;
-      min-height: 580px;
-    }
-
-    .archive-card:nth-child(4) {
-      grid-column: span 4;
-      min-height: 580px;
-    }
-
-    .archive-card:nth-child(5) {
-      grid-column: span 4;
-      min-height: 580px;
-    }
-
-    .archive-card:nth-child(n+6) {
-      grid-column: span 3;
-      min-height: 320px;
-    }
-
-    .archive-card img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition:
-        transform .8s cubic-bezier(.2,.7,.2,1),
-        filter .8s ease;
-      filter: grayscale(.15) contrast(1.05);
-    }
-
-    .archive-card:hover img {
-      transform: scale(1.055);
-      filter: grayscale(0) contrast(1.12);
-    }
-
-    .archive-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,.12),
-          transparent 40%,
-          rgba(0,0,0,.88)
-        );
-      pointer-events: none;
-    }
-
-    .archive-number {
-      position: absolute;
-      z-index: 3;
-      top: 16px;
-      left: 17px;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .2em;
-      color: rgba(255,255,255,.65);
-    }
-
-    .archive-corner {
-      position: absolute;
-      z-index: 3;
-      top: 14px;
-      right: 15px;
-      width: 17px;
-      height: 17px;
-      border-top: 1px solid rgba(255,255,255,.5);
-      border-right: 1px solid rgba(255,255,255,.5);
-    }
-
-    .archive-info {
-      position: absolute;
-      z-index: 3;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 26px;
-    }
-
-    .archive-label {
-      font-family: var(--mono);
-      color: var(--gold);
-      font-size: 8px;
-      letter-spacing: .22em;
-      margin-bottom: 8px;
-    }
-
-    .archive-name {
-      font-size: 23px;
-      font-weight: 500;
-      letter-spacing: -.02em;
-    }
-
-    .archive-desc {
-      color: rgba(255,255,255,.52);
-      font-family: var(--mono);
-      font-size: 8px;
-      line-height: 1.7;
-      margin-top: 8px;
-      max-width: 420px;
-    }
-
-    /* =========================================================
-       DATA PANELS
-       ========================================================= */
-
-    .data-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .data-panel {
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.025), transparent),
-        var(--panel);
-      padding: 34px;
-      min-height: 390px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .data-panel::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border: 1px solid rgba(255,255,255,.025);
-      pointer-events: none;
-    }
-
-    .panel-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 40px;
-    }
-
-    .panel-code {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .2em;
-      color: var(--gold);
-    }
-
-    .panel-state {
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--green);
-      letter-spacing: .14em;
-    }
-
-    .data-big {
-      position: relative;
-      z-index: 2;
-      font-family: var(--mono);
-      font-size: clamp(32px, 5vw, 66px);
-      letter-spacing: .04em;
-      margin-bottom: 12px;
-    }
-
-    .data-description {
-      position: relative;
-      z-index: 2;
-      max-width: 560px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 9px;
-      line-height: 2;
-    }
-
-    .coordinates {
-      position: absolute;
-      right: 30px;
-      bottom: 30px;
-      width: 170px;
-      height: 170px;
-      border: 1px solid rgba(215,181,109,.12);
-      border-radius: 50%;
-    }
-
-    .coordinates::before,
-    .coordinates::after {
-      content: "";
-      position: absolute;
-      background: rgba(215,181,109,.14);
-    }
-
-    .coordinates::before {
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-    }
-
-    .coordinates::after {
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-    }
-
-    .coordinates span {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      background: var(--gold);
-      border-radius: 50%;
-      top: 37%;
-      left: 62%;
-      box-shadow: 0 0 15px var(--gold);
-    }
-
-    /* =========================================================
-       SIGNAL MATRIX
-       ========================================================= */
-
-    .matrix {
-      display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      gap: 5px;
-      height: 180px;
-      align-items: end;
-      margin-top: 28px;
-    }
-
-    .matrix i {
-      display: block;
-      height: calc(var(--h) * 1%);
-      background: rgba(215,181,109,.65);
-      opacity: .5;
-      animation: signal 1.8s ease-in-out infinite alternate;
-      animation-delay: calc(var(--d) * 1ms);
-    }
-
-    @keyframes signal {
-      from {
-        transform: scaleY(.65);
-        opacity: .35;
-      }
-      to {
-        transform: scaleY(1);
-        opacity: .8;
-      }
-    }
-
-    /* =========================================================
-       TYPOGRAPHIC MANIFEST
-       ========================================================= */
-
-    .manifest {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 55px 0;
-      overflow: hidden;
-    }
-
-    .manifest-track {
-      display: flex;
-      width: max-content;
-      animation: marquee 32s linear infinite;
-    }
-
-    .manifest-track span {
-      font-family: var(--mono);
-      font-size: clamp(28px, 4vw, 56px);
-      letter-spacing: .15em;
-      white-space: nowrap;
-      color: rgba(255,255,255,.09);
-      padding-right: 50px;
-    }
-
-    .manifest-track span:nth-child(even) {
-      color: rgba(215,181,109,.22);
-    }
-
-    @keyframes marquee {
-      to { transform: translateX(-50%); }
-    }
-
-    /* =========================================================
-       IMAGE WALL
-       ========================================================= */
-
-    .wall {
-      columns: 4 250px;
-      column-gap: 12px;
-    }
-
-    .wall-item {
-      break-inside: avoid;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: #0a0a0e;
-    }
-
-    .wall-item img {
-      width: 100%;
-      transition: transform .7s ease, filter .7s ease;
-      filter: saturate(.82);
-    }
-
-    .wall-item:hover img {
-      transform: scale(1.035);
-      filter: saturate(1.05);
-    }
-
-    .wall-tag {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      padding: 6px 8px;
-      background: rgba(0,0,0,.72);
-      border: 1px solid rgba(255,255,255,.13);
-      font-family: var(--mono);
-      font-size: 7px;
-      letter-spacing: .16em;
-      color: rgba(255,255,255,.7);
-      backdrop-filter: blur(8px);
-    }
-
-    /* =========================================================
-       TERMINAL
-       ========================================================= */
-
-    .terminal {
-      border: 1px solid var(--line);
-      background: #07070a;
-      box-shadow: 0 25px 80px rgba(0,0,0,.35);
-    }
-
-    .terminal-bar {
-      height: 42px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 17px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .terminal-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #383840;
-    }
-
-    .terminal-title {
-      margin-left: auto;
-      margin-right: auto;
-      font-family: var(--mono);
-         font-size: 8px;
-      letter-spacing: .18em;
-      color: var(--dim);
-    }
-
-    .terminal-body {
-      min-height: 420px;
-      padding: 28px;
-      overflow: auto;
-      font-family: var(--mono);
-      font-size: 11px;
-      line-height: 2;
-      color: #b7b7bd;
-    }
-
-    .terminal-line {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 5px;
-    }
-
-    .terminal-prompt {
-      color: var(--gold);
-      user-select: none;
-    }
-
-    .terminal-command {
-      color: #eeeae0;
-    }
-
-    .terminal-output {
-      color: #66666f;
-      padding-left: 24px;
-      margin-bottom: 15px;
-    }
-
-    .terminal-output strong {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 7px;
-      height: 13px;
-      background: var(--gold);
-      vertical-align: -2px;
-      animation: blink 1s steps(1) infinite;
-    }
-
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
-
-    footer {
-      width: min(var(--max), calc(100% - 50px));
-      margin: 0 auto;
-      padding: 80px 0 35px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr .5fr .5fr .8fr;
-      gap: 40px;
-      padding: 40px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .footer-brand {
-      font-family: var(--mono);
-      font-size: 14px;
-      letter-spacing: .3em;
-      margin-bottom: 15px;
-    }
-
-    .footer-description {
-      max-width: 420px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 8px;
-      line-height: 2;
-    }
-
-    .footer-heading {
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .2em;
-      color: var(--gold);
-      margin-bottom: 17px;
-    }
-
-    .footer-link {
-      display: block;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 8px;
-      margin-bottom: 9px;
-      transition: color .2s ease;
-    }
-
-    .footer-link:hover {
-      color: var(--text);
-    }
-
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 7px;
-      letter-spacing: .16em;
-    }
-
-    /* =========================================================
-       REVEAL ANIMATION
-       ========================================================= */
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(25px);
-      transition:
-        opacity .8s ease,
-        transform .8s cubic-bezier(.2,.7,.2,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* =========================================================
-       IMAGE LIGHTBOX
-       ========================================================= */
-
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      display: grid;
-      place-items: center;
-      padding: 30px;
-      background: rgba(0,0,0,.92);
-      backdrop-filter: blur(18px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity .3s ease, visibility .3s ease;
-    }
-
-    .lightbox.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .lightbox img {
-      max-width: min(1100px, 92vw);
-      max-height: 86vh;
-      object-fit: contain;
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 30px 100px rgba(0,0,0,.65);
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 25px;
-      right: 30px;
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--line-bright);
-      background: rgba(0,0,0,.4);
-      color: var(--text);
-      cursor: pointer;
-      font-family: var(--mono);
-      font-size: 18px;
-    }
-
-    .lightbox-label {
-      position: absolute;
-      left: 30px;
-      bottom: 25px;
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .18em;
-      color: var(--muted);
-    }
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 950px) {
-      .nav {
-        display: none;
-      }
-
-      .control-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .control-cell:nth-child(2) {
-        border-right: none;
-      }
-
-      .control-cell:nth-child(-n+2) {
-        border-bottom: 1px solid var(--line);
-      }
-
-      .archive-card:nth-child(1),
-      .archive-card:nth-child(2) {
-        grid-column: span 6;
-      }
-
-      .archive-card:nth-child(n+3) {
-        grid-column: span 4;
-      }
-
-      .data-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .topbar {
-        padding: 0 17px;
-      }
-
-      .brand {
-        font-size: 10px;
-      }
-
-      .status {
-        font-size: 7px;
-      }
-
-      .hero {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .hero-title {
-        font-size: clamp(36px, 13vw, 75px);
-        letter-spacing: .16em;
-        margin-right: -.16em;
-      }
-
-      .hero-meta {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .section {
-        width: min(100% - 30px, var(--max));
-        padding: 80px 0;
-      }
-
-      .section-header {
-        display: block;
-      }
-
-      .section-note {
-        text-align: left;
-        margin-top: 18px;
-      }
-
-      .control-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .control-cell {
-        border-right: none !important;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .control-cell:last-child {
-        border-bottom: none;
-      }
-
-      .archive-grid {
-        display: block;
-      }
-
-      .archive-card,
-      .archive-card:nth-child(n) {
-        min-height: 420px;
-        margin-bottom: 12px;
-      }
-
-      .archive-card:nth-child(3),
-      .archive-card:nth-child(4),
-      .archive-card:nth-child(5) {
-        min-height: 500px;
-      }
-
-      .data-panel {
-        min-height: 350px;
-        padding: 25px;
-      }
-
-      .coordinates {
-        width: 120px;
-        height: 120px;
-        right: 20px;
-        bottom: 20px;
-      }
-
-      .wall {
-        columns: 2 150px;
-      }
-
-      .terminal-body {
-        font-size: 9px;
-        padding: 20px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050507">
+
+<title>NULLSHIFT // ARCHIVE</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#050507;
+  --bg2:#09090d;
+  --panel:#0b0b10;
+  --panel2:#101016;
+  --line:rgba(255,255,255,.10);
+  --line2:rgba(255,255,255,.18);
+  --text:#eeeae0;
+  --muted:#85858e;
+  --dim:#4d4d56;
+  --gold:#d7b56d;
+  --gold2:#f0d792;
+  --violet:#8873aa;
+  --green:#79a58a;
+  --red:#9b4658;
+  --mono:"IBM Plex Mono",monospace;
+  --sans:"Space Grotesk",sans-serif;
+  --max:1500px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+  background:var(--bg);
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 75% 5%,rgba(115,82,145,.13),transparent 28%),
+    radial-gradient(circle at 15% 65%,rgba(100,75,120,.07),transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  overflow-x:hidden;
+  cursor:crosshair;
+}
+
+/* ================= CRT EFFECT ================= */
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  pointer-events:none;
+  opacity:.10;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255,255,255,.045) 3px
+    );
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 48%,
+      rgba(0,0,0,.35) 100%
+    );
+}
+
+::selection{
+  background:var(--gold);
+  color:#050507;
+}
+
+::-webkit-scrollbar{
+  width:7px;
+}
+
+::-webkit-scrollbar-track{
+  background:#050507;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#292932;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--gold);
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+img{
+  display:block;
+  max-width:100%;
+}
+
+/* ================= BACKGROUND GRID ================= */
+
+.grid{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  opacity:.17;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:70px 70px;
+  mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.noise{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.025;
+  pointer-events:none;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.5) 0 1px,
+      transparent 1px 4px
+    );
+}
+
+/* ================= HEADER ================= */
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:64px;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  background:rgba(5,5,7,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  font:600 11px var(--mono);
+  letter-spacing:.25em;
+}
+
+.logoMark{
+  width:27px;
+  height:27px;
+  border:1px solid var(--gold);
+  transform:rotate(45deg);
+  display:grid;
+  place-items:center;
+}
+
+.logoMark span{
+  width:7px;
+  height:7px;
+  background:var(--gold);
+  border-radius:50%;
+}
+
+nav{
+  display:flex;
+  gap:27px;
+  font:9px var(--mono);
+  letter-spacing:.18em;
+  color:var(--muted);
+}
+
+nav a{
+  position:relative;
+  transition:.25s;
+}
+
+nav a:hover{
+  color:var(--gold2);
+}
+
+nav a:after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-8px;
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:.25s;
+}
+
+nav a:hover:after{
+  width:100%;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font:8px var(--mono);
+  letter-spacing:.15em;
+}
+
+.statusDot{
+  width:6px;
+  height:6px;
+  background:var(--green);
+  border-radius:50%;
+  box-shadow:0 0 12px var(--green);
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.35}
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  padding:120px 25px 80px;
+}
+
+.orbit{
+  position:absolute;
+  width:min(75vw,900px);
+  aspect-ratio:1;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:50%;
+  animation:rotate 55s linear infinite;
+}
+
+.orbit:before{
+  content:"";
+  position:absolute;
+  inset:12%;
+  border:1px solid rgba(215,181,109,.09);
+  border-radius:50%;
+}
+
+.orbit:after{
+  content:"";
+  position:absolute;
+  inset:29%;
+  border:1px solid rgba(136,115,170,.12);
+  border-radius:50%;
+}
+
+@keyframes rotate{
+  to{transform:rotate(360deg)}
+}
+
+.crosshair{
+  position:absolute;
+  width:min(90vw,1200px);
+  height:min(90vw,1200px);
+}
+
+.crosshair:before,
+.crosshair:after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.045);
+}
+
+.crosshair:before{
+  width:1px;
+  height:100%;
+  left:50%;
+}
+
+.crosshair:after{
+  height:1px;
+  width:100%;
+  top:50%;
+}
+
+.heroContent{
+  position:relative;
+  text-align:center;
+  max-width:1100px;
+  z-index:2;
+}
+
+.kicker{
+  font:9px var(--mono);
+  color:var(--gold);
+  letter-spacing:.48em;
+  margin-bottom:27px;
+}
+
+.heroLogo{
+  width:min(180px,34vw);
+  aspect-ratio:1;
+  object-fit:contain;
+  margin:auto auto 30px;
+  filter:
+    contrast(1.12)
+    drop-shadow(0 0 35px rgba(215,181,109,.10));
+}
+
+h1{
+  font:400 clamp(48px,10vw,125px) var(--mono);
+  letter-spacing:.20em;
+  line-height:.8;
+  margin-right:-.20em;
+}
+
+h1 span{
+  color:var(--gold);
+}
+
+.heroLine{
+  width:160px;
+  height:1px;
+  margin:38px auto;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    var(--gold),
+    transparent
+  );
+}
+
+.subtitle{
+  font:9px/2 var(--mono);
+  color:var(--muted);
+  letter-spacing:.28em;
+}
+
+.meta{
+  display:flex;
+  justify-content:center;
+  gap:45px;
+  margin-top:27px;
+  font:8px var(--mono);
+  color:var(--dim);
+  letter-spacing:.13em;
+}
+
+.meta strong{
+  color:var(--text);
+  font-weight:500;
+}
+
+.scroll{
+  position:absolute;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  font:7px var(--mono);
+  color:var(--dim);
+  letter-spacing:.28em;
+}
+
+.scroll:after{
+  content:"";
+  display:block;
+  width:1px;
+  height:35px;
+  margin:11px auto;
+  background:linear-gradient(var(--gold),transparent);
+}
+
+/* ================= GENERAL ================= */
+
+.section{
+  width:min(var(--max),calc(100% - 50px));
+  margin:auto;
+  padding:115px 0;
+}
+
+.sectionHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:30px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:18px;
+  margin-bottom:50px;
+}
+
+.index{
+  color:var(--gold);
+  font:8px var(--mono);
+  letter-spacing:.25em;
+  margin-bottom:10px;
+}
+
+.sectionTitle{
+  font:500 clamp(28px,4vw,52px) var(--sans);
+  letter-spacing:-.04em;
+}
+
+.sectionNote{
+  max-width:410px;
+  color:var(--muted);
+  font:8px/1.9 var(--mono);
+  text-align:right;
+}
+
+/* ================= SYSTEM PANEL ================= */
+
+.systemGrid{
+  display:grid;
+  grid-template-columns:1.6fr .7fr .7fr .7fr;
+  border:1px solid var(--line);
+}
+
+.systemCell{
+  min-height:145px;
+  padding:26px;
+  border-right:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+
+.systemCell:last-child{
+  border-right:0;
+}
+
+.label{
+  color:var(--dim);
+  font:7px var(--mono);
+  letter-spacing:.2em;
+  margin-bottom:20px;
+}
+
+.value{
+  font:18px var(--mono);
+  letter-spacing:.08em;
+}
+
+.gold{
+  color:var(--gold);
+}
+
+.meter{
+  height:2px;
+  margin-top:20px;
+  background:#1b1b20;
+}
+
+.meter span{
+  display:block;
+  width:76%;
+  height:100%;
+  background:var(--gold);
+  animation:meter 4s alternate infinite;
+}
+
+@keyframes meter{
+  from{width:53%}
+  to{width:84%}
+}
+
+/* ================= ARCHIVE CARDS ================= */
+
+.archive{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:12px;
+}
+
+.card{
+  min-height:430px;
+  grid-column:span 4;
+  border:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+  background:#09090d;
+  isolation:isolate;
+}
+
+.card.large{
+  grid-column:span 7;
+  min-height:530px;
+}
+
+.card.side{
+  grid-column:span 5;
+  min-height:530px;
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  position:absolute;
+  inset:0;
+  object-fit:cover;
+  transition:.8s cubic-bezier(.2,.7,.2,1);
+  filter:grayscale(.18) contrast(1.08);
+}
+
+.card:hover img{
+  transform:scale(1.06);
+  filter:grayscale(0) contrast(1.13);
+}
+
+.card:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.08),
+      transparent 42%,
+      rgba(0,0,0,.93)
+    );
+}
+
+.cardNo{
+  position:absolute;
+  z-index:3;
+  top:15px;
+  left:16px;
+  font:8px var(--mono);
+  color:rgba(255,255,255,.62);
+  letter-spacing:.18em;
+}
+
+.corner{
+  position:absolute;
+  z-index:3;
+  top:14px;
+  right:14px;
+  width:17px;
+  height:17px;
+  border-top:1px solid rgba(255,255,255,.45);
+  border-right:1px solid rgba(255,255,255,.45);
+}
+
+.cardInfo{
+  position:absolute;
+  z-index:3;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:27px;
+}
+
+.cardTag{
+  color:var(--gold);
+  font:7px var(--mono);
+  letter-spacing:.22em;
+  margin-bottom:9px;
+}
+
+.cardName{
+  font:500 25px var(--sans);
+}
+
+.cardDesc{
+  max-width:450px;
+  margin-top:8px;
+  color:rgba(255,255,255,.55);
+  font:8px/1.8 var(--mono);
+}
+
+/* ================= CANDIDATE INDEX ================= */
+
+.candidates{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.candidate{
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.025),transparent),
+    var(--panel);
+  padding:32px;
+  position:relative;
+  overflow:hidden;
+}
+
+.candidate:before{
+  content:"CANDIDATE INDEX";
+  position:absolute;
+  top:18px;
+  right:20px;
+  color:var(--dim);
+  font:7px var(--mono);
+  letter-spacing:.18em;
+}
+
+.candidateId{
+  font:clamp(25px,4vw,48px) var(--mono);
+  letter-spacing:.08em;
+  margin:40px 0 15px;
+  color:var(--gold2);
+  word-break:break-all;
+}
+
+.candidateType{
+  color:var(--muted);
+  font:8px/1.8 var(--mono);
+}
+
+.badge{
+  display:inline-block;
+  margin-top:25px;
+  padding:6px 9px;
+  border:1px solid rgba(121,165,138,.25);
+  color:var(--green);
+  font:7px var(--mono);
+  letter-spacing:.15em;
+}
+
+/* ================= SIGNAL ================= */
+
+.signalGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.panel{
+  min-height:390px;
+  padding:34px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  position:relative;
+  overflow:hidden;
+}
+
+.panelHead{
+  display:flex;
+  justify-content:space-between;
+  font:8px var(--mono);
+  letter-spacing:.17em;
+}
+
+.panelCode{
+  color:var(--gold);
+}
+
+.panelState{
+  color:var(--green);
+}
+
+.big{
+  margin-top:45px;
+  font:clamp(34px,5vw,67px) var(--mono);
+  letter-spacing:.04em;
+}
+
+.description{
+  max-width:550px;
+  margin-top:10px;
+  color:var(--muted);
+  font:8px/2 var(--mono);
+}
+
+.matrix{
+  height:150px;
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(20,1fr);
+  gap:5px;
+  align-items:end;
+}
+
+.matrix i{
+  height:calc(var(--h)*1%);
+  background:var(--gold);
+  opacity:.5;
+  animation:signal 1.8s alternate infinite;
+  animation-delay:calc(var(--d)*1ms);
+}
+
+@keyframes signal{
+  from{transform:scaleY(.55);opacity:.25}
+  to{transform:scaleY(1);opacity:.75}
+}
+
+/* ================= MANIFEST ================= */
+
+.manifest{
+  overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:50px 0;
+}
+
+.track{
+  width:max-content;
+  display:flex;
+  animation:marquee 30s linear infinite;
+}
+
+.track span{
+  white-space:nowrap;
+  font:clamp(25px,4vw,55px) var(--mono);
+  letter-spacing:.15em;
+  color:rgba(255,255,255,.075);
+  padding-right:50px;
+}
+
+.track span:nth-child(2){
+  color:rgba(215,181,109,.17);
+}
+
+@keyframes marquee{
+  to{transform:translateX(-50%)}
+}
+
+/* ================= TERMINAL ================= */
+
+.terminal{
+  border:1px solid var(--line2);
+  background:#060608;
+  box-shadow:0 30px 100px rgba(0,0,0,.4);
+}
+
+.terminalTop{
+  height:44px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 16px;
+  border-bottom:1px solid var(--line);
+}
+
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#383840;
+}
+
+.terminalTitle{
+  margin:auto;
+  color:var(--dim);
+  font:7px var(--mono);
+  letter-spacing:.2em;
+}
+
+.terminalBody{
+  padding:30px;
+  min-height:500px;
+  font:10px/2 var(--mono);
+  color:#a8a8b0;
+}
+
+.line{
+  display:flex;
+  gap:12px;
+  margin-bottom:3px;
+}
+
+.prompt{
+  color:var(--gold);
+}
+
+.command{
+  color:#eeeae0;
+}
+
+.output{
+  padding-left:24px;
+  margin-bottom:15px;
+  color:#66666f;
+}
+
+.output strong{
+  color:var(--gold);
+  font-weight:500;
+}
+
+.cursor{
+  display:inline-block;
+  width:7px;
+  height:13px;
+  background:var(--gold);
+  vertical-align:-2px;
+  animation:blink 1s steps(1) infinite;
+}
+
+@keyframes blink{
+  50%{opacity:0}
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  width:min(var(--max),calc(100% - 50px));
+  margin:auto;
+  padding:80px 0 35px;
+}
+
+.footerGrid{
+  display:grid;
+  grid-template-columns:1.6fr .7fr .7fr .7fr;
+  gap:40px;
+  padding:40px 0;
+  border-top:1px solid var(--line);
+}
+
+.footerBrand{
+  font:14px var(--mono);
+  letter-spacing:.3em;
+  margin-bottom:15px;
+}
+
+.footerText{
+  max-width:430px;
+  color:var(--muted);
+  font:8px/2 var(--mono);
+}
+
+.footerHead{
+  color:var(--gold);
+  font:7px var(--mono);
+  letter-spacing:.2em;
+  margin-bottom:17px;
+}
+
+.footerLink{
+  display:block;
+  color:var(--muted);
+  font:8px var(--mono);
+  margin-bottom:9px;
+}
+
+.footerLink:hover{
+  color:var(--text);
+}
+
+.footerBottom{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+  color:var(--dim);
+  font:7px var(--mono);
+  letter-spacing:.15em;
+}
+
+/* ================= REVEAL ================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(25px);
+  transition:.8s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
+
+/* ================= LIGHTBOX ================= */
+
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:grid;
+  place-items:center;
+  padding:30px;
+  background:rgba(0,0,0,.94);
+  backdrop-filter:blur(20px);
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+}
+
+.lightbox.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.lightbox img{
+  max-width:92vw;
+  max-height:85vh;
+  object-fit:contain;
+  border:1px solid var(--line2);
+}
+
+.close{
+  position:absolute;
+  top:25px;
+  right:25px;
+  width:42px;
+  height:42px;
+  background:#09090d;
+  border:1px solid var(--line2);
+  color:var(--text);
+  font:18px var(--mono);
+  cursor:pointer;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:950px){
+
+  nav{
+    display:none;
+  }
+
+  .systemGrid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .systemCell:nth-child(2){
+    border-right:0;
+  }
+
+  .systemCell:nth-child(-n+2){
+    border-bottom:1px solid var(--line);
+  }
+
+  .card.large,
+  .card.side{
+    grid-column:span 6;
+  }
+
+  .card{
+    grid-column:span 4;
+  }
+
+  .signalGrid{
+    grid-template-columns:1fr;
+  }
+
+  .footerGrid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:650px){
+
+  header{
+    padding:0 16px;
+  }
+
+  .brand{
+    font-size:9px;
+  }
+
+  .status{
+    font-size:6px;
+  }
+
+  .hero{
+    padding-left:15px;
+    padding-right:15px;
+  }
+
+  h1{
+    font-size:clamp(36px,13vw,75px);
+    letter-spacing:.13em;
+    margin-right:-.13em;
+  }
+
+  .meta{
+    flex-direction:column;
+    gap:11px;
+  }
+
+  .section{
+    width:calc(100% - 30px);
+    padding:80px 0;
+  }
+
+  .sectionHeader{
+    display:block;
+  }
+
+  .sectionNote{
+    text-align:left;
+    margin-top:18px;
+  }
+
+  .systemGrid{
+    grid-template-columns:1fr;
+  }
+
+  .systemCell{
+    border-right:0!important;
+    border-bottom:1px solid var(--line);
+  }
+
+  .systemCell:last-child{
+    border-bottom:0;
+  }
+
+  .archive{
+    display:block;
+  }
+
+  .card,
+  .card.large,
+  .card.side{
+    min-height:420px;
+    margin-bottom:12px;
+  }
+
+  .card.large,
+  .card.side{
+    min-height:500px;
+  }
+
+  .candidates{
+    grid-template-columns:1fr;
+  }
+
+  .panel{
+    min-height:350px;
+    padding:25px;
+  }
+
+  .terminalBody{
+    padding:20px;
+    font-size:8px;
+    min-height:430px;
+    overflow:auto;
+  }
+
+  .footerGrid{
+    grid-template-columns:1fr;
+  }
+
+  .footerBottom{
+    flex-direction:column;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *:before,
+  *:after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="grid-overlay"></div>
+<div class="grid"></div>
+<div class="noise"></div>
 
-  <!-- =======================================================
-       TOP NAVIGATION
-       ======================================================= -->
+<header>
 
-  <header class="topbar">
+  <a href="#top" class="brand">
+    <span class="logoMark"><span></span></span>
+    NULLSHIFT // ARCHIVE
+  </a>
 
-    <a href="#top" class="brand">
-      <span class="brand-mark"></span>
-      <span>NULLSHIFT // ARCHIVE</span>
-    </a>
+  <nav>
+    <a href="#records">RECORDS</a>
+    <a href="#candidates">INDEX</a>
+    <a href="#signals">SIGNALS</a>
+    <a href="#terminal">TERMINAL</a>
+  </nav>
 
-    <nav class="nav">
-      <a href="#archive">ARCHIVE</a>
-      <a href="#data">DATA</a>
-      <a href="#visuals">VISUALS</a>
-      <a href="#terminal">TERMINAL</a>
-    </nav>
+  <div class="status">
+    <span class="statusDot"></span>
+    ARCHIVE ONLINE
+  </div>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      ARCHIVE ONLINE
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+  <div class="orbit"></div>
+  <div class="crosshair"></div>
+
+  <div class="heroContent reveal">
+
+    <div class="kicker">
+      NULLSHIFT // DIGITAL ARCHIVE
     </div>
 
-  </header>
-
-
-  <!-- =======================================================
-       HERO
-       ======================================================= -->
-
-  <main id="top">
-
-    <section class="hero">
-
-      <div class="hero-orbit"></div>
-      <div class="hero-crosshair"></div>
-
-      <div class="hero-inner reveal">
-
-        <div class="hero-kicker">
-          DIGITAL ARCHIVE // RESTRICTED ACCESS
-        </div>
-
-        <img
-          class="hero-logo"
-          src="NullShift Logo.webp"
-          alt="NULLSHIFT"
-        />
-
-        <h1 class="hero-title">
-          NULL<span>SHIFT</span>
-        </h1>
-
-        <div class="hero-line"></div>
-
-        <p class="hero-subtitle">
-          ARCHIVE // VISUAL INDEX // SYSTEM RECORDS
-        </p>
-
-        <div class="hero-meta">
-          <span>
-            ARCHIVE:
-            <strong>NS-A/001</strong>
-          </span>
-
-          <span>
-            ACCESS:
-            <strong>OPEN</strong>
-          </span>
-
-          <span>
-            STATUS:
-            <strong>ACTIVE</strong>
-          </span>
-        </div>
-
-      </div>
-
-      <div class="scroll-indicator">
-        SCROLL TO ACCESS
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ARCHIVE CONTROL
-         ===================================================== -->
-
-    <section class="section reveal" id="archive">
-
-      <div class="section-header">
-
-        <div>
-          <div class="section-index">01 // ARCHIVE</div>
-          <h2 class="section-title">
-            The Archive
-          </h2>
-        </div>
-
-        <p class="section-note">
-          A curated visual index of material associated with
-          NULLSHIFT. Explore the records without disturbing
-          what remains undocumented.
-        </p>
-
-      </div>
-
-
-      <div class="control-grid">
-
-        <div class="control-cell">
-
-          <div class="cell-label">
-            ARCHIVE STATUS
-          </div>
-
-          <div class="cell-value gold">
-            ONLINE
-          </div>
-
-          <div class="meter">
-            <span></span>
-          </div>
-
-        </div>
-
-
-        <div class="control-cell">
-
-          <div class="cell-label">
-            ACCESS
-          </div>
-
-          <div class="cell-value">
-            PUBLIC
-          </div>
-
-        </div>
-
-
-        <div class="control-cell">
-
-          <div class="cell-label">
-            RECORDS
-          </div>
-
-          <div class="cell-value">
-            09
-          </div>
-
-        </div>
-
-
-        <div class="control-cell">
-
-          <div class="cell-label">
-            INDEX
-          </div>
-
-          <div class="cell-value">
-            NS-A
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         IMAGE ARCHIVE
-         ===================================================== -->
-
-    <section class="section reveal">
-
-      <div class="section-header">
-
-        <div>
-          <div class="section-index">02 // RECORDS</div>
-          <h2 class="section-title">
-            Visual Records
-          </h2>
-        </div>
-
-        <p class="section-note">
-          Selected imagery preserved within the archive.
-          Click any record to inspect it at full resolution.
-        </p>
-
-      </div>
-
-
-      <div class="archive-grid">
-
-        <article class="archive-card image-open">
-
-          <img
-            src="T H R E N O D Y.png"
-            alt="Archive artwork"
-          />
-
-          <span class="archive-number">
-            REC // 001
-          </span>
-
-          <span class="archive-corner"></span>
-
-          <div class="archive-info">
-
-            <div class="archive-label">
-              ARCHIVE ARTWORK
-            </div>
-
-            <div class="archive-name">
-              THRENODY
-            </div>
-
-            <div class="archive-desc">
-              Visual record preserved within the NULLSHIFT archive.
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="archive-card image-open">
-
-          <img
-            src="e988c12d3a3efa598806079ea4d00084 (2).jpg"
-            alt="Cosmic visual record"
-          />
-
-          <span class="archive-number">
-            REC // 002
-          </span>
-
-          <span class="archive-corner"></span>
-
-          <div class="archive-info">
-
-            <div class="archive-label">
-              CELESTIAL RECORD
-            </div>
-
-            <div class="archive-name">
-              EVENT HORIZON
-            </div>
-
-            <div class="archive-desc">
-              A captured visual fragment from the archive.
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="archive-card image-open">
-
-          <img
-            src="6e1bccb39bb7a2225ecc4978a173bfe7.jpg"
-            alt="Celestial archive record"
-          />
-
-          <span class="archive-number">
-            REC // 003
-          </span>
-
-          <span class="archive-corner"></span>
-
-          <div class="archive-info">
-
-            <div class="archive-label">
-              CELESTIAL
-            </div>
-
-            <div class="archive-name">
-              OBSERVATION
-            </div>
-
-            <div class="archive-desc">
-              Archived astronomical imagery.
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="archive-card image-open">
-
-          <img
-            src="download.jpg"
-            alt="NULLSHIFT archive image"
-          />
-
-          <span class="archive-number">
-            REC // 004
-          </span>
-
-          <span class="archive-corner"></span>
-
-          <div class="archive-info">
-
-            <div class="archive-label">
-              SYSTEM IMAGE
-            </div>
-
-            <div class="archive-name">
-              NULL
-            </div>
-
-            <div class="archive-desc">
-              An isolated visual artifact.
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="archive-card image-open">
-
-          <img
-            src="MCV_MountsOfMayhem_reward_wallpaper_TeamGold_1080x1920.png"
-            alt="Archive visual"
-          />
-
-          <span class="archive-number">
-            REC // 005
-          </span>
-
-          <span class="archive-corner"></span>
-
-          <div class="archive-info">
-
-            <div class="archive-label">
-              EXTERNAL RECORD
-            </div>
-
-            <div class="archive-name">
-              MOUNTED
-            </div>
-
-            <div class="archive-desc">
-              External visual reference stored in the archive.
-            </div>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         DATA
-         ===================================================== -->
-
-    <section class="section reveal" id="data">
-
-      <div class="section-header">
-
-        <div>
-          <div class="section-index">03 // DATA</div>
-          <h2 class="section-title">
-            Archive Metrics
-          </h2>
-        </div>
-
-        <p class="section-note">
-          Non-narrative system information maintained for
-          archival presentation.
-        </p>
-
-      </div>
-
-
-      <div class="data-layout">
-
-
-        <div class="data-panel">
-
-          <div class="panel-top">
-
-            <span class="panel-code">
-              NS // 9502026#
-            </span>
-
-            <span class="panel-state">
-              INDEXED
-            </span>
-
-          </div>
-
-          <div class="data-big">
-            9502026#
-          </div>
-
-          <p class="data-description">
-            Registered archive identifier. This record is
-            presented as an index reference only.
-          </p>
-
-          <div class="coordinates">
-            <span></span>
-          </div>
-
-        </div>
-
-
-        <div class="data-panel">
-
-          <div class="panel-top">
-
-            <span class="panel-code">
-              SIGNAL // MATRIX
-            </span>
-
-            <span class="panel-state">
-              MONITORING
-            </span>
-
-          </div>
-
-          <div class="data-big">
-            04.77
-          </div>
-
-          <p class="data-description">
-            Abstract archive signal visualization.
-            Values are intentionally non-narrative.
-          </p>
-
-          <div class="matrix">
-
-            <i style="--h:42;--d:0"></i>
-            <i style="--h:68;--d:80"></i>
-            <i style="--h:31;--d:150"></i>
-            <i style="--h:87;--d:220"></i>
-            <i style="--h:55;--d:290"></i>
-            <i style="--h:74;--d:350"></i>
-            <i style="--h:38;--d:410"></i>
-            <i style="--h:92;--d:470"></i>
-            <i style="--h:61;--d:530"></i>
-            <i style="--h:45;--d:590"></i>
-            <i style="--h:79;--d:650"></i>
-            <i style="--h:52;--d:710"></i>
-            <i style="--h:88;--d:770"></i>
-            <i style="--h:35;--d:830"></i>
-            <i style="--h:70;--d:890"></i>
-            <i style="--h:48;--d:950"></i>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         MANIFEST
-         ===================================================== -->
-
-    <div class="manifest">
-
-      <div class="manifest-track">
-
-        <span>
-          NULLSHIFT • ARCHIVE • NULLSHIFT • ARCHIVE •
-        </span>
-
-        <span>
-          NULLSHIFT • ARCHIVE • NULLSHIFT • ARCHIVE •
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         VISUAL WALL
-         ===================================================== -->
-
-    <section class="section reveal" id="visuals">
-
-      <div class="section-header">
-
-        <div>
-          <div class="section-index">04 // VISUALS</div>
-          <h2 class="section-title">
-            Peripheral Records
-          </h2>
-        </div>
-
-        <p class="section-note">
-          Additional imagery arranged as a visual field.
-        </p>
-
-      </div>
-
-
-      <div class="wall">
-
-
-        <div class="wall-item image-open">
-
-          <img
-            src="tiko-sticker.webp"
-            alt="Archive sticker"
-          />
-
-          <span class="wall-tag">
-            REC // 006
-          </span>
-
-        </div>
-
-
-        <div class="wall-item image-open">
-
-          <img
-            src="theveller-sticker.webp"
-            alt="Archive sticker"
-          />
-
-          <span class="wall-tag">
-            REC // 007
-          </span>
-
-        </div>
-
-
-        <div class="wall-item image-open">
-
-          <img
-            src="doraemon-sticker.webp"
-            alt="Archive sticker"
-          />
-
-          <span class="wall-tag">
-            REC // 008
-          </span>
-
-        </div>
-
-
-        <div class="wall-item image-open">
-
-          <img
-            src="download.jpg"
-            alt="Archive record"
-          />
-
-          <span class="wall-tag">
-            REC // 009
-          </span>
-
-        </div>
-
-
-        <div class="wall-item image-open">
-
-          <img
-            src="6e1bccb39bb7a2225ecc4978a173bfe7.jpg"
-            alt="Archive record"
-          />
-
-          <span class="wall-tag">
-            REC // 010
-          </span>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         TERMINAL
-         ===================================================== -->
-
-    <section class="section reveal" id="terminal">
-
-      <div class="section-header">
-
-        <div>
-          <div class="section-index">05 // TERMINAL</div>
-          <h2 class="section-title">
-            Archive Terminal
-          </h2>
-        </div>
-
-        <p class="section-note">
-          A simulated interface for navigating the visual
-          archive.
-        </p>
-
-      </div>
-
-
-      <div class="terminal">
-
-        <div class="terminal-bar">
-
-          <span class="terminal-dot"></span>
-          <span class="terminal-dot"></span>
-          <span class="terminal-dot"></span>
-
-          <span class="terminal-title">
-            NS_ARCHIVE_TERMINAL
-          </span>
-
-        </div>
-
-
-        <div class="terminal-body">
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              connect archive
-            </span>
-          </div>
-
-          <div class="terminal-output">
-            connection established...<br />
-            archive node: <strong>NS-A/001</strong><br />
-            encryption: <strong>ACTIVE</strong><br />
-            records available: <strong>010</strong>
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              index --status
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            querying archive status...<br />
-            system state: <strong>ONLINE</strong><br />
-            archive integrity: <strong>73%</strong><br />
-            external access: <strong>PERMITTED</strong>
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              records --list
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            <strong>REC // 001</strong> — THRENODY<br />
-            <strong>REC // 002</strong> — EVENT HORIZON<br />
-            <strong>REC // 003</strong> — OBSERVATION<br />
-            <strong>REC // 004</strong> — NULL<br />
-            <strong>REC // 005</strong> — MOUNTED<br />
-            <strong>REC // 006</strong> — TIKO<br />
-            <strong>REC // 007</strong> — THE VELLER<br />
-            <strong>REC // 008</strong> — DORAEMON<br />
-            <strong>REC // 009</strong> — NULL<br />
-            <strong>REC // 010</strong> — OBSERVATION
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              query --candidate 9502026#
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            candidate identifier recognized.<br />
-            classification: <strong>REGISTERED</strong><br />
-            simulation reference: <strong>#777</strong><br />
-            status: <strong>ACTIVE</strong>
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              observe
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            observation request received.<br />
-            processing...<br />
-            processing...<br />
-            <strong>WARNING:</strong> requested observation exceeds
-            standard archival parameters.
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              transcend
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            command recognized.<br />
-            matter ........ <strong>STABLE</strong><br />
-            pattern ....... <strong>STABLE</strong><br />
-            memory ........ <strong>UNSTABLE</strong><br />
-            awareness ..... <strong>UNKNOWN</strong><br /><br />
-
-            <strong>THE AXIOM</strong> // CONNECTION DETECTED
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="terminal-command">
-              exit
-            </span>
-
-          </div>
-
-          <div class="terminal-output">
-            session terminated.<br />
-            archive remains online.
-          </div>
-
-
-          <div class="terminal-line">
-
-            <span class="terminal-prompt">
-              $
-            </span>
-
-            <span class="cursor"></span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
-    <footer>
-
-      <div class="footer-grid">
-
-        <div>
-
-          <div class="footer-brand">
-            NULLSHIFT
-          </div>
-
-          <p class="footer-description">
-            A visual and digital archive documenting fragments,
-            records, imagery, and system observations associated
-            with the NULLSHIFT project.
-          </p>
-
-        </div>
-
-
-        <div>
-
-          <div class="footer-heading">
-            NAVIGATE
-          </div>
-
-          <a class="footer-link" href="#archive">
-            ARCHIVE
-          </a>
-
-          <a class="footer-link" href="#data">
-            DATA
-          </a>
-
-          <a class="footer-link" href="#visuals">
-            VISUALS
-          </a>
-
-          <a class="footer-link" href="#terminal">
-            TERMINAL
-          </a>
-
-        </div>
-
-
-        <div>
-
-          <div class="footer-heading">
-            SYSTEM
-          </div>
-
-          <span class="footer-link">
-            NS-A/001
-          </span>
-
-          <span class="footer-link">
-            NODE // 777
-          </span>
-
-          <span class="footer-link">
-            STATUS // ACTIVE
-          </span>
-
-          <span class="footer-link">
-            ACCESS // OPEN
-          </span>
-
-        </div>
-
-
-        <div>
-
-          <div class="footer-heading">
-            ARCHIVE
-          </div>
-
-          <span class="footer-link">
-            RECORDS // 010
-          </span>
-
-          <span class="footer-link">
-            INDEX // NS-A
-          </span>
-
-          <span class="footer-link">
-            SIGNAL // 04.77
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-bottom">
-
-        <span>
-          NULLSHIFT // ARCHIVE SYSTEM
-        </span>
-
-        <span>
-          ALL RECORDS PRESERVED // 2026
-        </span>
-
-        <span>
-          ERRATA // SYSTEM NODE
-        </span>
-
-      </div>
-
-    </footer>
-
-
-  </main>
-
-
-  <!-- =======================================================
-       LIGHTBOX
-       ======================================================= -->
-
-  <div class="lightbox" id="lightbox">
-
-    <button
-      class="lightbox-close"
-      id="lightboxClose"
-      aria-label="Close image"
-    >
-      ×
-    </button>
-
+    <!-- KEEP YOUR EXISTING LOGO FILE BESIDE index.html -->
     <img
-      id="lightboxImage"
-      src=""
-      alt="Expanded archive record"
-    />
+      class="heroLogo"
+      src="NullShift Logo.webp"
+      alt="NULLSHIFT"
+    >
 
-    <div class="lightbox-label" id="lightboxLabel">
-      ARCHIVE RECORD
+    <h1>
+      NULL<span>SHIFT</span>
+    </h1>
+
+    <div class="heroLine"></div>
+
+    <div class="subtitle">
+      VISUAL RECORDS // IDENTIFIERS // SYSTEM DOCUMENTATION
+    </div>
+
+    <div class="meta">
+
+      <span>
+        ARCHIVE:
+        <strong>NS-A/001</strong>
+      </span>
+
+      <span>
+        ACCESS:
+        <strong>PUBLIC</strong>
+      </span>
+
+      <span>
+        STATUS:
+        <strong>ACTIVE</strong>
+      </span>
+
     </div>
 
   </div>
 
+  <div class="scroll">
+    SCROLL TO ACCESS
+  </div>
 
-  <!-- =======================================================
-       JAVASCRIPT
-       ======================================================= -->
+</section>
 
-  <script>
+<!-- ================= ARCHIVE ================= -->
 
-    /* =======================================================
-       SCROLL REVEAL
-       ======================================================= */
+<section class="section reveal" id="records">
 
-    const revealElements = document.querySelectorAll(".reveal");
+  <div class="sectionHeader">
 
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
+    <div>
+      <div class="index">01 // RECORDS</div>
+      <h2 class="sectionTitle">Visual Archive</h2>
+    </div>
 
-        entries.forEach((entry) => {
+    <p class="sectionNote">
+      A curated collection of visual material associated
+      with NULLSHIFT. Each record can be opened independently
+      for closer inspection.
+    </p>
 
-          if (entry.isIntersecting) {
+  </div>
 
-            entry.target.classList.add("visible");
+  <div class="archive">
 
-            revealObserver.unobserve(entry.target);
+    <article class="card large imageOpen">
 
-          }
+      <img
+        src="T H R E N O D Y.png"
+        alt="NULLSHIFT visual record"
+      >
 
-        });
+      <span class="cardNo">REC // 001</span>
+      <span class="corner"></span>
 
-      },
-      {
-        threshold: 0.12
+      <div class="cardInfo">
+
+        <div class="cardTag">ARCHIVE ARTWORK</div>
+
+        <div class="cardName">
+          THRENODY
+        </div>
+
+        <p class="cardDesc">
+          A primary visual record preserved within the
+          NULLSHIFT archive.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card side imageOpen">
+
+      <img
+        src="e988c12d3a3efa598806079ea4d00084 (2).jpg"
+        alt="NULLSHIFT visual record"
+      >
+
+      <span class="cardNo">REC // 002</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">CELESTIAL RECORD</div>
+
+        <div class="cardName">
+          EVENT HORIZON
+        </div>
+
+        <p class="cardDesc">
+          A preserved visual fragment presented without
+          additional narrative context.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="6e1bccb39bb7a2225ecc4978a173bfe7.jpg"
+        alt="NULLSHIFT celestial record"
+      >
+
+      <span class="cardNo">REC // 003</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">CELESTIAL</div>
+
+        <div class="cardName">
+          OBSERVATION
+        </div>
+
+        <p class="cardDesc">
+          Archived astronomical imagery.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="download.jpg"
+        alt="NULLSHIFT archive image"
+      >
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="MCV_MountsOfMayhem_reward_wallpaper_TeamGold_1080x1920.png"
+        alt="NULLSHIFT visual record"
+      >
+
+      <span class="cardNo">REC // 004</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">EXTERNAL RECORD</div>
+
+        <div class="cardName">
+          ARCHIVE FRAGMENT
+        </div>
+
+        <p class="cardDesc">
+          A supplementary visual record retained within
+          the archive index.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="tiko-sticker.webp"
+        alt="NULLSHIFT archive sticker"
+      >
+
+      <span class="cardNo">REC // 005</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">PERIPHERAL RECORD</div>
+
+        <div class="cardName">
+          TIKO
+        </div>
+
+        <p class="cardDesc">
+          A peripheral visual element preserved as part of
+          the wider NULLSHIFT archive.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="theveller-sticker.webp"
+        alt="NULLSHIFT archive sticker"
+      >
+
+      <span class="cardNo">REC // 006</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">PERIPHERAL RECORD</div>
+
+        <div class="cardName">
+          THE VELLER
+        </div>
+
+        <p class="cardDesc">
+          An indexed visual fragment retained for reference.
+        </p>
+
+      </div>
+
+    </article>
+
+    <article class="card imageOpen">
+
+      <img
+        src="doraemon-sticker.webp"
+        alt="NULLSHIFT archive sticker"
+      >
+
+      <span class="cardNo">REC // 007</span>
+      <span class="corner"></span>
+
+      <div class="cardInfo">
+
+        <div class="cardTag">PERIPHERAL RECORD</div>
+
+        <div class="cardName">
+          ARCHIVE STICKER
+        </div>
+
+        <p class="cardDesc">
+          A small visual artifact within the peripheral
+          collection.
+        </p>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- ================= CANDIDATE INDEX ================= -->
+
+<section class="section reveal" id="candidates">
+
+  <div class="sectionHeader">
+
+    <div>
+      <div class="index">02 // INDEX</div>
+      <h2 class="sectionTitle">Candidate Registry</h2>
+    </div>
+
+    <p class="sectionNote">
+      Publicly indexed identifiers associated with NULLSHIFT.
+      No additional narrative information is disclosed here.
+    </p>
+
+  </div>
+
+
+  <div class="candidates">
+
+
+    <article class="candidate">
+
+      <div class="label">
+        PRIMARY INDEX
+      </div>
+
+      <div class="candidateId">
+        9502026#
+      </div>
+
+      <p class="candidateType">
+        Primary registered identifier within the NULLSHIFT
+        archive. This entry intentionally contains no
+        narrative disclosure.
+      </p>
+
+      <span class="badge">
+        INDEXED
+      </span>
+
+    </article>
+
+
+    <article class="candidate">
+
+      <div class="label">
+        ARCHIVE REFERENCE
+      </div>
+
+      <div class="candidateId">
+        0000395#
+      </div>
+
+      <p class="candidateType">
+        Historical archive identifier. Retained as a reference
+        within the public index.
+      </p>
+
+      <span class="badge">
+        RECORDED
+      </span>
+
+    </article>
+
+
+    <article class="candidate">
+
+      <div class="label">
+        ARCHIVE REFERENCE
+      </div>
+
+      <div class="candidateId">
+        10012012
+      </div>
+
+      <p class="candidateType">
+        Additional registered identifier associated with the
+        archive's indexed records.
+      </p>
+
+      <span class="badge">
+        RECORDED
+      </span>
+
+    </article>
+
+
+    <article class="candidate">
+
+      <div class="label">
+        ARCHIVE REFERENCE
+      </div>
+
+      <div class="candidateId">
+        12911035
+      </div>
+
+      <p class="candidateType">
+        Public archive reference maintained without additional
+        contextual disclosure.
+      </p>
+
+      <span class="badge">
+        INDEXED
+      </span>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+<!-- ================= SIGNALS ================= -->
+
+<section class="section reveal" id="signals">
+
+  <div class="sectionHeader">
+
+    <div>
+      <div class="index">03 // SIGNALS</div>
+      <h2 class="sectionTitle">Signal Interface</h2>
+    </div>
+
+    <p class="sectionNote">
+      Abstract system visualisation designed to resemble
+      an old diagnostic terminal. The displayed values are
+      interface elements rather than narrative information.
+    </p>
+
+  </div>
+
+
+  <div class="signalGrid">
+
+
+    <article class="panel">
+
+      <div class="panelHead">
+
+        <span class="panelCode">
+          NS // SIGNAL-01
+        </span>
+
+        <span class="panelState">
+          STABLE
+        </span>
+
+      </div>
+
+      <div class="big">
+        04.77
+      </div>
+
+      <p class="description">
+        A non-narrative signal representation generated for
+        the archive interface. The display exists purely as
+        a visual diagnostic layer.
+      </p>
+
+      <div class="matrix">
+
+        <i style="--h:38;--d:0"></i>
+        <i style="--h:67;--d:70"></i>
+        <i style="--h:51;--d:140"></i>
+        <i style="--h:82;--d:210"></i>
+        <i style="--h:43;--d:280"></i>
+        <i style="--h:91;--d:350"></i>
+        <i style="--h:57;--d:420"></i>
+        <i style="--h:73;--d:490"></i>
+        <i style="--h:34;--d:560"></i>
+        <i style="--h:88;--d:630"></i>
+        <i style="--h:48;--d:700"></i>
+        <i style="--h:76;--d:770"></i>
+        <i style="--h:61;--d:840"></i>
+        <i style="--h:94;--d:910"></i>
+        <i style="--h:42;--d:980"></i>
+        <i style="--h:69;--d:1050"></i>
+        <i style="--h:53;--d:1120"></i>
+        <i style="--h:81;--d:1190"></i>
+        <i style="--h:37;--d:1260"></i>
+        <i style="--h:72;--d:1330"></i>
+
+      </div>
+
+    </article>
+
+
+    <article class="panel">
+
+      <div class="panelHead">
+
+        <span class="panelCode">
+          NS // DIAGNOSTIC
+        </span>
+
+        <span class="panelState">
+          ACTIVE
+        </span>
+
+      </div>
+
+      <div class="big">
+        77:04
+      </div>
+
+      <p class="description">
+        Diagnostic interface layer. All information displayed
+        in this panel is deliberately abstract and contains
+        no narrative material.
+      </p>
+
+      <div
+        style="
+          position:absolute;
+          right:35px;
+          bottom:35px;
+          width:155px;
+          height:155px;
+          border:1px solid rgba(215,181,109,.14);
+          border-radius:50%;
+        "
+      >
+
+        <div
+          style="
+            position:absolute;
+            left:50%;
+            top:0;
+            bottom:0;
+            width:1px;
+            background:rgba(215,181,109,.12);
+          "
+        ></div>
+
+        <div
+          style="
+            position:absolute;
+            top:50%;
+            left:0;
+            right:0;
+            height:1px;
+            background:rgba(215,181,109,.12);
+          "
+        ></div>
+
+        <div
+          style="
+            position:absolute;
+            width:7px;
+            height:7px;
+            border-radius:50%;
+            background:var(--gold);
+            left:63%;
+            top:36%;
+            box-shadow:0 0 18px var(--gold);
+          "
+        ></div>
+
+      </div>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+<!-- ================= MANIFEST ================= -->
+
+<div class="manifest">
+
+  <div class="track">
+
+    <span>
+      NULLSHIFT • ARCHIVE • RECORD • INDEX • SIGNAL •
+      NULLSHIFT • ARCHIVE • RECORD • INDEX • SIGNAL •
+    </span>
+
+    <span>
+      NULLSHIFT • ARCHIVE • RECORD • INDEX • SIGNAL •
+      NULLSHIFT • ARCHIVE • RECORD • INDEX • SIGNAL •
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- ================= TERMINAL ================= -->
+
+<section class="section reveal" id="terminal">
+
+  <div class="sectionHeader">
+
+    <div>
+      <div class="index">04 // TERMINAL</div>
+      <h2 class="sectionTitle">Archive Terminal</h2>
+    </div>
+
+    <p class="sectionNote">
+      A fictional command interface for navigating the
+      publicly available archive index.
+    </p>
+
+  </div>
+
+
+  <div class="terminal">
+
+    <div class="terminalTop">
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="terminalTitle">
+        NULLSHIFT_ARCHIVE // TERMINAL
+      </span>
+
+    </div>
+
+
+    <div class="terminalBody">
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">boot --archive</span>
+      </div>
+
+      <div class="output">
+        Initialising archive interface...
+      </div>
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">status</span>
+      </div>
+
+      <div class="output">
+        ARCHIVE STATUS:
+        <strong>ONLINE</strong><br>
+        INDEX STATUS:
+        <strong>ACTIVE</strong><br>
+        ACCESS LEVEL:
+        <strong>PUBLIC</strong>
+      </div>
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">index --list</span>
+      </div>
+
+      <div class="output">
+        [001] VISUAL RECORD<br>
+        [002] CELESTIAL RECORD<br>
+        [003] OBSERVATION<br>
+        [004] ARCHIVE FRAGMENT<br>
+        [005] PERIPHERAL RECORD<br>
+        [006] PERIPHERAL RECORD<br>
+        [007] PERIPHERAL RECORD
+      </div>
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">candidate --lookup</span>
+      </div>
+
+      <div class="output">
+        PRIMARY:
+        <strong>9502026#</strong><br>
+        REFERENCE:
+        <strong>0000395#</strong><br>
+        REFERENCE:
+        <strong>10012012</strong><br>
+        REFERENCE:
+        <strong>12911035</strong>
+      </div>
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">records --count</span>
+      </div>
+
+      <div class="output">
+        AVAILABLE VISUAL RECORDS:
+        <strong>07</strong>
+      </div>
+
+
+      <div class="line">
+        <span class="prompt">$</span>
+        <span class="command">help</span>
+      </div>
+
+      <div class="output">
+        Available commands:<br><br>
+
+        <strong>status</strong>
+        &nbsp;&nbsp; display archive status<br>
+
+        <strong>index --list</strong>
+        &nbsp;&nbsp; list indexed records<br>
+
+        <strong>candidate --lookup</strong>
+        &nbsp;&nbsp; display public identifiers<br>
+
+        <strong>records --count</strong>
+        &nbsp;&nbsp; count available records<br>
+
+        <strong>clear</strong>
+        &nbsp;&nbsp; clear terminal output<br>
+
+        <strong>help</strong>
+        &nbsp;&nbsp; display available commands
+      </div>
+
+
+      <div class="line">
+
+        <span class="prompt">$</span>
+
+        <span class="command">
+          <span class="cursor"></span>
+        </span>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+  <div class="footerGrid">
+
+
+    <div>
+
+      <div class="footerBrand">
+        NULLSHIFT
+      </div>
+
+      <p class="footerText">
+        NULLSHIFT is an independent digital project built
+        around atmosphere, visual design, experimental
+        systems and interactive presentation.
+        This archive exists as a public-facing index of
+        selected material.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <div class="footerHead">
+        NAVIGATION
+      </div>
+
+      <a class="footerLink" href="#top">
+        HOME
+      </a>
+
+      <a class="footerLink" href="#records">
+        RECORDS
+      </a>
+
+      <a class="footerLink" href="#candidates">
+        INDEX
+      </a>
+
+      <a class="footerLink" href="#signals">
+        SIGNALS
+      </a>
+
+      <a class="footerLink" href="#terminal">
+        TERMINAL
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <div class="footerHead">
+        ARCHIVE
+      </div>
+
+      <span class="footerLink">
+        NS-A/001
+      </span>
+
+      <span class="footerLink">
+        PUBLIC ACCESS
+      </span>
+
+      <span class="footerLink">
+        VISUAL INDEX
+      </span>
+
+      <span class="footerLink">
+        ACTIVE
+      </span>
+
+    </div>
+
+
+    <div>
+
+      <div class="footerHead">
+        IDENTIFIER
+      </div>
+
+      <span class="footerLink">
+        9502026#
+      </span>
+
+      <span class="footerLink">
+        ARCHIVE ONLINE
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footerBottom">
+
+    <span>
+      NULLSHIFT // ARCHIVE
+    </span>
+
+    <span>
+      NS-A/001 // PUBLIC INDEX
+    </span>
+
+    <span>
+      © 2026 NULLSHIFT
+    </span>
+
+  </div>
+
+</footer>
+
+</main>
+
+
+<!-- ================= LIGHTBOX ================= -->
+
+<div class="lightbox" id="lightbox">
+
+  <button
+    class="close"
+    id="closeLightbox"
+    aria-label="Close image"
+  >
+    ×
+  </button>
+
+  <img
+    id="lightboxImage"
+    src=""
+    alt="Expanded archive record"
+  >
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+const revealItems = document.querySelectorAll(".reveal");
+
+const revealObserver = new IntersectionObserver(
+  entries => {
+
+    entries.forEach(entry => {
+
+      if(entry.isIntersecting){
+
+        entry.target.classList.add("visible");
+
+        revealObserver.unobserve(entry.target);
+
       }
-    );
-
-
-    revealElements.forEach((element) => {
-      revealObserver.observe(element);
-    });
-
-
-    /* =======================================================
-       IMAGE LIGHTBOX
-       ======================================================= */
-
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImage = document.getElementById("lightboxImage");
-    const lightboxClose = document.getElementById("lightboxClose");
-    const lightboxLabel = document.getElementById("lightboxLabel");
-
-    const imageOpeners = document.querySelectorAll(".image-open");
-
-
-    imageOpeners.forEach((card) => {
-
-      card.addEventListener("click", () => {
-
-        const image = card.querySelector("img");
-
-        if (!image) return;
-
-        lightboxImage.src = image.src;
-        lightboxImage.alt = image.alt;
-
-        const number =
-          card.querySelector(".archive-number") ||
-          card.querySelector(".wall-tag");
-
-        if (number) {
-          lightboxLabel.textContent = number.textContent.trim();
-        } else {
-          lightboxLabel.textContent = "ARCHIVE RECORD";
-        }
-
-        lightbox.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-      });
 
     });
 
+  },
+  {
+    threshold:.12
+  }
+);
 
-    function closeLightbox() {
+revealItems.forEach(item => {
+  revealObserver.observe(item);
+});
 
-      lightbox.classList.remove("active");
 
-      document.body.style.overflow = "";
+/* =========================================================
+   IMAGE LIGHTBOX
+   ========================================================= */
 
-      setTimeout(() => {
-        lightboxImage.src = "";
-      }, 300);
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const closeLightbox = document.getElementById("closeLightbox");
+
+const imageItems = document.querySelectorAll(".imageOpen");
+
+imageItems.forEach(item => {
+
+  item.addEventListener("click", () => {
+
+    const image = item.querySelector("img");
+
+    if(!image) return;
+
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
+
+    lightbox.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+  });
+
+});
+
+
+function closeViewer(){
+
+  lightbox.classList.remove("active");
+
+  document.body.style.overflow = "";
+
+  setTimeout(() => {
+
+    lightboxImage.src = "";
+
+  },300);
+
+}
+
+
+closeLightbox.addEventListener(
+  "click",
+  closeViewer
+);
+
+
+lightbox.addEventListener(
+  "click",
+  event => {
+
+    if(event.target === lightbox){
+
+      closeViewer();
 
     }
 
-
-    lightboxClose.addEventListener("click", closeLightbox);
-
-
-    lightbox.addEventListener("click", (event) => {
-
-      if (event.target === lightbox) {
-        closeLightbox();
-      }
-
-    });
+  }
+);
 
 
-    document.addEventListener("keydown", (event) => {
+document.addEventListener(
+  "keydown",
+  event => {
 
-      if (event.key === "Escape") {
-        closeLightbox();
-      }
+    if(event.key === "Escape"){
 
-    });
+      closeViewer();
 
+    }
 
-    /* =======================================================
-       TERMINAL TYPE EFFECT
-       ======================================================= */
-
-    const terminalCommands =
-      document.querySelectorAll(".terminal-command");
+  }
+);
 
 
-    terminalCommands.forEach((command) => {
+/* =========================================================
+   TERMINAL MICRO-INTERACTION
+   ========================================================= */
 
-      command.addEventListener("mouseenter", () => {
+const terminal = document.querySelector(".terminalBody");
 
-        command.style.textShadow =
-          "0 0 12px rgba(215,181,109,.35)";
+document.addEventListener(
+  "keydown",
+  event => {
 
-      });
+    if(event.key.toLowerCase() === "c" && event.ctrlKey){
 
+      terminal.scrollTop = terminal.scrollHeight;
 
-      command.addEventListener("mouseleave", () => {
+    }
 
-        command.style.textShadow = "";
-
-      });
-
-    });
-
-
-    /* =======================================================
-       IMAGE ERROR HANDLING
-       ======================================================= */
-
-    document.querySelectorAll("img").forEach((image) => {
-
-      image.addEventListener("error", () => {
-
-        image.style.display = "none";
-
-        const parent = image.parentElement;
-
-        if (parent) {
-          parent.style.background =
-            "linear-gradient(135deg,#0a0a0e,#15151b)";
-        }
-
-      });
-
-    });
+  }
+);
 
 
-    /* =======================================================
-       CURRENT YEAR
-       ======================================================= */
+/* =========================================================
+   SUBTLE PARALLAX
+   ========================================================= */
 
-    const year = new Date().getFullYear();
+const orbit = document.querySelector(".orbit");
 
-    document.querySelectorAll(".footer-bottom").forEach((footer) => {
+window.addEventListener(
+  "mousemove",
+  event => {
 
-      footer.innerHTML =
-        footer.innerHTML.replace("2026", year);
+    if(!orbit) return;
 
-    });
+    const x =
+      (event.clientX / window.innerWidth - .5) * 10;
 
-  </script>
+    const y =
+      (event.clientY / window.innerHeight - .5) * 10;
+
+    orbit.style.marginLeft = `${x}px`;
+    orbit.style.marginTop = `${y}px`;
+
+  },
+  {passive:true}
+);
+
+
+/* =========================================================
+   CURRENT YEAR
+   ========================================================= */
+
+document.querySelectorAll(".footerBottom").forEach(
+  footer => {
+
+    footer.innerHTML =
+      footer.innerHTML.replace(
+        "© 2026",
+        `© ${new Date().getFullYear()}`
+      );
+
+  }
+);
+
+</script>
 
 </body>
 </html>
-        
-      
+    
