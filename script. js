@@ -1,0 +1,190 @@
+(() => {
+  "use strict";
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  // Mobile navigation
+  const menuToggle = $("#menu-toggle");
+  const primaryNav = $("#primary-nav");
+
+  if (menuToggle && primaryNav) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Open navigation" : "Close navigation");
+      primaryNav.classList.toggle("is-open", !isOpen);
+    });
+
+    $$("a", primaryNav).forEach((link) => {
+      link.addEventListener("click", () => {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        primaryNav.classList.remove("is-open");
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && primaryNav.classList.contains("is-open")) {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        primaryNav.classList.remove("is-open");
+        menuToggle.focus();
+      }
+    });
+  }
+
+  // Small development peek tabs
+  const peekContent = {
+    world: {
+      label: "WORLD DESIGN",
+      title: "A place that rewards a closer look.",
+      text: "The world is being designed to feel lived in, with environmental details and systems that invite curiosity rather than explain everything at once.",
+      status: "IN PROGRESS",
+      art: "peek-art-world"
+    },
+    sound: {
+      label: "MUSIC & ATMOSPHERE",
+      title: "Sound is part of the storytelling.",
+      text: "Original musical ideas and ambient experiments are being shaped alongside the project. The aim is to make each space feel like it has its own mood.",
+      status: "EXPERIMENTS IN PROGRESS",
+      art: "peek-art-sound"
+    },
+    making: {
+      label: "INDEPENDENT DEVELOPMENT",
+      title: "Big ideas, built one piece at a time.",
+      text: "Design notes, small prototypes, visual experiments, and careful iteration are all part of the process. The first goal is to make the foundations work well.",
+      status: "ONGOING",
+      art: "peek-art-making"
+    }
+  };
+
+  const peekTabs = $$(".peek-tab");
+  const peekPanel = $("#peek-panel");
+  const peekArt = $("#peek-art");
+
+  function selectPeek(key, tab) {
+    const item = peekContent[key];
+    if (!item || !peekPanel) return;
+
+    peekTabs.forEach((button) => {
+      const active = button === tab;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
+    });
+
+    $("#peek-label").textContent = item.label;
+    $("#peek-title").textContent = item.title;
+    $("#peek-text").textContent = item.text;
+    $("#peek-status").lastChild.textContent = ` ${item.status}`;
+    peekPanel.setAttribute("aria-labelledby", tab.id);
+    peekArt.className = `peek-art ${item.art}`;
+  }
+
+  peekTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectPeek(tab.dataset.peek, tab));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(event.key)) return;
+      event.preventDefault();
+      const direction = ["ArrowDown", "ArrowRight"].includes(event.key) ? 1 : -1;
+      const next = peekTabs[(index + direction + peekTabs.length) % peekTabs.length];
+      next.focus();
+      selectPeek(next.dataset.peek, next);
+    });
+  });
+
+  // ARG puzzle state is intentionally local to this browser.
+  const puzzleState = { note: false, mirror: false };
+  const solvedCount = $("#solved-count");
+  const progressFill = $("#progress-fill");
+
+  function renderPuzzleProgress() {
+    const count = Number(puzzleState.note) + Number(puzzleState.mirror);
+    solvedCount.textContent = `${count} / 2 signals found`;
+    progressFill.style.width = `${count * 50}%`;
+  }
+
+  const noteForm = $("#note-form");
+  const noteAnswer = $("#note-answer");
+  const noteFeedback = $("#note-feedback");
+  const hintButton = $("#note-hint-button");
+  const hintText = $("#note-hint");
+
+  noteForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const answer = noteAnswer.value.trim().toLowerCase().replace(/[.!?]/g, "");
+
+    if (answer === "promise" || answer === "a promise") {
+      puzzleState.note = true;
+      noteFeedback.textContent = "Signal 001 found. A good answer can change the meaning of a note.";
+      noteFeedback.classList.add("is-success");
+      noteAnswer.setAttribute("disabled", "disabled");
+      $(".answer-button", noteForm).setAttribute("disabled", "disabled");
+      renderPuzzleProgress();
+    } else if (answer.length === 0) {
+      noteFeedback.textContent = "Write something first. The note isn't going to fill itself in.";
+    } else {
+      noteFeedback.textContent = "Not quite. Read the clue once more, then try again.";
+    }
+  });
+
+  hintButton.addEventListener("click", () => {
+    const isOpen = hintButton.getAttribute("aria-expanded") === "true";
+    hintButton.setAttribute("aria-expanded", String(!isOpen));
+    hintText.hidden = isOpen;
+    hintButton.textContent = isOpen ? "Need a hint?" : "Hide hint";
+  });
+
+  const choiceButtons = $$(".choice-button");
+  const objectFeedback = $("#object-feedback");
+
+  choiceButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (puzzleState.mirror) return;
+      const isCorrect = button.dataset.choice === "mirror";
+
+      if (isCorrect) {
+        puzzleState.mirror = true;
+        button.classList.add("is-correct");
+        choiceButtons.forEach((choice) => choice.disabled = true);
+        objectFeedback.textContent = "Signal 002 found. Not every bright thing makes its own light.";
+        renderPuzzleProgress();
+      } else {
+        button.classList.add("is-wrong");
+        objectFeedback.textContent = "Not that one. Does it make light, or reflect it?";
+        window.setTimeout(() => button.classList.remove("is-wrong"), 650);
+      }
+    });
+  });
+
+  $("#reset-signals").addEventListener("click", () => {
+    puzzleState.note = false;
+    puzzleState.mirror = false;
+    noteAnswer.disabled = false;
+    noteAnswer.value = "";
+    $(".answer-button", noteForm).disabled = false;
+    noteFeedback.textContent = "";
+    noteFeedback.classList.remove("is-success");
+    objectFeedback.textContent = "";
+    choiceButtons.forEach((button) => {
+      button.disabled = false;
+      button.classList.remove("is-correct", "is-wrong");
+    });
+    hintButton.setAttribute("aria-expanded", "false");
+    hintButton.textContent = "Need a hint?";
+    hintText.hidden = true;
+    renderPuzzleProgress();
+  });
+
+  // A tiny footer detail, because websites are allowed to be a little playful.
+  const secretButton = $("#quiet-secret");
+  const secretMessage = $("#secret-message");
+  secretButton.addEventListener("click", () => {
+    secretMessage.hidden = !secretMessage.hidden;
+    secretButton.setAttribute("aria-label", secretMessage.hidden ? "A tiny detail" : "Hide the tiny detail");
+  });
+
+  $("#year").textContent = String(new Date().getFullYear());
+  renderPuzzleProgress();
+})();
