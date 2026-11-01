@@ -1,353 +1,69 @@
- 
-       
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1711">
-  <meta name="description" content="NullShift is an independent philosophical mystery game in development by Harsheel Mishra. Explore the project, catch a glimpse of its world, and try a few small web puzzles.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="NULLSHIFT — A world of questions">
-  <meta property="og:description" content="A philosophical mystery game about creation, consequence, and curiosity. In development by Harsheel Mishra.">
-  <meta property="og:url" content="https://nullshiftdev-t.github.io/">
-  <title>NULLSHIFT — A world of questions</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#080b08">
+  <meta name="description" content="NULLSHIFT — a public-facing archive of fragments, signals and unfinished records.">
+  <title>NULLSHIFT — Public Archive</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <aside class="rail" id="rail">
+      <a class="brand" href="#home" aria-label="NullShift home">
+        <span class="brand-mark" aria-hidden="true"><i></i><b></b><em></em></span>
+        <span class="brand-word">NULL<span>SHIFT</span><small>PUBLIC ARCHIVE</small></span>
+      </a>
+      <div class="rail-rule"></div>
+      <div class="rail-label">DIRECTORY <span>00—08</span></div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a href="#home" data-route="home"><span class="nav-no">00</span><span>Overview</span></a>
+        <a href="#index" data-route="index"><span class="nav-no">01</span><span>The Index</span></a>
+        <a href="#threnody" data-route="threnody"><span class="nav-no">02</span><span>The Threnody</span><i class="nav-mark"></i></a>
+        <a href="#paries" data-route="paries"><span class="nav-no">03</span><span>The Last Paries</span><i class="nav-mark"></i></a>
+        <a href="#signals" data-route="signals"><span class="nav-no">04</span><span>Signal Room</span></a>
+        <a href="#gallery" data-route="gallery"><span class="nav-no">05</span><span>Visual Records</span></a>
+        <a href="#fieldnotes" data-route="fieldnotes"><span class="nav-no">06</span><span>Field Notes</span></a>
+        <a href="#about" data-route="about"><span class="nav-no">07</span><span>Project / Author</span></a>
+        <a href="#unlisted" data-route="unlisted" class="unlisted-link hidden-route"><span class="nav-no">08</span><span>Unlisted</span><i class="lock-dot"></i></a>
+      </nav>
+      <div class="rail-bottom">
+        <div class="rail-rule"></div>
+        <div class="status-line"><span class="status-light"></span><span>ARCHIVE PARTIALLY INDEXED</span></div>
+        <div class="rail-meta"><span>REV. 02</span><span id="rail-record-count">00 / 08</span></div>
+        <div class="rail-meta"><span>© BLANKCALYX</span><span>NULLSHIFT.DEV</span></div>
+      </div>
+    </aside>
 
-  <div class="announcement">
-    <span class="announcement-dot" aria-hidden="true"></span>
-    <span>NULLSHIFT IS IN DEVELOPMENT</span>
-    <span class="announcement-divider" aria-hidden="true"></span>
-    <span class="announcement-note">A little world, still taking shape.</span>
+    <main class="main-column">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>NULLSHIFT</span><b>/</b><span id="crumb-current">OVERVIEW</span></div>
+        <div class="topbar-right">
+          <button class="plain-button" id="search-open" type="button"><span class="search-glyph">⌕</span> SEARCH <kbd>/</kbd></button>
+          <span class="top-status"><i></i> PUBLIC ACCESS</span>
+          <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Toggle navigation">☰</button>
+        </div>
+      </header>
+
+      <div id="page" class="page" tabindex="-1" aria-live="polite"></div>
+
+      <footer class="footer">
+        <div class="footer-left"><span class="footer-sigil">∴</span><span>NULLSHIFT / PUBLIC ARCHIVE</span></div>
+        <div class="footer-right"><span>NOT ALL RECORDS ARE PRESENT.</span><a href="#index">RETURN TO INDEX ↑</a></div>
+      </footer>
+    </main>
   </div>
 
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="NullShift home">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" role="img">
-          <circle cx="24" cy="24" r="16.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".48"/>
-          <ellipse cx="24" cy="24" rx="22" ry="8.5" fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(-33 24 24)"/>
-          <path d="M24 13.5 27.2 21l7.3 3-7.3 3-3.2 7.5-3.2-7.5-7.3-3 7.3-3 3.2-7.5Z" fill="currentColor"/>
-        </svg>
-      </span>
-      <span class="brand-type">
-        <strong>NULLSHIFT</strong>
-        <small>THE WORLD IS STILL FORMING</small>
-      </span>
-    </a>
+  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-head"><span id="search-title">ARCHIVE SEARCH</span><button class="icon-button" id="search-close" aria-label="Close search">×</button></div>
+    <label class="search-field"><span>⌕</span><input id="search-input" type="search" placeholder="Search records, signals, fragments…" autocomplete="off"></label>
+    <div class="search-hint">SEARCH IS LIMITED TO PUBLICLY INDEXED MATERIAL.</div>
+    <div id="search-results" class="search-results"><p class="empty-search">Enter a term to begin.</p></div>
+  </dialog>
 
-    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav">
-      <span></span><span></span>
-    </button>
-
-    <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
-      <a href="#project">The project</a>
-      <a href="#peek">A little peek</a>
-      <a href="#signals">Signal room <span class="nav-spark" aria-hidden="true">✳</span></a>
-      <a href="#creator">The creator</a>
-      <a class="nav-cta" href="#signals">Explore signals <span aria-hidden="true">↗</span></a>
-    </nav>
-  </header>
-
-  <main id="main">
-    <section class="hero section-wrap" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> AN INDEPENDENT GAME PROJECT</p>
-        <h1>Some worlds are meant to be explored.<br><em>Others ask questions back.</em></h1>
-        <p class="hero-description">
-          <strong>NullShift</strong> is a philosophical mystery game about creation, consequence,
-          and the strange things we discover when we look a little closer.
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#project">Get to know NullShift <span aria-hidden="true">↗</span></a>
-          <a class="button button-quiet" href="#signals"><span class="button-star" aria-hidden="true">✳</span> Try the Signal Room</a>
-        </div>
-        <div class="hero-footnote">
-          <span class="status-pill"><span></span> IN DEVELOPMENT</span>
-          <span>Release date not announced</span>
-        </div>
-      </div>
-
-      <div class="hero-art" aria-label="Abstract illustration of a small world surrounded by orbiting shapes">
-        <div class="art-scribble scribble-one">stay curious</div>
-        <div class="art-scribble scribble-two">✳</div>
-        <div class="orbit orbit-a"></div>
-        <div class="orbit orbit-b"></div>
-        <div class="orbit orbit-c"></div>
-        <div class="planet">
-          <div class="planet-glow"></div>
-          <div class="planet-land land-one"></div>
-          <div class="planet-land land-two"></div>
-          <div class="planet-land land-three"></div>
-          <div class="planet-shine"></div>
-        </div>
-        <span class="moon moon-one"></span>
-        <span class="moon moon-two"></span>
-        <span class="moon moon-three"></span>
-        <span class="star star-one">✦</span>
-        <span class="star star-two">✧</span>
-        <span class="star star-three">✳</span>
-        <div class="art-note">
-          <span class="note-index">A NOTE FROM THE MAKING</span>
-          <strong>Every detail<br>has a reason.</strong>
-          <span class="note-doodle" aria-hidden="true">↗</span>
-        </div>
-        <div class="art-caption">A WORLD IN PROGRESS <span>01 / ∞</span></div>
-      </div>
-    </section>
-
-    <section class="ticker" aria-label="Project themes">
-      <div class="ticker-track">
-        <span>CREATION</span><i>✳</i><span>CONSEQUENCE</span><i>✳</i><span>CURIOSITY</span><i>✳</i><span>IDENTITY</span><i>✳</i><span>DISCOVERY</span><i>✳</i>
-        <span>CREATION</span><i>✳</i><span>CONSEQUENCE</span><i>✳</i><span>CURIOSITY</span><i>✳</i><span>IDENTITY</span><i>✳</i><span>DISCOVERY</span><i>✳</i>
-      </div>
-    </section>
-
-    <section class="section section-project" id="project">
-      <div class="section-wrap">
-        <div class="section-heading">
-          <p class="eyebrow"><span class="eyebrow-line"></span> FIRST, THE IMPORTANT PART</p>
-          <h2>A game with more to<br><em>think about.</em></h2>
-          <p class="section-intro">
-            NullShift is being built around one simple idea: having power is easy to imagine.
-            Understanding what to do with it is much harder.
-          </p>
-        </div>
-
-        <div class="question-grid">
-          <article class="question-card question-card-cream">
-            <span class="card-number">01</span>
-            <div class="question-icon icon-create" aria-hidden="true"><span></span><span></span><span></span></div>
-            <h3>What do you create?</h3>
-            <p>Build, shape, and bring ideas into a world that has a life of its own.</p>
-            <span class="card-bottom">THE ART OF BEGINNING</span>
-          </article>
-          <article class="question-card question-card-green">
-            <span class="card-number">02</span>
-            <div class="question-icon icon-change" aria-hidden="true">↗</div>
-            <h3>What do your choices change?</h3>
-            <p>Every decision has a context. Not every outcome arrives as expected.</p>
-            <span class="card-bottom">THE WEIGHT OF A CHOICE</span>
-          </article>
-          <article class="question-card question-card-gold">
-            <span class="card-number">03</span>
-            <div class="question-icon icon-curiosity" aria-hidden="true">✳</div>
-            <h3>What are you missing?</h3>
-            <p>Look closely. Small details can make a familiar place feel unfamiliar.</p>
-            <span class="card-bottom">THE JOY OF NOTICING</span>
-          </article>
-        </div>
-
-        <div class="project-note">
-          <div class="project-note-mark" aria-hidden="true">N.</div>
-          <div>
-            <p class="note-kicker">A PROMISE ABOUT THE STORY</p>
-            <p class="project-note-text">The best discoveries should belong to the people who make them. This site offers a glimpse, not a plot summary.</p>
-          </div>
-          <span class="note-flower" aria-hidden="true">✳</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-peek" id="peek">
-      <div class="section-wrap">
-        <div class="peek-heading">
-          <div>
-            <p class="eyebrow"><span class="eyebrow-line"></span> A FEW THINGS TAKING SHAPE</p>
-            <h2>Behind the little<br><em>bits of wonder.</em></h2>
-          </div>
-          <p class="peek-intro">A project is more than its final screen. Here's a small, spoiler-free look at what's going into it.</p>
-        </div>
-
-        <div class="peek-layout">
-          <div class="peek-menu" role="tablist" aria-label="Development glimpses">
-            <button class="peek-tab is-active" id="tab-world" type="button" role="tab" aria-selected="true" aria-controls="peek-panel" data-peek="world">
-              <span class="peek-tab-icon">◌</span><span><strong>The world</strong><small>Places, systems & details</small></span><span class="tab-arrow">↗</span>
-            </button>
-            <button class="peek-tab" id="tab-sound" type="button" role="tab" aria-selected="false" aria-controls="peek-panel" data-peek="sound">
-              <span class="peek-tab-icon">♫</span><span><strong>The sound</strong><small>Music, mood & atmosphere</small></span><span class="tab-arrow">↗</span>
-            </button>
-            <button class="peek-tab" id="tab-making" type="button" role="tab" aria-selected="false" aria-controls="peek-panel" data-peek="making">
-              <span class="peek-tab-icon">✳</span><span><strong>The making</strong><small>Ideas becoming something real</small></span><span class="tab-arrow">↗</span>
-            </button>
-          </div>
-
-          <div class="peek-panel" id="peek-panel" role="tabpanel" aria-labelledby="tab-world" tabindex="0">
-            <div class="peek-art peek-art-world" id="peek-art" aria-hidden="true">
-              <div class="peek-sun"></div><div class="peek-hill hill-a"></div><div class="peek-hill hill-b"></div>
-              <span class="peek-spark spark-a">✦</span><span class="peek-spark spark-b">✳</span><span class="peek-spark spark-c">·</span>
-              <div class="peek-paper">FIELD NOTE <b>01</b></div>
-            </div>
-            <div class="peek-panel-copy">
-              <span class="panel-label" id="peek-label">WORLD DESIGN</span>
-              <h3 id="peek-title">A place that rewards a closer look.</h3>
-              <p id="peek-text">The world is being designed to feel lived in, with environmental details and systems that invite curiosity rather than explain everything at once.</p>
-              <span class="panel-status" id="peek-status"><i></i> IN PROGRESS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-signals" id="signals">
-      <div class="section-wrap">
-        <div class="signals-heading">
-          <div>
-            <p class="eyebrow"><span class="eyebrow-line"></span> SOMETHING FOR THE CURIOUS</p>
-            <h2>Welcome to the<br><em>Signal Room.</em></h2>
-            <p class="section-intro">A couple of small puzzles have found their way onto this page. No lore knowledge required. Just a little attention.</p>
-          </div>
-          <div class="signal-stamp" aria-hidden="true">
-            <span>OPEN</span><strong>✳</strong><span>TO CURIOSITY</span>
-          </div>
-        </div>
-
-        <div class="signals-grid">
-          <article class="signal-card signal-card-paper">
-            <div class="signal-card-top">
-              <span class="signal-number">SIGNAL 001</span>
-              <span class="signal-status"><i></i> AVAILABLE</span>
-            </div>
-            <div class="signal-illustration illustration-note" aria-hidden="true">
-              <div class="paper-sheet"><span></span><span></span><span></span><b>?</b></div>
-              <div class="paper-star">✳</div>
-            </div>
-            <h3>The Unsent Note</h3>
-            <p class="signal-description">A short riddle, written on a note with no name attached.</p>
-            <form id="note-form" class="puzzle-form">
-              <label for="note-answer">I can be made, kept, broken, or shared. What am I?</label>
-              <div class="answer-row">
-                <input id="note-answer" name="answer" type="text" autocomplete="off" placeholder="Your answer..." aria-describedby="note-feedback note-hint">
-                <button class="answer-button" type="submit" aria-label="Check answer">↗</button>
-              </div>
-              <button class="hint-button" id="note-hint-button" type="button" aria-expanded="false" aria-controls="note-hint">Need a hint?</button>
-              <p class="hint-text" id="note-hint" hidden>It can exist between two people, even when neither is holding anything.</p>
-              <p class="puzzle-feedback" id="note-feedback" aria-live="polite"></p>
-            </form>
-          </article>
-
-          <article class="signal-card signal-card-dark">
-            <div class="signal-card-top">
-              <span class="signal-number">SIGNAL 002</span>
-              <span class="signal-status"><i></i> AVAILABLE</span>
-            </div>
-            <div class="signal-illustration illustration-object" aria-hidden="true">
-              <span class="object-orbit"></span>
-              <span class="object-star">✧</span>
-              <span class="object-circle">◒</span>
-            </div>
-            <h3>Borrowed Light</h3>
-            <p class="signal-description">One of these things only gives light back. Find the odd one out.</p>
-            <div class="choice-grid" role="group" aria-label="Choose the object that reflects light instead of creating it">
-              <button class="choice-button" type="button" data-choice="candle"><span>🕯️</span><small>Candle</small></button>
-              <button class="choice-button" type="button" data-choice="lantern"><span>🏮</span><small>Lantern</small></button>
-              <button class="choice-button" type="button" data-choice="mirror"><span>🪞</span><small>Mirror</small></button>
-            </div>
-            <p class="puzzle-feedback dark-feedback" id="object-feedback" aria-live="polite"></p>
-          </article>
-        </div>
-
-        <div class="signals-bottom">
-          <div class="progress-copy">
-            <span class="progress-label">YOUR LITTLE DISCOVERIES</span>
-            <strong id="solved-count">0 / 2 signals found</strong>
-          </div>
-          <div class="progress-track" aria-label="Puzzle progress"><span id="progress-fill"></span></div>
-          <button id="reset-signals" class="reset-button" type="button">Reset puzzles ↺</button>
-        </div>
-        <p class="signals-footnote">These are website-only mini puzzles. The game's story remains its own discovery.</p>
-      </div>
-    </section>
-
-    <section class="section section-creator" id="creator">
-      <div class="section-wrap creator-layout">
-        <div class="creator-art" aria-hidden="true">
-          <div class="creator-orbit creator-orbit-one"></div>
-          <div class="creator-orbit creator-orbit-two"></div>
-          <div class="creator-sun"></div>
-          <div class="creator-letter">H<span>.</span>M<span>.</span></div>
-          <span class="creator-spark creator-spark-a">✳</span>
-          <span class="creator-spark creator-spark-b">✦</span>
-          <span class="creator-caption">IDEAS → EXPERIMENTS → WORLDS</span>
-        </div>
-        <div class="creator-copy">
-          <p class="eyebrow"><span class="eyebrow-line"></span> A HUMAN BEHIND THE UNIVERSE</p>
-          <h2>Made by one curious<br><em>mind. For curious minds.</em></h2>
-          <p class="creator-lead">Hey, I'm <strong>Harsheel Mishra</strong>, the creator of NullShift.</p>
-          <p>I'm interested in game development, music, technology, and the big questions that make you pause halfway through a normal day. NullShift is where those interests meet: a growing project built through experiments, sketches, systems, sound, and a lot of thinking.</p>
-          <p>It's being made one piece at a time. The goal isn't to rush toward a big reveal. It's to make every piece worth discovering.</p>
-          <div class="creator-signoff">
-            <span class="signature">Harsheel</span>
-            <span class="signoff-note">CREATOR · NULLSHIFT</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-status">
-      <div class="section-wrap">
-        <div class="status-heading">
-          <div>
-            <p class="eyebrow"><span class="eyebrow-line"></span> A SMALL DEVELOPMENT UPDATE</p>
-            <h2>Still being <em>made.</em></h2>
-          </div>
-          <p>NullShift is a work in progress. This page will grow as the project does.</p>
-        </div>
-        <div class="status-list">
-          <div class="status-item"><span class="status-check">✳</span><span><strong>Core concept</strong><small>Established</small></span><span class="status-state state-done">FOUNDATION SET</span></div>
-          <div class="status-item"><span class="status-check">◌</span><span><strong>World & systems</strong><small>Design and iteration</small></span><span class="status-state">IN PROGRESS</span></div>
-          <div class="status-item"><span class="status-check">♫</span><span><strong>Music & atmosphere</strong><small>Original experiments</small></span><span class="status-state">IN PROGRESS</span></div>
-          <div class="status-item"><span class="status-check">✧</span><span><strong>Public release</strong><small>No date announced</small></span><span class="status-state state-later">NOT ANNOUNCED</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="closing section-wrap">
-      <div class="closing-card">
-        <span class="closing-flower" aria-hidden="true">✳</span>
-        <p class="eyebrow">UNTIL THE NEXT DISCOVERY</p>
-        <h2>Stay curious.<br><em>Look a little closer.</em></h2>
-        <p>There will be more to see as NullShift takes shape.</p>
-        <a class="button button-primary" href="#home">Back to the beginning <span aria-hidden="true">↑</span></a>
-        <span class="closing-orbit" aria-hidden="true"></span>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-main">
-      <a class="brand footer-brand" href="#home" aria-label="NullShift home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48">
-            <circle cx="24" cy="24" r="16.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".48"/>
-            <ellipse cx="24" cy="24" rx="22" ry="8.5" fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(-33 24 24)"/>
-            <path d="M24 13.5 27.2 21l7.3 3-7.3 3-3.2 7.5-3.2-7.5-7.3-3 7.3-3 3.2-7.5Z" fill="currentColor"/>
-          </svg>
-        </span>
-        <span class="brand-type"><strong>NULLSHIFT</strong><small>THE FALL IS THE RISE.</small></span>
-      </a>
-      <div class="footer-links">
-        <a href="#project">The project</a>
-        <a href="#signals">Signal room</a>
-        <a href="#creator">Creator</a>
-        <a href="NULLSHIFT_LICENSE.md">Project license ↗</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Harsheel Mishra. All rights reserved.</span>
-      <button class="quiet-secret" id="quiet-secret" type="button" aria-label="A tiny detail">✳</button>
-      <span>Made with curiosity, not a command prompt.</span>
-    </div>
-    <p class="secret-message" id="secret-message" aria-live="polite" hidden>Some things are only noticed twice. You noticed.</p>
-  </footer>
-
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
 </html>
