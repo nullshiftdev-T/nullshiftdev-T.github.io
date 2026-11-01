@@ -222,4 +222,4 @@
   $("#footer-time").textContent=`LOCAL CLOCK // ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
   updateCounts();
   render(location.hash.slice(1)||"home");
-})();
+})(); 
