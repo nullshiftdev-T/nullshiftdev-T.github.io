@@ -4,65 +4,64 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b08">
-  <meta name="description" content="NULLSHIFT — a public-facing archive of fragments, signals and unfinished records.">
-  <title>NULLSHIFT — Public Archive</title>
+  <meta name="description" content="NULLSHIFT — an incomplete public archive of records, absences, and things that were not meant to be found.">
+  <title>NULLSHIFT // ARCHIVE 00</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="site-shell">
-    <aside class="rail" id="rail">
-      <a class="brand" href="#home" aria-label="NullShift home">
-        <span class="brand-mark" aria-hidden="true"><i></i><b></b><em></em></span>
-        <span class="brand-word">NULL<span>SHIFT</span><small>PUBLIC ARCHIVE</small></span>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="frame-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="site">
+    <aside class="sidebar" id="sidebar">
+      <a class="wordmark" href="#home" aria-label="NullShift archive home">
+        <span class="sigil"><i></i><b></b><em></em></span>
+        <span class="wordmark-type">NULL<span>SHIFT</span><small>INCOMPLETE RECORDS OFFICE</small></span>
       </a>
-      <div class="rail-rule"></div>
-      <div class="rail-label">DIRECTORY <span>00—08</span></div>
-      <nav class="side-nav" aria-label="Main navigation">
-        <a href="#home" data-route="home"><span class="nav-no">00</span><span>Overview</span></a>
-        <a href="#index" data-route="index"><span class="nav-no">01</span><span>The Index</span></a>
-        <a href="#threnody" data-route="threnody"><span class="nav-no">02</span><span>The Threnody</span><i class="nav-mark"></i></a>
-        <a href="#paries" data-route="paries"><span class="nav-no">03</span><span>The Last Paries</span><i class="nav-mark"></i></a>
-        <a href="#signals" data-route="signals"><span class="nav-no">04</span><span>Signal Room</span></a>
-        <a href="#gallery" data-route="gallery"><span class="nav-no">05</span><span>Visual Records</span></a>
-        <a href="#fieldnotes" data-route="fieldnotes"><span class="nav-no">06</span><span>Field Notes</span></a>
-        <a href="#about" data-route="about"><span class="nav-no">07</span><span>Project / Author</span></a>
-        <a href="#unlisted" data-route="unlisted" class="unlisted-link hidden-route"><span class="nav-no">08</span><span>Unlisted</span><i class="lock-dot"></i></a>
+      <div class="side-divider"><span>DIRECTORY</span><span>00—09</span></div>
+      <nav id="main-nav" aria-label="Archive sections">
+        <a href="#home" data-route="home"><span class="nav-index">00</span><span class="nav-label">Front matter</span><span class="nav-glyph">↗</span></a>
+        <a href="#index" data-route="index"><span class="nav-index">01</span><span class="nav-label">The index</span><span class="nav-glyph">⌕</span></a>
+        <a href="#threnody" data-route="threnody"><span class="nav-index">02</span><span class="nav-label">The Threnody</span><span class="nav-glyph">△</span></a>
+        <a href="#paries" data-route="paries"><span class="nav-index">03</span><span class="nav-label">The Last Paries</span><span class="nav-glyph">∴</span></a>
+        <a href="#signals" data-route="signals"><span class="nav-index">04</span><span class="nav-label">Signal / noise</span><span class="nav-glyph">⌁</span></a>
+        <a href="#specimens" data-route="specimens"><span class="nav-index">05</span><span class="nav-label">Visual specimens</span><span class="nav-glyph">▧</span></a>
+        <a href="#fieldnotes" data-route="fieldnotes"><span class="nav-index">06</span><span class="nav-label">Field notes</span><span class="nav-glyph">✳</span></a>
+        <a href="#about" data-route="about"><span class="nav-index">07</span><span class="nav-label">Project file</span><span class="nav-glyph">↗</span></a>
+        <a href="#discovered" data-route="discovered" class="restricted-link" hidden><span class="nav-index">08</span><span class="nav-label">Unlisted record</span><span class="nav-glyph">◉</span></a>
+        <a href="#ledger" data-route="ledger"><span class="nav-index">09</span><span class="nav-label">Your ledger</span><span class="nav-glyph">≡</span></a>
       </nav>
-      <div class="rail-bottom">
-        <div class="rail-rule"></div>
-        <div class="status-line"><span class="status-light"></span><span>ARCHIVE PARTIALLY INDEXED</span></div>
-        <div class="rail-meta"><span>REV. 02</span><span id="rail-record-count">00 / 08</span></div>
-        <div class="rail-meta"><span>© BLANKCALYX</span><span>NULLSHIFT.DEV</span></div>
+      <div class="sidebar-bottom">
+        <div class="status"><span class="status-dot"></span><span>PUBLIC ARCHIVE // UNSTABLE</span></div>
+        <div class="status-row"><span>REVISION</span><b>DEV.2 / PUBLIC</b></div>
+        <div class="status-row"><span>INDEXED</span><b id="indexed-count">00 / 09</b></div>
+        <div class="side-stamp">BLANKCALYX <span>©</span><br><small>NO RECORD IS COMPLETE.</small></div>
       </div>
     </aside>
 
-    <main class="main-column">
+    <main class="main">
       <header class="topbar">
-        <div class="breadcrumbs"><span>NULLSHIFT</span><b>/</b><span id="crumb-current">OVERVIEW</span></div>
-        <div class="topbar-right">
-          <button class="plain-button" id="search-open" type="button"><span class="search-glyph">⌕</span> SEARCH <kbd>/</kbd></button>
-          <span class="top-status"><i></i> PUBLIC ACCESS</span>
-          <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Toggle navigation">☰</button>
+        <div class="crumb"><span>NS / PUBLIC ARCHIVE</span><b>›</b><strong id="current-label">FRONT MATTER</strong></div>
+        <div class="top-actions">
+          <span class="live-mark"><i></i> SIGNAL PRESENT</span>
+          <button class="text-button" id="search-open" type="button"><span>⌕</span> FIND <kbd>/</kbd></button>
+          <button class="menu-button" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
         </div>
       </header>
-
-      <div id="page" class="page" tabindex="-1" aria-live="polite"></div>
-
+      <section id="page" class="page" tabindex="-1" aria-live="polite"></section>
       <footer class="footer">
-        <div class="footer-left"><span class="footer-sigil">∴</span><span>NULLSHIFT / PUBLIC ARCHIVE</span></div>
-        <div class="footer-right"><span>NOT ALL RECORDS ARE PRESENT.</span><a href="#index">RETURN TO INDEX ↑</a></div>
+        <div class="footer-left"><span class="footer-sigil">∴</span><span>NULLSHIFT / AN INCOMPLETE PUBLIC ARCHIVE</span></div>
+        <div class="footer-right"><span id="footer-time">LOCAL TIME UNKNOWN</span><a href="#index">INDEX ↑</a></div>
       </footer>
     </main>
   </div>
 
-  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
-    <div class="dialog-head"><span id="search-title">ARCHIVE SEARCH</span><button class="icon-button" id="search-close" aria-label="Close search">×</button></div>
-    <label class="search-field"><span>⌕</span><input id="search-input" type="search" placeholder="Search records, signals, fragments…" autocomplete="off"></label>
-    <div class="search-hint">SEARCH IS LIMITED TO PUBLICLY INDEXED MATERIAL.</div>
-    <div id="search-results" class="search-results"><p class="empty-search">Enter a term to begin.</p></div>
+  <dialog id="search-dialog" class="search-dialog" aria-labelledby="search-heading">
+    <div class="dialog-head"><div><small>ARCHIVE UTILITY 01</small><h2 id="search-heading">Search the fragments.</h2></div><button class="close-button" id="search-close" aria-label="Close search">×</button></div>
+    <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="A name. A phrase. A mistake." autocomplete="off"></label>
+    <div class="search-meta">PUBLIC MATERIAL ONLY. ABSENCE IS NOT PROOF OF NONEXISTENCE.</div>
+    <div id="search-results" class="search-results"><p class="muted">Type to search indexed records.</p></div>
   </dialog>
-
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
